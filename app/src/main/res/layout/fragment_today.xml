@@ -41,15 +41,16 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/animationView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                app:lottie_rawRes="@raw/snowy_night"
                 app:layout_constraintStart_toEndOf="@id/degree"
                 app:layout_constraintTop_toBottomOf="@id/date"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="35dp"
                 android:layout_marginStart="10dp"
                 app:lottie_autoPlay="true"
-                app:lottie_loop="false" />
+                app:lottie_loop="true" />
 
 
             <TextView
@@ -67,7 +68,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recy"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="120dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

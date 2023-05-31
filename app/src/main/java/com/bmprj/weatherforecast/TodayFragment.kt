@@ -27,7 +27,7 @@ class TodayFragment : Fragment() {
 
         val list = ArrayList<Hourly>()
         for(i in 1..10){
-            val a = Hourly(R.drawable.ic_launcher_foreground,i.toString()+"PM")
+            val a = Hourly(R.drawable.ic_launcher_background,i.toString()+"PM")
             list.add(a)
         }
 

@@ -9,29 +9,37 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
+import android.os.Handler
 import android.os.StrictMode
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.gms.location.FusedLocationProviderClient
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
 class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProviderClient) {
 
 
-    var str="https://api.weatherapi.com/v1/current.json?key=3d94ea89afba4d1b8bf85744232605&q="
+    var str="https://api.weatherapi.com/v1/forecast.json?key=3d94ea89afba4d1b8bf85744232605&q="
     val permissionId=2
     var time=""
     var tempature=""
     var conditionText=""
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission", "SetTextI18n")
-    fun getLocation(date:TextView,degree:TextView,condition:TextView,animationView:LottieAnimationView){
+    fun getLocation(date:TextView,degree:TextView,condition:TextView,animationView:LottieAnimationView,recy:RecyclerView){
 
         if (checkPermissions()) {
             if (isLocationEnabled()) {
@@ -42,7 +50,7 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                         val list: List<Address> =
                             geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
 
-                        str = str+"${list[0].latitude},${list[0].longitude}&aqi=yes"
+                        str = str+"${list[0].latitude},${list[0].longitude}&days=1&aqi=yes&lang=tr"
 
                         val SDK_INT = Build.VERSION.SDK_INT
                         if (SDK_INT > 8) {
@@ -65,33 +73,63 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                             val code = conditionn.getInt("code")
                             conditionText=conditionn.getString("text")
 
-//                            val forecast = obj.getJSONObject("forecast")
-//                            val forecastday= forecast.getJSONArray("forecastday")
-//                            val hour= forecastday.getJSONObject(2)
-//                            var timelist = ArrayList<String>()
-//
-//                            for(i in 0..23){
-//                                val time = hour.getString("time")
-//                                println(time)
-//                                timelist.add(time)
-//                            }
+                            val forecast =obj.getJSONObject("forecast")
+                            val forecastday  = forecast.getJSONArray("forecastday")
+                            val hour = forecastday.getJSONObject(0)
+                            val hh = hour.getJSONArray("hour")
+                            
+// pressure_mb, humidity,uv,chance_of_rain eklenecek!!
+
+                            val formatter = DateTimeFormatter.ofPattern("HH")
+                            val currentt = LocalDateTime.now().format(formatter)
+                            val t = currentt.toInt()
+
+                            val liste=ArrayList<Hourly>()
+                            if(t<17){
+                                for(i  in t .. hh.length()-1){
+                                    val hourSet = hh.getJSONObject(i)
+                                    val temp = hourSet.getDouble("temp_c")
+                                    val cond = hourSet.getJSONObject("condition")
+                                    val icon = cond.getString("icon")
+
+                                    val h = Hourly(icon,i.toString()+":00",temp.toString()+"°")
+                                    liste.add(h)
+                                }
+                            } else{
+                                for(i  in 17 .. hh.length()-1){
+                                    val hourSet = hh.getJSONObject(i)
+                                    val temp = hourSet.getDouble("temp_c")
+                                    val cond = hourSet.getJSONObject("condition")
+                                    val icon = cond.getString("icon")
+
+                                    val h = Hourly(icon,i.toString()+":00",temp.toString()+"°")
+                                    liste.add(h)
+                                }
+
+                            }
 
 
-
-
-
+                                recy.apply {
+                                    layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+                                    recy.layoutManager=layoutManager
+                                    adapter=HourlyAdapter(liste)
+                                    recy.adapter=adapter
+                                }
 
 
                             date.text=time
                             degree.text=tempature+"°"
                             condition.text=conditionText
+
                             when(code){
                                 1000->{ animationView.setAnimation(R.raw.sunny) }
                                 1003->{ animationView.setAnimation(R.raw.partly_cloudy) }
                                 1006->{ animationView.setAnimation(R.raw.cloudy) }
-                                1030,1135,1147->{ animationView.setAnimation(R.raw.sisli) }
-                                1114,1117,1204,1207,1210,1213,1216,1219,1222,1225,->{ animationView.setAnimation(R.raw.snowy) }
-                                1180,1183,1186,1189,1192,1195,1198,1201,1240,1246->{ animationView.setAnimation(R.raw.partly_shower) }
+                                1030,1135,1147->{ animationView.setAnimation(R.raw.mist) }
+                                1114,1117,1204,1207,1213,1219,1225,->{ animationView.setAnimation(R.raw.snow) }
+                                1210,1216,1222,1249,1252,1255,1258 ->{ animationView.setAnimation(R.raw.snow_sunny) }
+                                1087,1273,1276->{ animationView.setAnimation(R.raw.thunder) }
+                                1183,1186,1189,1192,1195,1198,1201,1240,1246->{ animationView.setAnimation(R.raw.partly_shower) }
 
                             }
 

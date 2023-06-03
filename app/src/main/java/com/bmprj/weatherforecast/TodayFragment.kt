@@ -9,6 +9,7 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
@@ -47,6 +48,15 @@ class TodayFragment() : Fragment() {
         return binding.root
     }
 
+    fun refreshCurrentClick(view:View){
+        val mFusedLocationClient = LocationServices.getFusedLocationProviderClient(view.context)
+        val r = RequestCurrent(view,mFusedLocationClient)
+
+
+        r.getLocation(binding.date,binding.degree,binding.condition,binding.animationView,binding.recy)
+
+    }
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,28 +64,9 @@ class TodayFragment() : Fragment() {
 
         val mFusedLocationClient = LocationServices.getFusedLocationProviderClient(view.context)
         val r = RequestCurrent(view,mFusedLocationClient)
-        r.getLocation(binding.date,binding.degree,binding.condition,binding.animationView)
 
 
-
-
-            val listt=ArrayList<Hourly>()
-            for(i in 1..5){
-                val a = Hourly(R.drawable.sun,i.toString()+"PM")
-                val b = Hourly(R.drawable.y,i.toString()+"PM")
-                listt.add(a)
-                listt.add(b)
-            }
-
-
-
-            binding.recy.apply {
-                layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-                binding.recy.layoutManager=layoutManager
-                adapter=HourlyAdapter(listt)
-                binding.recy.adapter=adapter
-            }
-
+        r.getLocation(binding.date,binding.degree,binding.condition,binding.animationView,binding.recy)
 
 
 

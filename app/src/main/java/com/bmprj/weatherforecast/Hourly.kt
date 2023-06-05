@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
 
-data class Hourly(var weatherimgHourly:String?,var time:String,var temp:String )
+data class Hourly(val weatherimgHourly:String?,val time:String,val temp:String )
 @BindingAdapter("imageUrl")
 fun setImageUrl(imgView: ImageView, imgUrl: String?){
 

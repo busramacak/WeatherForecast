@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="rainy"
+            type="com.bmprj.weatherforecast.Rainy" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:isScrollContainer="false"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/percentageRainy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="@{rainy.percentageRainy, default=100}" />
+
+            <RatingBar
+                android:layout_marginTop="10dp"
+                style="@style/CustomRatingBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:numStars="1"
+                android:isIndicator="true"
+                android:rating="@{rainy.rating}"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@{rainy.rating > 0 ? @color/rating:@color/black}"
+                android:text="@{rainy.precip_mm}"/>
+
+            <TextView
+                android:id="@+id/timeRainy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="@{rainy.timeRainy, default=5.00}" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

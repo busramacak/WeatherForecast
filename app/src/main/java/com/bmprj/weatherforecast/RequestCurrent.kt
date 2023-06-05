@@ -9,20 +9,16 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
-import android.os.Handler
 import android.os.StrictMode
 import android.view.View
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.lottie.LottieAnimationView
+import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -39,7 +35,8 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission", "SetTextI18n")
-    fun getLocation(date:TextView,degree:TextView,condition:TextView,animationView:LottieAnimationView,recy:RecyclerView){
+    fun getLocation(binding:FragmentTodayBinding){
+
 
         if (checkPermissions()) {
             if (isLocationEnabled()) {
@@ -77,23 +74,32 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                             val forecastday  = forecast.getJSONArray("forecastday")
                             val hour = forecastday.getJSONObject(0)
                             val hh = hour.getJSONArray("hour")
-                            
-// pressure_mb, humidity,uv,chance_of_rain eklenecek!!
+
+                            val day = hour.getJSONObject("day")
+                            val avghumidity=day.getInt("avghumidity")
+                            val totalprecip_mm = day.getDouble("totalprecip_mm")
+                            val uv = day.getInt("uv")
+
 
                             val formatter = DateTimeFormatter.ofPattern("HH")
                             val currentt = LocalDateTime.now().format(formatter)
                             val t = currentt.toInt()
 
-                            val liste=ArrayList<Hourly>()
+                            val hourly = ArrayList<Hourly>()
+                            val rainy = ArrayList<Rainy>()
                             if(t<17){
                                 for(i  in t .. hh.length()-1){
                                     val hourSet = hh.getJSONObject(i)
                                     val temp = hourSet.getDouble("temp_c")
                                     val cond = hourSet.getJSONObject("condition")
                                     val icon = cond.getString("icon")
+                                    val rain =hourSet.getInt("chance_of_rain")
+                                    val precip = hourSet.getDouble("precip_mm").toFloat()
+                                    val r = Rainy("%"+rain.toString(),i.toString()+":00",precip.toString(),precip)
+                                    rainy.add(r)
 
                                     val h = Hourly(icon,i.toString()+":00",temp.toString()+"°")
-                                    liste.add(h)
+                                    hourly.add(h)
                                 }
                             } else{
                                 for(i  in 17 .. hh.length()-1){
@@ -101,35 +107,50 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                                     val temp = hourSet.getDouble("temp_c")
                                     val cond = hourSet.getJSONObject("condition")
                                     val icon = cond.getString("icon")
+                                    val rain =hourSet.getInt("change_of_rain")
+                                    val precip = hourSet.getDouble("precip_mm").toFloat()
+
+                                    val r = Rainy("%"+rain.toString(),i.toString()+":00",precip.toString(),precip)
+                                    rainy.add(r)
 
                                     val h = Hourly(icon,i.toString()+":00",temp.toString()+"°")
-                                    liste.add(h)
+                                    hourly.add(h)
                                 }
 
                             }
 
 
-                                recy.apply {
-                                    layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-                                    recy.layoutManager=layoutManager
-                                    adapter=HourlyAdapter(liste)
-                                    recy.adapter=adapter
-                                }
+                            binding.recyRain.apply {
+                                layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+                                binding.recyRain.layoutManager=layoutManager
+                                adapter=RainyAdapter(rainy)
+                                binding.recyRain.adapter=adapter
+                            }
 
 
-                            date.text=time
-                            degree.text=tempature+"°"
-                            condition.text=conditionText
+                            binding.recy.apply {
+                                layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+                                binding.recy.layoutManager=layoutManager
+                                adapter=HourlyAdapter(hourly)
+                                binding.recy.adapter=adapter
+                            }
 
+
+                            binding.date.text=time
+                            binding.degree.text=tempature+"°"
+                            binding.condition.text=conditionText
+                            binding.humidity.text="%"+avghumidity.toString()
+                            binding.uv.text=uv.toString()
+                            binding.totalprecip.text="Günlük toplam hacim "+totalprecip_mm.toString()+" mm"
                             when(code){
-                                1000->{ animationView.setAnimation(R.raw.sunny) }
-                                1003->{ animationView.setAnimation(R.raw.partly_cloudy) }
-                                1006->{ animationView.setAnimation(R.raw.cloudy) }
-                                1030,1135,1147->{ animationView.setAnimation(R.raw.mist) }
-                                1114,1117,1204,1207,1213,1219,1225,->{ animationView.setAnimation(R.raw.snow) }
-                                1210,1216,1222,1249,1252,1255,1258 ->{ animationView.setAnimation(R.raw.snow_sunny) }
-                                1087,1273,1276->{ animationView.setAnimation(R.raw.thunder) }
-                                1183,1186,1189,1192,1195,1198,1201,1240,1246->{ animationView.setAnimation(R.raw.partly_shower) }
+                                1000->{ binding.animationView.setAnimation(R.raw.sunny) }
+                                1003->{ binding.animationView.setAnimation(R.raw.partly_cloudy) }
+                                1006->{ binding.animationView.setAnimation(R.raw.cloudy) }
+                                1030,1135,1147->{ binding.animationView.setAnimation(R.raw.mist) }
+                                1114,1117,1204,1207,1213,1219,1225,->{ binding.animationView.setAnimation(R.raw.snow) }
+                                1210,1216,1222,1249,1252,1255,1258 ->{ binding.animationView.setAnimation(R.raw.snow_sunny) }
+                                1087,1273,1276->{ binding.animationView.setAnimation(R.raw.thunder) }
+                                1183,1186,1189,1192,1195,1198,1201,1240,1246->{ binding.animationView.setAnimation(R.raw.partly_shower) }
 
                             }
 

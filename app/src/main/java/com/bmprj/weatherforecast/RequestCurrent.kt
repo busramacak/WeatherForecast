@@ -87,6 +87,7 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
 
                             val hourly = ArrayList<Hourly>()
                             val rainy = ArrayList<Rainy>()
+                            var pressure_mb=0
                             if(t<17){
                                 for(i  in t .. hh.length()-1){
                                     val hourSet = hh.getJSONObject(i)
@@ -94,6 +95,7 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                                     val cond = hourSet.getJSONObject("condition")
                                     val icon = cond.getString("icon")
                                     val rain =hourSet.getInt("chance_of_rain")
+                                    pressure_mb+=hourSet.getInt("pressure_mb")
                                     val precip = hourSet.getDouble("precip_mm").toFloat()
                                     val r = Rainy("%"+rain.toString(),i.toString()+":00",precip.toString(),precip)
                                     rainy.add(r)
@@ -107,7 +109,7 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                                     val temp = hourSet.getDouble("temp_c")
                                     val cond = hourSet.getJSONObject("condition")
                                     val icon = cond.getString("icon")
-                                    val rain =hourSet.getInt("change_of_rain")
+                                    val rain =hourSet.getInt("chance_of_rain")
                                     val precip = hourSet.getDouble("precip_mm").toFloat()
 
                                     val r = Rainy("%"+rain.toString(),i.toString()+":00",precip.toString(),precip)
@@ -142,12 +144,22 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                             binding.humidity.text="%"+avghumidity.toString()
                             binding.uv.text=uv.toString()
                             binding.totalprecip.text="Günlük toplam hacim "+totalprecip_mm.toString()+" mm"
+                            binding.pressure.text=pressure_mb.toString()
                             when(code){
-                                1000->{ binding.animationView.setAnimation(R.raw.sunny) }
-                                1003->{ binding.animationView.setAnimation(R.raw.partly_cloudy) }
+                                1000->{
+                                    if(t>6&&t<21){ binding.animationView.setAnimation(R.raw.sunny) }
+                                    else { binding.animationView.setAnimation(R.raw.night) }
+                                }
+                                1003->{
+                                    if(t>6&&t<21) { binding.animationView.setAnimation(R.raw.partly_cloudy) }
+                                    else{binding.animationView.setAnimation(R.raw.cloudynight) }
+                                }
                                 1006->{ binding.animationView.setAnimation(R.raw.cloudy) }
                                 1030,1135,1147->{ binding.animationView.setAnimation(R.raw.mist) }
-                                1114,1117,1204,1207,1213,1219,1225,->{ binding.animationView.setAnimation(R.raw.snow) }
+                                1114, 1117, 1204, 1207, 1213, 1219, 1225 -> {
+                                    if (t > 6 && t < 21) { binding.animationView.setAnimation(R.raw.snow) }
+                                    else{ binding.animationView.setAnimation(R.raw.snownight)  }
+                                }
                                 1210,1216,1222,1249,1252,1255,1258 ->{ binding.animationView.setAnimation(R.raw.snow_sunny) }
                                 1087,1273,1276->{ binding.animationView.setAnimation(R.raw.thunder) }
                                 1183,1186,1189,1192,1195,1198,1201,1240,1246->{ binding.animationView.setAnimation(R.raw.partly_shower) }

@@ -1,9 +1,11 @@
 package com.bmprj.weatherforecast
 
+import android.R.attr.*
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Matrix
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -11,6 +13,7 @@ import android.location.LocationManager
 import android.os.Build
 import android.os.StrictMode
 import android.view.View
+import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +25,7 @@ import org.json.JSONObject
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProviderClient) {
 
@@ -87,7 +90,7 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
 
                             val hourly = ArrayList<Hourly>()
                             val rainy = ArrayList<Rainy>()
-                            var pressure_mb=0
+                            val wind = ArrayList<Wind>()
                             if(t<17){
                                 for(i  in t .. hh.length()-1){
                                     val hourSet = hh.getJSONObject(i)
@@ -95,11 +98,14 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                                     val cond = hourSet.getJSONObject("condition")
                                     val icon = cond.getString("icon")
                                     val rain =hourSet.getInt("chance_of_rain")
-                                    pressure_mb+=hourSet.getInt("pressure_mb")
                                     val precip = hourSet.getDouble("precip_mm").toFloat()
+                                    val wind_degree=hourSet.getInt("wind_degree")
+                                    val wind_kph = hourSet.getDouble("wind_kph")
+
                                     val r = Rainy("%"+rain.toString(),i.toString()+":00",precip.toString(),precip)
                                     rainy.add(r)
-
+                                    val w = Wind(wind_kph.toString(), wind_degree.toFloat())
+                                    wind.add(w)
                                     val h = Hourly(icon,i.toString()+":00",temp.toString()+"°")
                                     hourly.add(h)
                                 }
@@ -111,16 +117,25 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                                     val icon = cond.getString("icon")
                                     val rain =hourSet.getInt("chance_of_rain")
                                     val precip = hourSet.getDouble("precip_mm").toFloat()
+                                    val wind_degree=hourSet.getInt("wind_degree")
+                                    val wind_kph = hourSet.getDouble("wind_kph")
 
                                     val r = Rainy("%"+rain.toString(),i.toString()+":00",precip.toString(),precip)
                                     rainy.add(r)
-
+                                    val w = Wind(wind_kph.toString(), wind_degree.toFloat())
+                                    wind.add(w)
                                     val h = Hourly(icon,i.toString()+":00",temp.toString()+"°")
                                     hourly.add(h)
                                 }
 
                             }
 
+                            binding.recyWind.apply {
+                                layoutManager=LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+                                binding.recyWind.layoutManager=layoutManager
+                                adapter=WindAdapter(wind)
+                                binding.recyWind.adapter=adapter
+                            }
 
                             binding.recyRain.apply {
                                 layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
@@ -144,7 +159,8 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                             binding.humidity.text="%"+avghumidity.toString()
                             binding.uv.text=uv.toString()
                             binding.totalprecip.text="Günlük toplam hacim "+totalprecip_mm.toString()+" mm"
-                            binding.pressure.text=pressure_mb.toString()
+
+
                             when(code){
                                 1000->{
                                     if(t>6&&t<21){ binding.animationView.setAnimation(R.raw.sunny) }

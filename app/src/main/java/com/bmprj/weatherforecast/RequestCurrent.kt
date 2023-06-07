@@ -13,7 +13,6 @@ import android.location.LocationManager
 import android.os.Build
 import android.os.StrictMode
 import android.view.View
-import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -88,12 +87,23 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                             val currentt = LocalDateTime.now().format(formatter)
                             val t = currentt.toInt()
 
+
+
+
+                            var wind_kp :Double=0.0
+                            var wind_degre:Int=0
+
+
                             val hourly = ArrayList<Hourly>()
                             val rainy = ArrayList<Rainy>()
                             val wind = ArrayList<Wind>()
                             if(t<17){
                                 for(i  in t .. hh.length()-1){
                                     val hourSet = hh.getJSONObject(i)
+                                    val hf = hh.getJSONObject(t)
+                                    wind_kp = hf.getDouble("wind_kph")
+                                    wind_degre = hf.getInt("wind_degree")
+
                                     val temp = hourSet.getDouble("temp_c")
                                     val cond = hourSet.getJSONObject("condition")
                                     val icon = cond.getString("icon")
@@ -102,9 +112,10 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                                     val wind_degree=hourSet.getInt("wind_degree")
                                     val wind_kph = hourSet.getDouble("wind_kph")
 
+
                                     val r = Rainy("%"+rain.toString(),i.toString()+":00",precip.toString(),precip)
                                     rainy.add(r)
-                                    val w = Wind(wind_kph.toString(), wind_degree.toFloat())
+                                    val w = Wind(wind_kph.toString(),wind_kph.toInt()*3, wind_degree.toFloat(),i.toString()+":00")
                                     wind.add(w)
                                     val h = Hourly(icon,i.toString()+":00",temp.toString()+"°")
                                     hourly.add(h)
@@ -112,6 +123,11 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                             } else{
                                 for(i  in 17 .. hh.length()-1){
                                     val hourSet = hh.getJSONObject(i)
+
+                                    val hf = hh.getJSONObject(t)
+                                    wind_kp = hf.getDouble("wind_kph")
+                                    wind_degre = hf.getInt("wind_degree")
+
                                     val temp = hourSet.getDouble("temp_c")
                                     val cond = hourSet.getJSONObject("condition")
                                     val icon = cond.getString("icon")
@@ -122,7 +138,7 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
 
                                     val r = Rainy("%"+rain.toString(),i.toString()+":00",precip.toString(),precip)
                                     rainy.add(r)
-                                    val w = Wind(wind_kph.toString(), wind_degree.toFloat())
+                                    val w = Wind(wind_kph.toString(),wind_kph.toInt()*3, wind_degree.toFloat(),i.toString()+":00")
                                     wind.add(w)
                                     val h = Hourly(icon,i.toString()+":00",temp.toString()+"°")
                                     hourly.add(h)
@@ -153,14 +169,15 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                             }
 
 
+
                             binding.date.text=time
                             binding.degree.text=tempature+"°"
                             binding.condition.text=conditionText
                             binding.humidity.text="%"+avghumidity.toString()
                             binding.uv.text=uv.toString()
                             binding.totalprecip.text="Günlük toplam hacim "+totalprecip_mm.toString()+" mm"
-
-
+                            binding.windKph.text=wind_kp.toString()
+                            binding.windDir.rotation=wind_degre.toFloat()
                             when(code){
                                 1000->{
                                     if(t>6&&t<21){ binding.animationView.setAnimation(R.raw.sunny) }

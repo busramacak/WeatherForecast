@@ -1,40 +1,22 @@
 package com.bmprj.weatherforecast
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.Address
-import android.location.Geocoder
-import android.location.Location
-import android.location.LocationManager
+import android.app.ProgressDialog
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import org.json.JSONObject
+import kotlinx.coroutines.delay
+import okhttp3.internal.wait
 import java.util.*
-import kotlin.collections.ArrayList
 
 
+@Suppress("DEPRECATION")
 class TodayFragment() : Fragment() {
     private lateinit var binding: FragmentTodayBinding
     override fun onCreateView(
@@ -55,12 +37,13 @@ class TodayFragment() : Fragment() {
         val mFusedLocationClient = LocationServices.getFusedLocationProviderClient(view.context)
         val r = RequestCurrent(view,mFusedLocationClient)
 
-
-        r.getLocation(binding)
-
+        val dialog = ProgressDialog(context)
+        dialog.setMessage("Yükleniyor...")
+        dialog.setCancelable(false)
+        dialog.setInverseBackgroundForced(false)
+        dialog.show()
+        r.getLocation(binding,dialog)
     }
-
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,10 +53,17 @@ class TodayFragment() : Fragment() {
         val r = RequestCurrent(view,mFusedLocationClient)
 
 
-        r.getLocation(binding)
+        val dialog = ProgressDialog(context)
+        dialog.setMessage("Yükleniyor...")
+        dialog.setCancelable(false)
+        dialog.setInverseBackgroundForced(false)
+        dialog.show()
+        r.getLocation(binding, dialog)
+    }
 
-
-
+    override fun onResume() {
+        super.onResume()
+        binding.animationView.playAnimation()
     }
 
 

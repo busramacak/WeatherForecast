@@ -3,6 +3,7 @@ package com.bmprj.weatherforecast
 import android.R.attr.*
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Matrix
@@ -37,7 +38,7 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission", "SetTextI18n")
-    fun getLocation(binding:FragmentTodayBinding){
+    fun getLocation(binding:FragmentTodayBinding,dialog:AlertDialog){
 
 
         if (checkPermissions()) {
@@ -92,7 +93,7 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
 
                             var wind_kp :Double=0.0
                             var wind_degre:Int=0
-
+                            var windDirection=""
 
                             val hourly = ArrayList<Hourly>()
                             val rainy = ArrayList<Rainy>()
@@ -103,6 +104,7 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                                     val hf = hh.getJSONObject(t)
                                     wind_kp = hf.getDouble("wind_kph")
                                     wind_degre = hf.getInt("wind_degree")
+                                    windDirection = hf.getString("wind_dir")
 
                                     val temp = hourSet.getDouble("temp_c")
                                     val cond = hourSet.getJSONObject("condition")
@@ -111,7 +113,6 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                                     val precip = hourSet.getDouble("precip_mm").toFloat()
                                     val wind_degree=hourSet.getInt("wind_degree")
                                     val wind_kph = hourSet.getDouble("wind_kph")
-
 
                                     val r = Rainy("%"+rain.toString(),i.toString()+":00",precip.toString(),precip)
                                     rainy.add(r)
@@ -127,6 +128,7 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                                     val hf = hh.getJSONObject(t)
                                     wind_kp = hf.getDouble("wind_kph")
                                     wind_degre = hf.getInt("wind_degree")
+                                    windDirection = hf.getString("wind_dir")
 
                                     val temp = hourSet.getDouble("temp_c")
                                     val cond = hourSet.getJSONObject("condition")
@@ -178,6 +180,7 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                             binding.totalprecip.text="Günlük toplam hacim "+totalprecip_mm.toString()+" mm"
                             binding.windKph.text=wind_kp.toString()
                             binding.windDir.rotation=wind_degre.toFloat()
+                            binding.direction.text=windDirection
                             when(code){
                                 1000->{
                                     if(t>6&&t<21){ binding.animationView.setAnimation(R.raw.sunny) }
@@ -200,7 +203,7 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                             }
 
 
-
+                            dialog.hide()
                         }
 
                     }

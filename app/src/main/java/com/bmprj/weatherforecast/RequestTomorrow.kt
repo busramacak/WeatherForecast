@@ -3,6 +3,7 @@ package com.bmprj.weatherforecast
 import android.R.attr.*
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Matrix
@@ -32,7 +33,7 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission", "SetTextI18n")
-    fun getLocation(binding: FragmentTomorrowBinding){
+    fun getLocation(binding: FragmentTomorrowBinding,dialog: AlertDialog){
 
 
         if (checkPermissions()) {
@@ -168,8 +169,7 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
 
                             }
 
-
-
+                            dialog.hide()
                         }
 
                     }

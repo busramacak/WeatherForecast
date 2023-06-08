@@ -244,12 +244,22 @@
                     android:src="@drawable/baseline_arrow_drop_up_24" />
 
                 <TextView
+                    android:id="@+id/kph"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="km/h N"
+                    android:text="km/h"
                     android:layout_below="@id/windDir"
                     android:layout_toEndOf="@id/wind_kph"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp"/>
+                <TextView
+                    android:id="@+id/direction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="N"
+                    android:layout_below="@id/windDir"
+                    android:layout_toEndOf="@id/kph"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginBottom="10dp"/>
 
 

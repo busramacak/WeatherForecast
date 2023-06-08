@@ -1,5 +1,6 @@
 package com.bmprj.weatherforecast
 
+import android.app.ProgressDialog
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import com.bmprj.weatherforecast.databinding.FragmentTomorrowBinding
 import com.google.android.gms.location.LocationServices
 
+@Suppress("DEPRECATION")
 class TomorrowFragment : Fragment() {
     private lateinit var binding: FragmentTomorrowBinding
 
@@ -29,7 +31,12 @@ class TomorrowFragment : Fragment() {
         val r = RequestTomorrow(view,mFusedLocationClient)
 
 
-        r.getLocation(binding)
+        val dialog = ProgressDialog(context)
+        dialog.setMessage("Yükleniyor...")
+        dialog.setCancelable(false)
+        dialog.setInverseBackgroundForced(false)
+        dialog.show()
+        r.getLocation(binding,dialog)
 
     }
 
@@ -40,7 +47,17 @@ class TomorrowFragment : Fragment() {
         val r = RequestTomorrow(view,mFusedLocationClient)
 
 
-        r.getLocation(binding)
+        val dialog = ProgressDialog(context)
+        dialog.setMessage("Yükleniyor...")
+        dialog.setCancelable(false)
+        dialog.setInverseBackgroundForced(false)
+        dialog.show()
+        r.getLocation(binding,dialog)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.animationView.playAnimation()
     }
 }

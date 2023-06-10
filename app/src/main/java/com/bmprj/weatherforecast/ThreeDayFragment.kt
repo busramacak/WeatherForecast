@@ -20,10 +20,11 @@ class ThreeDayFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding= DataBindingUtil.inflate(inflater,R.layout.fragment_three_day, container, false)
+        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_three_day, container, false)
         binding.threeDay=this
         return binding.root
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

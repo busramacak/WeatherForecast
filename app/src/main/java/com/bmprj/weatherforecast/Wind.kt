@@ -7,8 +7,7 @@ import androidx.databinding.BindingAdapter
 
 
 
-data class Wind(val wind: String,val height:Int,val wind_degree:Float, val time:String) {
-}
+data class Wind(val wind: String,val height:Int,val wind_degree:Float, val time:String)
 
 @BindingAdapter("height")
 fun setLayoutWidth(view: ImageView, height: Int) {

@@ -6,7 +6,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Matrix
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -87,7 +86,6 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
                             val conditionText=conditionn.getString("text")
 
 
-                            var wind_degre:Int=0
 
 
                             val hourly = ArrayList<Hourly>()
@@ -129,14 +127,14 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
                             binding.recyWind.apply {
                                 layoutManager=LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
                                 binding.recyWind.layoutManager=layoutManager
-                                adapter=WindAdapter(wind)
+                                adapter= WindAdapter(wind)
                                 binding.recyWind.adapter=adapter
                             }
 
                             binding.recyRain.apply {
                                 layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
                                 binding.recyRain.layoutManager=layoutManager
-                                adapter=RainyAdapter(rainy)
+                                adapter= RainyAdapter(rainy)
                                 binding.recyRain.adapter=adapter
                             }
 
@@ -144,7 +142,7 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
                             binding.recy.apply {
                                 layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
                                 binding.recy.layoutManager=layoutManager
-                                adapter=HourlyAdapter(hourly)
+                                adapter= HourlyAdapter(hourly)
                                 binding.recy.adapter=adapter
                             }
 
@@ -162,10 +160,16 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
                                 1003->{ binding.animationView.setAnimation(R.raw.partly_cloudy) }
                                 1006->{ binding.animationView.setAnimation(R.raw.cloudy) }
                                 1030,1135,1147->{ binding.animationView.setAnimation(R.raw.mist) }
-                                1114, 1117, 1204, 1207, 1213, 1219, 1225 -> { binding.animationView.setAnimation(R.raw.snow) }
-                                1210,1216,1222,1249,1252,1255,1258 ->{ binding.animationView.setAnimation(R.raw.snow_sunny) }
+                                1114, 1117, 1204, 1207, 1213, 1219, 1225 -> { binding.animationView.setAnimation(
+                                    R.raw.snow
+                                ) }
+                                1210,1216,1222,1249,1252,1255,1258 ->{ binding.animationView.setAnimation(
+                                    R.raw.snow_sunny
+                                ) }
                                 1087,1273,1276->{ binding.animationView.setAnimation(R.raw.thunder) }
-                                1183,1186,1189,1192,1195,1198,1201,1240,1246->{ binding.animationView.setAnimation(R.raw.partly_shower) }
+                                1183,1186,1189,1192,1195,1198,1201,1240,1246->{ binding.animationView.setAnimation(
+                                    R.raw.partly_shower
+                                ) }
 
                             }
 
@@ -214,14 +218,5 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
         )
     }
 
-    fun getData(list:ArrayList<String>):ArrayList<String>{
-
-        var liste = ArrayList<String>()
-
-
-
-        return liste
-
-    }
 }
 

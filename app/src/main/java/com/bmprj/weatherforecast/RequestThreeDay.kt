@@ -153,14 +153,6 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
         )
     }
 
-    fun getData(list:ArrayList<String>):ArrayList<String>{
 
-        var liste = ArrayList<String>()
-
-
-
-        return liste
-
-    }
 }
 

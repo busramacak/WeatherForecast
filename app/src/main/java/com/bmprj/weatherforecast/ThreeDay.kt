@@ -5,9 +5,9 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 
-data class ThreeDay(val day:String?, val condition:String,val maxTemp:String,val minTemp:String, val image:String){}
+data class ThreeDay(val day:String?, val condition:String,val maxTemp:String,val minTemp:String, val image:String)
 
-@BindingAdapter("imageUrl")
+@BindingAdapter("imageUrll")
 fun setImageUrll(imgView: ImageView, imgUrl: String?){
 
     imgUrl?.let {

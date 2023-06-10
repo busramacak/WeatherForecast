@@ -1,13 +1,9 @@
 package com.bmprj.weatherforecast
 
-import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 
 
 data class Hourly(val weatherimgHourly:String?,val time:String,val temp:String )

@@ -9,7 +9,7 @@
         android:id="@+id/todayFragment"
         android:name="com.bmprj.weatherforecast.TodayFragment"
         android:label="fragment_today"
-        tools:layout="@layout/fragment_today" />
+        tools:layout="@layout/fragment_today"/>
     <fragment
         android:id="@+id/tomorrowFragment"
         android:name="com.bmprj.weatherforecast.TomorrowFragment"
@@ -20,4 +20,7 @@
         android:name="com.bmprj.weatherforecast.ThreeDayFragment"
         android:label="ThreeDayFragment"
         tools:layout="@layout/fragment_three_day"/>
+
+
+
 </navigation>

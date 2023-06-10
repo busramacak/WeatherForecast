@@ -6,11 +6,11 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Matrix
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
+import android.media.ExifInterface
 import android.os.Build
 import android.os.StrictMode
 import android.view.View
@@ -35,10 +35,11 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
     var time=""
     var tempature=""
     var conditionText=""
+    var city=""
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission", "SetTextI18n")
-    fun getLocation(binding:FragmentTodayBinding,dialog:AlertDialog){
+    fun getLocation(binding:FragmentTodayBinding,dialog:AlertDialog, cityname:String?){
 
 
         if (checkPermissions()) {
@@ -50,7 +51,15 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                         val list: List<Address> =
                             geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
 
-                        str = str+"${list[0].latitude},${list[0].longitude}&days=1&aqi=yes&lang=tr"
+
+                        if(cityname!=null){
+                            str = str+"${cityname}&days=1&aqi=yes&lang=tr"
+
+
+                        }else{
+                            str = str+"${list[0].latitude},${list[0].longitude}&days=1&aqi=yes&lang=tr"
+
+                        }
 
                         val SDK_INT = Build.VERSION.SDK_INT
                         if (SDK_INT > 8) {
@@ -65,6 +74,13 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
 
                             val json = response.body!!.string()
                             val obj = JSONObject(json)
+
+                            val location = obj.getJSONObject("location")
+                            city = location.getString("name")
+
+
+
+
                             val current = obj.getJSONObject("current")
                             time = current.getString("last_updated")
                             tempature = current.getDouble("temp_c").toInt().toString()
@@ -151,14 +167,14 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                             binding.recyWind.apply {
                                 layoutManager=LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
                                 binding.recyWind.layoutManager=layoutManager
-                                adapter=WindAdapter(wind)
+                                adapter= WindAdapter(wind)
                                 binding.recyWind.adapter=adapter
                             }
 
                             binding.recyRain.apply {
                                 layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
                                 binding.recyRain.layoutManager=layoutManager
-                                adapter=RainyAdapter(rainy)
+                                adapter= RainyAdapter(rainy)
                                 binding.recyRain.adapter=adapter
                             }
 
@@ -166,7 +182,7 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                             binding.recy.apply {
                                 layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
                                 binding.recy.layoutManager=layoutManager
-                                adapter=HourlyAdapter(hourly)
+                                adapter= HourlyAdapter(hourly)
                                 binding.recy.adapter=adapter
                             }
 
@@ -196,9 +212,13 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                                     if (t > 6 && t < 21) { binding.animationView.setAnimation(R.raw.snow) }
                                     else{ binding.animationView.setAnimation(R.raw.snownight)  }
                                 }
-                                1210,1216,1222,1249,1252,1255,1258 ->{ binding.animationView.setAnimation(R.raw.snow_sunny) }
+                                1210,1216,1222,1249,1252,1255,1258 ->{ binding.animationView.setAnimation(
+                                    R.raw.snow_sunny
+                                ) }
                                 1087,1273,1276->{ binding.animationView.setAnimation(R.raw.thunder) }
-                                1183,1186,1189,1192,1195,1198,1201,1240,1246->{ binding.animationView.setAnimation(R.raw.partly_shower) }
+                                1183,1186,1189,1192,1195,1198,1201,1240,1246->{ binding.animationView.setAnimation(
+                                    R.raw.partly_shower
+                                ) }
 
                             }
 
@@ -212,7 +232,6 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
         } else {
             requestPermissions()
         }
-
     }
 
     fun isLocationEnabled(): Boolean {
@@ -248,14 +267,5 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
         )
     }
 
-    fun getData(list:ArrayList<String>):ArrayList<String>{
-
-        var liste = ArrayList<String>()
-
-
-
-        return liste
-
-    }
 }
 

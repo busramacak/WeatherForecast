@@ -11,7 +11,7 @@ class HourlyAdapter(private val list:ArrayList<Hourly>)
         class ViewHolder(private val binding:HourlyLayoutBinding)
             :RecyclerView.ViewHolder(binding.root){
 
-                fun bind(hourly:Hourly?){
+                fun bind(hourly: Hourly?){
                     binding.hourly=hourly
                     binding.executePendingBindings()
 

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.bmprj.weatherforecast
 
 import android.app.ProgressDialog
@@ -11,9 +13,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.delay
-import okhttp3.internal.wait
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 @Suppress("DEPRECATION")
@@ -24,7 +25,7 @@ class TodayFragment() : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
 
-        binding= DataBindingUtil.inflate(inflater,R.layout.fragment_today, container, false)
+        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_today, container, false)
         binding.today=this
 
 
@@ -42,7 +43,16 @@ class TodayFragment() : Fragment() {
         dialog.setCancelable(false)
         dialog.setInverseBackgroundForced(false)
         dialog.show()
-        r.getLocation(binding,dialog)
+        val dh = DatabaseHelper(requireContext())
+        val search = DAO().get(dh)
+        var city:String? = null
+        for(i in search){
+            if(i.id==1){
+                city=i.search
+            }
+        }
+        r.getLocation(binding,dialog,city)
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -58,20 +68,16 @@ class TodayFragment() : Fragment() {
         dialog.setCancelable(false)
         dialog.setInverseBackgroundForced(false)
         dialog.show()
-        r.getLocation(binding, dialog)
+
+
+        r.getLocation(binding,dialog,null)
+
     }
 
     override fun onResume() {
         super.onResume()
         binding.animationView.playAnimation()
     }
-
-
-
-
-
-
-
 
 
 }

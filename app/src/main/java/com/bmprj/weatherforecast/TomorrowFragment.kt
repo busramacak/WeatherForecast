@@ -20,7 +20,7 @@ class TomorrowFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding= DataBindingUtil.inflate(inflater,R.layout.fragment_tomorrow, container, false)
+        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_tomorrow, container, false)
         binding.tomorrow=this
         return binding.root
     }
@@ -39,6 +39,8 @@ class TomorrowFragment : Fragment() {
         r.getLocation(binding,dialog)
 
     }
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

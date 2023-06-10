@@ -11,7 +11,7 @@ class WindAdapter(private val list:ArrayList<Wind>)
         class ViewHolder(private val binding:WindLayoutBinding)
             :RecyclerView.ViewHolder(binding.root){
 
-                fun bind(wind:Wind?){
+                fun bind(wind: Wind?){
                     binding.wind=wind
                     binding.executePendingBindings()
                 }

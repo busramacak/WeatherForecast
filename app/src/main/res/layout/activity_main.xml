@@ -32,6 +32,14 @@
                 android:text="SEHİR ADİ"
                 android:textSize="18sp" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:onClick="@{()-> main.searchClick()}"
+                android:src="@drawable/wind_arrow"
+                android:layout_marginEnd="30dp"/>
+
         </androidx.appcompat.widget.Toolbar>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

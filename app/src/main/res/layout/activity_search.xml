@@ -39,11 +39,8 @@
                 android:layout_gravity="center"
                 app:showAsAction="always|ifRoom"
                 android:iconifiedByDefault="false"
-                android:closeIcon="@drawable/wind_arrow"
-                android:onQueryTextChange="@{() -> search.onQueryChange(searchView.getQuery().toString())}"
-                android:queryHint="Yer Arama"
-                android:searchHintIcon="@null"
-                android:searchIcon="@null" />
+                android:onQueryTextSubmit="@{() -> search.onQueryTextSubmit(searchView.getQuery().toString())}"
+                android:queryHint="Yer Arama" />
 
 
         </androidx.appcompat.widget.Toolbar>

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
@@ -35,7 +36,6 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
     var time=""
     var tempature=""
     var conditionText=""
-    var city=""
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission", "SetTextI18n")
@@ -76,8 +76,12 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                             val obj = JSONObject(json)
 
                             val location = obj.getJSONObject("location")
-                            city = location.getString("name")
-
+                            val city = location.getString("name")
+                            val dh =DatabaseHelper(view.context)
+//                            var context: Context = view.context
+//                            val intent = Intent(context,MainActivity::class.java)
+                            DAO().update(dh,1,city)
+//                            context.startActivity(intent)
 
 
 

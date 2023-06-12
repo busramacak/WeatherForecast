@@ -19,6 +19,16 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=DataBindingUtil.setContentView(this,R.layout.activity_search)
         binding.search=this
+
+        binding.recyS.apply {
+            layoutManager=LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+            binding.recyS.layoutManager=layoutManager
+            val list = ArrayList<SearchV>()
+            val s = SearchV("Konumunuz","")
+            list.add(s)
+            adapter = SearchAdapter(list)
+            binding.recyS.adapter=adapter
+        }
     }
 
 
@@ -26,7 +36,7 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    fun onQueryChange(query: String): Boolean {
+    fun onQueryTextSubmit(query: String): Boolean {
 
         var str = ""
         if(query!=""){

@@ -38,4 +38,9 @@ class DAO {
         }
         return searchList
     }
+
+    fun delete(dh:DatabaseHelper){
+        val db = dh.writableDatabase
+        db.delete("weatherSearch",null,null)
+    }
 }

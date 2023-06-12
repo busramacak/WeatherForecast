@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
 import com.google.android.gms.location.LocationServices
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 @Suppress("DEPRECATION")
@@ -43,15 +42,20 @@ class TodayFragment() : Fragment() {
         dialog.setCancelable(false)
         dialog.setInverseBackgroundForced(false)
         dialog.show()
+
+
         val dh = DatabaseHelper(requireContext())
         val search = DAO().get(dh)
-        var city:String? = null
+        var cityy:String? = null
         for(i in search){
             if(i.id==1){
-                city=i.search
+                cityy=i.search
+                r.getLocation(binding,dialog,cityy)
+                break
             }
+
         }
-        r.getLocation(binding,dialog,city)
+
 
     }
 
@@ -69,9 +73,17 @@ class TodayFragment() : Fragment() {
         dialog.setInverseBackgroundForced(false)
         dialog.show()
 
+        val dh = DatabaseHelper(requireContext())
+        val search = DAO().get(dh)
+        var city:String? = null
+        for(i in search){
+            if(i.id==1){
+                city=i.search
+                r.getLocation(binding,dialog,city)
+                break
+            }
 
-        r.getLocation(binding,dialog,null)
-
+        }
     }
 
     override fun onResume() {

@@ -23,13 +23,32 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         NavigationUI.setupWithNavController(binding.bottomNav,navHostFragment.navController)
 
+        val dh = DatabaseHelper(this)
+        DAO().add(dh,1,null)
+
+        val search = DAO().get(dh)
+
+        for( i in search){
+            if(i.id==1){
+                binding.title.text=i.search
+                break
+            }
+
+        }
+
     }
+
+    override fun onResume() {
+        super.onResume()
+
+
+    }
+
 
 
     fun searchClick(){
 
         startActivity(Intent(this,SearchActivity::class.java))
-
 
     }
 

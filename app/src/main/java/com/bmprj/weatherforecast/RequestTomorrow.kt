@@ -32,7 +32,7 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission", "SetTextI18n")
-    fun getLocation(binding: FragmentTomorrowBinding,dialog: AlertDialog){
+    fun getLocation(binding: FragmentTomorrowBinding,dialog: AlertDialog,cityname:String?){
 
 
         if (checkPermissions()) {
@@ -43,8 +43,19 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
                         val geocoder = Geocoder(view.context, Locale.getDefault())
                         val list: List<Address> =
                             geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
+                        if(cityname!=null){
+                            if(cityname=="Konumunuz"){
+                                str = str+"${list[0].latitude},${list[0].longitude}&days=2&aqi=yes&lang=tr"
+                            }
+                            else{
+                                str = str+"${cityname}&days=2&aqi=yes&lang=tr"
+                            }
 
-                        str = str+"${list[0].latitude},${list[0].longitude}&days=2&aqi=yes&lang=tr"
+
+                        }else{
+                            str = str+"${list[0].latitude},${list[0].longitude}&days=2&aqi=yes&lang=tr"
+
+                        }
 
                         val SDK_INT = Build.VERSION.SDK_INT
                         if (SDK_INT > 8) {

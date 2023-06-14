@@ -39,7 +39,17 @@ class ThreeDayFragment : Fragment() {
         dialog.setCancelable(false)
         dialog.setInverseBackgroundForced(false)
         dialog.show()
-        r.getLocation(binding,dialog)
+        val dh = DatabaseHelper(requireContext())
+        val search = DAO().get(dh)
+        var city:String? = null
+        for(i in search){
+            if(i.id==1){
+                city=i.search
+                r.getLocation(binding,dialog,city)
+                break
+            }
+
+        }
 
 
     }

@@ -1,5 +1,6 @@
 package com.bmprj.weatherforecast
 
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -31,8 +32,14 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this,MainActivity::class.java))
+    }
+
 
     fun backClick(view: View) {
+        startActivity(Intent(this,MainActivity::class.java))
 
     }
 

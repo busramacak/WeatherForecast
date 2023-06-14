@@ -5,13 +5,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
-import android.media.ExifInterface
 import android.os.Build
 import android.os.StrictMode
 import android.view.View
@@ -53,7 +51,12 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
 
 
                         if(cityname!=null){
-                            str = str+"${cityname}&days=1&aqi=yes&lang=tr"
+                            if(cityname=="Konumunuz"){
+                                str = str+"${list[0].latitude},${list[0].longitude}&days=1&aqi=yes&lang=tr"
+                            }
+                            else{
+                                str = str+"${cityname}&days=1&aqi=yes&lang=tr"
+                            }
 
 
                         }else{
@@ -226,16 +229,21 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
 
                             }
 
-
                             dialog.hide()
+
                         }
 
                     }
                 }
             }
+
+
         } else {
             requestPermissions()
+
         }
+
+
     }
 
     fun isLocationEnabled(): Boolean {

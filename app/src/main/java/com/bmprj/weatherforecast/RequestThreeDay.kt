@@ -35,7 +35,7 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission", "SetTextI18n")
-    fun getLocation(binding: FragmentThreeDayBinding,dialog: AlertDialog){
+    fun getLocation(binding: FragmentThreeDayBinding,dialog: AlertDialog,cityname:String?){
 
 
         if (checkPermissions()) {
@@ -47,7 +47,19 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
                         val list: List<Address> =
                             geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
 
-                        str = str+"${list[0].latitude},${list[0].longitude}&days=3&aqi=yes&lang=tr"
+                        if(cityname!=null){
+                            if(cityname=="Konumunuz"){
+                                str = str+"${list[0].latitude},${list[0].longitude}&days=3&aqi=yes&lang=tr"
+                            }
+                            else{
+                                str = str+"${cityname}&days=3&aqi=yes&lang=tr"
+                            }
+
+
+                        }else{
+                            str = str+"${list[0].latitude},${list[0].longitude}&days=3&aqi=yes&lang=tr"
+
+                        }
 
                         val SDK_INT = Build.VERSION.SDK_INT
                         if (SDK_INT > 8) {

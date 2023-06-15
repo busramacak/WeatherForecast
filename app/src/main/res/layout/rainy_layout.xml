@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -10,7 +11,9 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/transparent"
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -25,7 +28,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:fontFamily="sans-serif-light"
                 android:layout_marginTop="10dp"
+                android:textColor="@color/white"
                 android:text="@{rainy.percentageRainy, default=100}" />
 
             <RatingBar
@@ -42,7 +47,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@{rainy.rating > 0 ? @color/rating:@color/black}"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@{rainy.rating > 0 ? @color/rating:@color/white}"
                 android:text="@{rainy.precip_mm}"/>
 
             <TextView
@@ -51,6 +57,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/white"
                 android:text="@{rainy.timeRainy, default=5.00}" />
 
         </LinearLayout>

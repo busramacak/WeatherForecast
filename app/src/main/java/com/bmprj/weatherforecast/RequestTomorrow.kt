@@ -31,7 +31,7 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
     val permissionId=2
 
     @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("MissingPermission", "SetTextI18n")
+    @SuppressLint("MissingPermission", "SetTextI18n", "ResourceAsColor")
     fun getLocation(binding: FragmentTomorrowBinding,dialog: AlertDialog,cityname:String?){
 
 
@@ -159,6 +159,8 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
 
 
 
+
+
                             binding.date.text=date
                             binding.degree.text="Gündüz ${max_temp}, Gece ${min_temp}"
                             binding.condition.text=conditionText
@@ -167,20 +169,58 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
                             binding.totalprecip.text="Günlük toplam hacim "+totalprecip_mm.toString()+" mm"
                             binding.windKph.text=minwind.toInt().toString()+"-"+maxwind.toInt().toString()
                             when(code){
-                                1000->{ binding.animationView.setAnimation(R.raw.sunny) }
-                                1003->{ binding.animationView.setAnimation(R.raw.partly_cloudy) }
-                                1006->{ binding.animationView.setAnimation(R.raw.cloudy) }
-                                1030,1135,1147->{ binding.animationView.setAnimation(R.raw.mist) }
-                                1114, 1117, 1204, 1207, 1213, 1219, 1225 -> { binding.animationView.setAnimation(
-                                    R.raw.snow
-                                ) }
-                                1210,1216,1222,1249,1252,1255,1258 ->{ binding.animationView.setAnimation(
-                                    R.raw.snow_sunny
-                                ) }
+                                1000->{
+                                    binding.animationView.setAnimation(R.raw.sunny)
+                                    binding.scrollV.setBackgroundResource(R.color.sunBackground)
+                                    binding.recy.setBackgroundResource(R.color.sunBackground)
+                                    binding.recyWind.setBackgroundResource(R.color.sunBackground)
+                                    binding.recyRain.setBackgroundResource(R.color.sunBackground)
+                                    binding.relRain.setBackgroundResource(R.color.sunBackground)
+                                    binding.rel.setBackgroundResource(R.color.sunBackground)
+                                    binding.relWind.setBackgroundResource(R.color.sunBackground)
+
+                                }
+                                1003->{
+                                    binding.animationView.setAnimation(R.raw.partly_cloudy)
+                                    binding.scrollV.setBackgroundResource(R.color.cloudBackground)
+                                    binding.recy.setBackgroundResource(R.color.cloudBackground)
+                                    binding.recyWind.setBackgroundResource(R.color.cloudBackground)
+                                    binding.recyRain.setBackgroundResource(R.color.cloudBackground)
+                                    binding.relRain.setBackgroundResource(R.color.cloudBackground)
+                                    binding.rel.setBackgroundResource(R.color.cloudBackground)
+                                    binding.relWind.setBackgroundResource(R.color.cloudBackground)
+                                }
+                                1006->{
+                                    binding.animationView.setAnimation(R.raw.cloudy)
+                                    binding.scrollV.setBackgroundResource(R.color.cloudBackground)
+                                    binding.recy.setBackgroundResource(R.color.cloudBackground)
+                                    binding.recyWind.setBackgroundResource(R.color.cloudBackground)
+                                    binding.recyRain.setBackgroundResource(R.color.cloudBackground)
+                                    binding.relRain.setBackgroundResource(R.color.cloudBackground)
+                                    binding.rel.setBackgroundResource(R.color.cloudBackground)
+                                    binding.relWind.setBackgroundResource(R.color.cloudBackground)
+                                }
+                                1030,1135,1147->{
+                                    binding.animationView.setAnimation(R.raw.mist)
+                                }
+                                1114, 1117, 1204, 1207, 1213, 1219, 1225 -> {
+                                    binding.animationView.setAnimation(R.raw.snow)
+                                }
+                                1210,1216,1222,1249,1252,1255,1258 ->{
+                                    binding.animationView.setAnimation(R.raw.snow_sunny)
+                                }
                                 1087,1273,1276->{ binding.animationView.setAnimation(R.raw.thunder) }
-                                1183,1186,1189,1192,1195,1198,1201,1240,1246->{ binding.animationView.setAnimation(
-                                    R.raw.partly_shower
-                                ) }
+                                1063,1183,1186,1189,1192,1195,1198,1201,1240,1246->{
+                                    binding.animationView.setAnimation(R.raw.partly_shower)
+                                    binding.scrollV.setBackgroundResource(R.color.rainyBackground)
+                                    binding.recy.setBackgroundResource(R.color.rainyBackground)
+                                    binding.recyWind.setBackgroundResource(R.color.rainyBackground)
+                                    binding.recyRain.setBackgroundResource(R.color.rainyBackground)
+                                    binding.relRain.setBackgroundResource(R.color.rainyBackground)
+                                    binding.rel.setBackgroundResource(R.color.rainyBackground)
+                                    binding.relWind.setBackgroundResource(R.color.rainyBackground)
+
+                                }
 
                             }
 

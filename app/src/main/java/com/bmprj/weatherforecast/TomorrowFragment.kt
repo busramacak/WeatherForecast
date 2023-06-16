@@ -39,13 +39,17 @@ class TomorrowFragment : Fragment() {
         val dh = DatabaseHelper(requireContext())
         val search = DAO().get(dh)
         var city:String? = null
-        for(i in search){
-            if(i.id==1){
-                city=i.search
-                r.getLocation(binding,dialog,city)
-                break
-            }
+        if(search.size>0){
+            for(i in search){
+                if(i.id==1){
+                    city=i.search
+                    r.getLocation(binding,dialog,city)
 
+                    break
+                }
+            }
+        }else{
+            r.getLocation(binding,dialog,city)
         }
 
     }
@@ -67,13 +71,17 @@ class TomorrowFragment : Fragment() {
         val dh = DatabaseHelper(requireContext())
         val search = DAO().get(dh)
         var city:String? = null
-        for(i in search){
-            if(i.id==1){
-                city=i.search
-                r.getLocation(binding,dialog,city)
-                break
-            }
+        if(search.size>0){
+            for(i in search){
+                if(i.id==1){
+                    city=i.search
+                    r.getLocation(binding,dialog,city)
 
+                    break
+                }
+            }
+        }else{
+            r.getLocation(binding,dialog,city)
         }
 
     }

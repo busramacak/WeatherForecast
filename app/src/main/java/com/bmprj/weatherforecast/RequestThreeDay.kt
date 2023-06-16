@@ -106,6 +106,7 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
                                 val conditionText = condition.getString("text")
 
                                 val t = ThreeDay(goal+", "+month+" "+dy,conditionText,maxtemp.toString()+"°",mintemp.toString()+"°",icon)
+
                                 threeday.add(t)
 
                             }

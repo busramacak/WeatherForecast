@@ -81,10 +81,15 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                             val location = obj.getJSONObject("location")
                             val city = location.getString("name")
                             val dh =DatabaseHelper(view.context)
-//                            var context: Context = view.context
-//                            val intent = Intent(context,MainActivity::class.java)
-                            DAO().update(dh,1,city)
-//                            context.startActivity(intent)
+
+                            if(DAO().get(dh).size==0){
+                                DAO().add(dh,1,city)
+
+                            }else
+                            {
+                                DAO().update(dh,1,city)
+                            }
+
 
 
 
@@ -206,38 +211,38 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                             binding.direction.text=windDirection
                             when(code){
                                 1000->{
-                                    binding.scrollV.setBackgroundResource(R.color.cloudBackground)
-                                    binding.scrollV.setBackgroundResource(R.color.sunBackground)
-                                    binding.recy.setBackgroundResource(R.color.sunBackground)
-                                    binding.recyWind.setBackgroundResource(R.color.sunBackground)
-                                    binding.recyRain.setBackgroundResource(R.color.sunBackground)
-                                    binding.relRain.setBackgroundResource(R.color.sunBackground)
-                                    binding.rel.setBackgroundResource(R.color.sunBackground)
-                                    binding.relWind.setBackgroundResource(R.color.sunBackground)
+
+//                                    binding.scrollV.setBackgroundResource(R.color.sunBackground)
+//                                    binding.recy.setBackgroundResource(R.color.sunBackground)
+//                                    binding.recyWind.setBackgroundResource(R.color.sunBackground)
+//                                    binding.recyRain.setBackgroundResource(R.color.sunBackground)
+//                                    binding.relRain.setBackgroundResource(R.color.sunBackground)
+//                                    binding.rel.setBackgroundResource(R.color.sunBackground)
+//                                    binding.relWind.setBackgroundResource(R.color.sunBackground)
 
                                     if(t>6&&t<21){ binding.animationView.setAnimation(R.raw.sunny) }
                                     else { binding.animationView.setAnimation(R.raw.night) }
                                 }
                                 1003->{
-                                    binding.scrollV.setBackgroundResource(R.color.cloudBackground)
-                                    binding.recy.setBackgroundResource(R.color.cloudBackground)
-                                    binding.recyWind.setBackgroundResource(R.color.cloudBackground)
-                                    binding.recyRain.setBackgroundResource(R.color.cloudBackground)
-                                    binding.relRain.setBackgroundResource(R.color.cloudBackground)
-                                    binding.rel.setBackgroundResource(R.color.cloudBackground)
-                                    binding.relWind.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.scrollV.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.recy.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.recyWind.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.recyRain.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.relRain.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.rel.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.relWind.setBackgroundResource(R.color.cloudBackground)
                                     if(t>6&&t<21) { binding.animationView.setAnimation(R.raw.partly_cloudy) }
                                     else{binding.animationView.setAnimation(R.raw.cloudynight) }
                                 }
                                 1006->{
                                     binding.animationView.setAnimation(R.raw.cloudy)
-                                    binding.scrollV.setBackgroundResource(R.color.cloudBackground)
-                                    binding.recy.setBackgroundResource(R.color.cloudBackground)
-                                    binding.recyWind.setBackgroundResource(R.color.cloudBackground)
-                                    binding.recyRain.setBackgroundResource(R.color.cloudBackground)
-                                    binding.relRain.setBackgroundResource(R.color.cloudBackground)
-                                    binding.rel.setBackgroundResource(R.color.cloudBackground)
-                                    binding.relWind.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.scrollV.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.recy.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.recyWind.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.recyRain.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.relRain.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.rel.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.relWind.setBackgroundResource(R.color.cloudBackground)
                                 }
                                 1030,1135,1147->{ binding.animationView.setAnimation(R.raw.mist) }
                                 1114, 1117, 1204, 1207, 1213, 1219, 1225 -> {
@@ -247,16 +252,26 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                                 1210,1216,1222,1249,1252,1255,1258 ->{ binding.animationView.setAnimation(
                                     R.raw.snow_sunny
                                 ) }
-                                1087,1273,1276->{ binding.animationView.setAnimation(R.raw.thunder) }
+                                1087,1273,1276->{
+                                    binding.animationView.setAnimation(R.raw.thunder)
+//                                    binding.scrollV.setBackgroundResource(R.color.thunderBackground)
+//                                    binding.recy.setBackgroundResource(R.color.thunderBackground)
+//                                    binding.recyWind.setBackgroundResource(R.color.thunderBackground)
+//                                    binding.recyRain.setBackgroundResource(R.color.thunderBackground)
+//                                    binding.relRain.setBackgroundResource(R.color.thunderBackground)
+//                                    binding.rel.setBackgroundResource(R.color.thunderBackground)
+//                                    binding.relWind.setBackgroundResource(R.color.thunderBackground)
+
+                                }
                                 1183,1186,1189,1192,1195,1198,1201,1240,1246->{
                                     binding.animationView.setAnimation(R.raw.partly_shower)
-                                    binding.scrollV.setBackgroundResource(R.color.rainyBackground)
-                                    binding.recy.setBackgroundResource(R.color.rainyBackground)
-                                    binding.recyWind.setBackgroundResource(R.color.rainyBackground)
-                                    binding.recyRain.setBackgroundResource(R.color.rainyBackground)
-                                    binding.relRain.setBackgroundResource(R.color.rainyBackground)
-                                    binding.rel.setBackgroundResource(R.color.rainyBackground)
-                                    binding.relWind.setBackgroundResource(R.color.rainyBackground)
+//                                    binding.scrollV.setBackgroundResource(R.color.rainyBackground)
+//                                    binding.recy.setBackgroundResource(R.color.rainyBackground)
+//                                    binding.recyWind.setBackgroundResource(R.color.rainyBackground)
+//                                    binding.recyRain.setBackgroundResource(R.color.rainyBackground)
+//                                    binding.relRain.setBackgroundResource(R.color.rainyBackground)
+//                                    binding.rel.setBackgroundResource(R.color.rainyBackground)
+//                                    binding.relWind.setBackgroundResource(R.color.rainyBackground)
                                 }
 
                             }

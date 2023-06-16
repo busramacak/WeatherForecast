@@ -24,7 +24,14 @@ class SearchAdapter(private val list:ArrayList<SearchV>)
                     val dh = DatabaseHelper(binding.root.context)
 
                     binding.constrain.setOnClickListener {
-                        DAO().update(dh,1,binding.city.text.toString())
+                        if(DAO().get(dh).size==0){
+                            DAO().add(dh,1,binding.city.text.toString())
+
+                        }else
+                        {
+                            DAO().update(dh,1,binding.city.text.toString())
+                        }
+
                         context.startActivity(intent)
 
 

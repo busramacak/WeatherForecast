@@ -18,20 +18,18 @@ class MainActivity : AppCompatActivity() {
         binding= DataBindingUtil.setContentView(this,R.layout.activity_main)
         binding.main=this
 
-
-
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         NavigationUI.setupWithNavController(binding.bottomNav,navHostFragment.navController)
 
         val dh = DatabaseHelper(this)
-        DAO().add(dh,1,null)
 
-        val search = DAO().get(dh)
+        if(DAO().get(dh).size==0){
+            binding.title.text=""
 
-        for( i in search){
-            if(i.id==1){
+        }else {
+            val s = DAO().get(dh)
+            for(i in s){
                 binding.title.text=i.search
-                break
             }
 
         }

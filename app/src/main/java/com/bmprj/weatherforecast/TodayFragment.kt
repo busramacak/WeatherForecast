@@ -11,14 +11,22 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
 import com.google.android.gms.location.LocationServices
+import com.google.gson.Gson
+import okhttp3.OkHttpClient
+import org.json.JSONObject
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
 @Suppress("DEPRECATION")
 class TodayFragment() : Fragment() {
     private lateinit var binding: FragmentTodayBinding
+    var strtext:String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -67,6 +75,7 @@ class TodayFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         val mFusedLocationClient = LocationServices.getFusedLocationProviderClient(view.context)
         val r = RequestCurrent(view,mFusedLocationClient)
 
@@ -99,6 +108,8 @@ class TodayFragment() : Fragment() {
         super.onResume()
         binding.animationView.playAnimation()
     }
+
+
 
 
 }

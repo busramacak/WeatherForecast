@@ -44,7 +44,7 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
                         val list: List<Address> =
                             geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
                         if(cityname!=null){
-                            if(cityname=="Konumunuz"){
+                            if(cityname=="Mevcut Konum"){
                                 str = str+"${list[0].latitude},${list[0].longitude}&days=2&aqi=yes&lang=tr"
                             }
                             else{
@@ -70,6 +70,7 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
 
                             val json = response.body!!.string()
                             val obj = JSONObject(json)
+
                             val location = obj.getJSONObject("location")
                             val city = location.getString("name")
                             val dh =DatabaseHelper(view.context)

@@ -1,18 +1,25 @@
 package com.bmprj.weatherforecast
 
+import android.app.ProgressDialog
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.bmprj.weatherforecast.databinding.ActivityMainBinding
+import com.google.gson.Gson
+import okhttp3.OkHttpClient
+import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= DataBindingUtil.setContentView(this,R.layout.activity_main)
@@ -21,10 +28,11 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         NavigationUI.setupWithNavController(binding.bottomNav,navHostFragment.navController)
 
+
         val dh = DatabaseHelper(this)
 
         if(DAO().get(dh).size==0){
-            binding.title.text=""
+            binding.title.text="Mervcut Konum"
 
         }else {
             val s = DAO().get(dh)

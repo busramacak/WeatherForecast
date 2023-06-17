@@ -26,7 +26,7 @@ class SearchActivity : AppCompatActivity() {
             layoutManager=LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
             binding.recyS.layoutManager=layoutManager
             val list = ArrayList<SearchV>()
-            val s = SearchV("Konumunuz","")
+            val s = SearchV("Mevcut Konum","")
             list.add(s)
             adapter = SearchAdapter(list)
             binding.recyS.adapter=adapter
@@ -65,6 +65,8 @@ class SearchActivity : AppCompatActivity() {
                 val obj = JSONArray(json)
 
                 val search = ArrayList<SearchV>()
+                val f = SearchV("Mevcut Konum","")
+                search.add(f)
                 for (i in 0 until obj.length()) {
                     val city = obj.getJSONObject(i)
                     val name = city.getString("name")

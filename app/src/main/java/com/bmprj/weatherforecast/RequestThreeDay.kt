@@ -48,7 +48,7 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
                             geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
 
                         if(cityname!=null){
-                            if(cityname=="Konumunuz"){
+                            if(cityname=="Mevcut Konum"){
                                 str = str+"${list[0].latitude},${list[0].longitude}&days=3&aqi=yes&lang=tr"
                             }
                             else{

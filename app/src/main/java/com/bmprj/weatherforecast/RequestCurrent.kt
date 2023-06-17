@@ -50,8 +50,9 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
                             geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
 
 
+
                         if(cityname!=null){
-                            if(cityname=="Konumunuz"){
+                            if(cityname=="Mevcut Konum"){
                                 str = str+"${list[0].latitude},${list[0].longitude}&days=1&aqi=yes&lang=tr"
                             }
                             else{
@@ -282,8 +283,10 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
 
                     }
                 }
-            }
 
+            }else{
+
+            }
 
         } else {
             requestPermissions()

@@ -15,6 +15,7 @@ class DAO {
         db.close()
     }
 
+
     fun update(dh:DatabaseHelper,id:Int,search: String?){
         val db = dh.writableDatabase
         val values = ContentValues()
@@ -23,6 +24,7 @@ class DAO {
         db.update("weatherSearch",values,"id=?", arrayOf(id.toString()))
         db.close()
     }
+
 
     @SuppressLint("Range")
     fun get(dh : DatabaseHelper):ArrayList<Search>{

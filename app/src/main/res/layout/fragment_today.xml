@@ -287,7 +287,7 @@
                     android:layout_marginTop="17dp"
                     android:layout_marginLeft="20dp"
                     android:layout_toEndOf="@+id/wind_kph"
-                    android:src="@drawable/baseline_arrow_drop_up_24" />
+                    android:src="@drawable/arrow_up" />
 
                 <TextView
                     android:id="@+id/kph"

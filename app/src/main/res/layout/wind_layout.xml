@@ -34,7 +34,7 @@
                 android:layout_marginEnd="15dp"
                 android:rotation="@{wind.wind_degree}"
                 android:scaleType="matrix"
-                android:src="@drawable/baseline_arrow_drop_up_24" />
+                android:src="@drawable/arrow_up" />
 
             <TextView
                 android:id="@+id/windd"

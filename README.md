@@ -6,3 +6,14 @@ weather, Tomorrow and Three Days weather forecast screen information.
 Features:
 Made with https://www.weatherapi.com, SQlite, OkHttp, Lottie,Location, DataBinding, MVVM architecture, Recyclerview, Navigation 
 Component(NavGraph, BottomNav), SearchView...
+
+
+
+
+
+
+<img width="200" src="https://github.com/busramacak/WeatherForecast/assets/115944594/e73a795d-872b-4325-b644-82fb97cae1b9" />
+
+
+<img width="200" src="https://github.com/busramacak/WeatherForecast/assets/115944594/39a86a07-0aeb-48bb-afdd-4c2f69329b53" />
+<img width="250" src="" />

@@ -1,18 +1,15 @@
 package com.bmprj.weatherforecast
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.bmprj.weatherforecast.databinding.ActivityMainBinding
-import com.google.gson.Gson
-import okhttp3.OkHttpClient
-import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= DataBindingUtil.setContentView(this,R.layout.activity_main)
         binding.main=this
+
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         NavigationUI.setupWithNavController(binding.bottomNav,navHostFragment.navController)

@@ -29,9 +29,6 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
 
     var str="https://api.weatherapi.com/v1/forecast.json?key=3d94ea89afba4d1b8bf85744232605&q="
     val permissionId=2
-    var time=""
-    var tempature=""
-    var conditionText=""
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission", "SetTextI18n")
@@ -116,15 +113,15 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
 
                             if(cityname!=null){
                                 if(cityname=="Mevcut Konum"){
-                                    str = str+"${list[0].latitude},${list[0].longitude}&days=3&aqi=yes&lang=tr"
+                                    str += "${list[0].latitude},${list[0].longitude}&days=3&aqi=yes&lang=tr"
                                 }
                                 else{
-                                    str = str+"${cityname}&days=3&aqi=yes&lang=tr"
+                                    str += "${cityname}&days=3&aqi=yes&lang=tr"
                                 }
 
 
                             }else{
-                                str = str+"${list[0].latitude},${list[0].longitude}&days=3&aqi=yes&lang=tr"
+                                str += "${list[0].latitude},${list[0].longitude}&days=3&aqi=yes&lang=tr"
 
                             }
 

@@ -1,8 +1,9 @@
 package com.bmprj.weatherforecast
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
+import android.content.DialogInterface.OnShowListener
 import android.content.Intent
 import android.location.LocationManager
 import android.os.Build
@@ -10,10 +11,8 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.Html
 import android.view.View
-import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.location.LocationManagerCompat.isLocationEnabled
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -39,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         val dh = DatabaseHelper(this)
 
         if(DAO().get(dh).size==0){
-            binding.title.text="Mervcut Konum"
+            binding.title.text="Mevcut Konum"
 
         }else {
             val s = DAO().get(dh)
@@ -58,6 +57,8 @@ class MainActivity : AppCompatActivity() {
             LocationManager.NETWORK_PROVIDER
         )
     }
+    @RequiresApi(Build.VERSION_CODES.Q)
+    @SuppressLint("MissingInflatedId")
     fun islocationenabled(){
 
         if (!isLocationEnabled()){
@@ -66,6 +67,13 @@ class MainActivity : AppCompatActivity() {
             val customLayout: View = layoutInflater.inflate(R.layout.alert_dialog_layout, null)
             alertDialog.setView(customLayout)
 
+            alertDialog.setPositiveButton(Html.fromHtml("<font color='#757474'>AYARLARI AÇ</font>")){ DialogInterface,which:Int ->
+                this.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+
+            }
+            alertDialog.setNegativeButton(Html.fromHtml("<font color='#757474'>HAYIR</font>"),null).create()
+            alertDialog.create()
+            alertDialog.show()
         }
     }
 

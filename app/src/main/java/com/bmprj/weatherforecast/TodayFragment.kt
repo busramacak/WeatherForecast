@@ -1,4 +1,3 @@
-@file:Suppress("DEPRECATION")
 
 package com.bmprj.weatherforecast
 
@@ -9,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
@@ -16,10 +16,8 @@ import com.google.android.gms.location.LocationServices
 import java.util.*
 
 
-@Suppress("DEPRECATION")
 class TodayFragment() : Fragment() {
     private lateinit var binding: FragmentTodayBinding
-    var strtext:String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -97,33 +95,6 @@ class TodayFragment() : Fragment() {
         }
 
     }
-//
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    override fun onResume() {
-//        super.onResume()
-//        val mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-//        val r = RequestCurrent(binding.animationView,mFusedLocationClient)
-//
-//        binding.animationView.playAnimation()
-//        val dh = DatabaseHelper(requireContext())
-//        val search = DAO().get(dh)
-//        var city:String? = null
-//        if(search.size>0){
-//            for(i in search){
-//                if(i.id==1){
-//                    city=i.search
-//                    r.getLocation(binding,null,city)
-//
-//                    break
-//                }
-//            }
-//        }else{
-//            r.getLocation(binding,null,city)
-//        }
-//
-//    }
-
-
 
 
 }

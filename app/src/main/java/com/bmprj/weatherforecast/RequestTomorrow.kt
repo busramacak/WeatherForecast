@@ -34,81 +34,268 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
     @SuppressLint("MissingPermission", "SetTextI18n", "ResourceAsColor")
     fun getLocation(binding: FragmentTomorrowBinding,dialog: AlertDialog,cityname:String?){
 
+        if(cityname!="Mevcut Konum" && cityname!=null){
 
-        if (checkPermissions()) {
-            if (isLocationEnabled()) {
-                mFusedLocationClient.lastLocation.addOnCompleteListener() { task ->
-                    val location: Location? = task.result
-                    if (location != null) {
-                        val geocoder = Geocoder(view.context, Locale.getDefault())
-                        val list: List<Address> =
-                            geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
-                        if(cityname!=null){
-                            if(cityname=="Mevcut Konum"){
+            str = str+"${cityname}&days=2&aqi=yes&lang=tr"
+
+            val SDK_INT = Build.VERSION.SDK_INT
+            if (SDK_INT > 8) {
+                val policy = StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build()
+                StrictMode.setThreadPolicy(policy)
+
+
+                var client= OkHttpClient()
+                val request = Request.Builder().url(str).build()
+                val response = client.newCall(request).execute()
+
+                val json = response.body!!.string()
+                val obj = JSONObject(json)
+
+                val location = obj.getJSONObject("location")
+                val city = location.getString("name")
+                val dh =DatabaseHelper(view.context)
+
+                if(DAO().get(dh).size==0){
+                    DAO().add(dh,1,city)
+
+                }else
+                {
+                    DAO().update(dh,1,city)
+                }
+
+                val forecast =obj.getJSONObject("forecast")
+                val forecastday  = forecast.getJSONArray("forecastday")
+                val hour = forecastday.getJSONObject(1)
+                val hh = hour.getJSONArray("hour")
+
+                val date = hour.getString("date")
+
+                val day = hour.getJSONObject("day")
+                val avghumidity=day.getInt("avghumidity")
+                val totalprecip_mm = day.getDouble("totalprecip_mm")
+                val uv = day.getInt("uv")
+                val max_temp = day.getDouble("maxtemp_c")
+                val min_temp = day.getDouble("mintemp_c")
+
+                val conditionn=day.getJSONObject("condition")
+                val code = conditionn.getInt("code")
+                val conditionText=conditionn.getString("text")
+
+
+
+
+                val hourly = ArrayList<Hourly>()
+                val rainy = ArrayList<Rainy>()
+                val wind = ArrayList<Wind>()
+                var maxwind=0.0
+                var minwind=0.0
+
+                for(i  in 0 .. hh.length()-1){
+                    val hourSet = hh.getJSONObject(i)
+
+                    val temp = hourSet.getDouble("temp_c")
+                    val cond = hourSet.getJSONObject("condition")
+                    val icon = cond.getString("icon")
+                    val rain =hourSet.getInt("chance_of_rain")
+                    val precip = hourSet.getDouble("precip_mm").toFloat()
+                    val wind_degree=hourSet.getInt("wind_degree")
+                    val wind_kph = hourSet.getDouble("wind_kph")
+
+                    if(minwind>wind_kph){
+                        minwind=wind_kph
+                    }
+
+                    if(maxwind< wind_kph){
+                        maxwind=wind_kph
+                    }
+
+
+                    val r = Rainy("%"+rain.toString(),i.toString()+":00",precip.toString(),precip)
+                    rainy.add(r)
+                    val w = Wind(wind_kph.toString(),wind_kph.toInt()*3, wind_degree.toFloat(),i.toString()+":00")
+                    wind.add(w)
+                    val h = Hourly(icon,i.toString()+":00",temp.toString()+"°")
+                    hourly.add(h)
+                }
+
+
+
+                binding.recyWind.apply {
+                    layoutManager=LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+                    binding.recyWind.layoutManager=layoutManager
+                    adapter= WindAdapter(wind)
+                    binding.recyWind.adapter=adapter
+                }
+
+                binding.recyRain.apply {
+                    layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+                    binding.recyRain.layoutManager=layoutManager
+                    adapter= RainyAdapter(rainy)
+                    binding.recyRain.adapter=adapter
+                }
+
+
+                binding.recy.apply {
+                    layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+                    binding.recy.layoutManager=layoutManager
+                    adapter= HourlyAdapter(hourly)
+                    binding.recy.adapter=adapter
+                }
+
+
+
+
+
+                binding.date.text=date
+                binding.degree.text="Gündüz ${max_temp}, Gece ${min_temp}"
+                binding.condition.text=conditionText
+                binding.humidity.text="%"+avghumidity.toString()
+                binding.uv.text=uv.toString()
+                binding.totalprecip.text="Günlük toplam hacim "+totalprecip_mm.toString()+" mm"
+                binding.windKph.text=minwind.toInt().toString()+"-"+maxwind.toInt().toString()
+                when(code){
+                    1000->{
+                        binding.animationView.setAnimation(R.raw.sunny)
+//                                    binding.scrollV.setBackgroundResource(R.color.sunBackground)
+//                                    binding.recy.setBackgroundResource(R.color.sunBackground)
+//                                    binding.recyWind.setBackgroundResource(R.color.sunBackground)
+//                                    binding.recyRain.setBackgroundResource(R.color.sunBackground)
+//                                    binding.relRain.setBackgroundResource(R.color.sunBackground)
+//                                    binding.rel.setBackgroundResource(R.color.sunBackground)
+//                                    binding.relWind.setBackgroundResource(R.color.sunBackground)
+
+                    }
+                    1003->{
+                        binding.animationView.setAnimation(R.raw.partly_cloudy)
+//                                    binding.scrollV.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.recy.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.recyWind.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.recyRain.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.relRain.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.rel.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.relWind.setBackgroundResource(R.color.cloudBackground)
+                    }
+                    1006->{
+                        binding.animationView.setAnimation(R.raw.cloudy)
+//                                    binding.scrollV.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.recy.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.recyWind.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.recyRain.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.relRain.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.rel.setBackgroundResource(R.color.cloudBackground)
+//                                    binding.relWind.setBackgroundResource(R.color.cloudBackground)
+                    }
+                    1030,1135,1147->{
+                        binding.animationView.setAnimation(R.raw.mist)
+                    }
+                    1114, 1117, 1204, 1207, 1213, 1219, 1225 -> {
+                        binding.animationView.setAnimation(R.raw.snow)
+                    }
+                    1210,1216,1222,1249,1252,1255,1258 ->{
+                        binding.animationView.setAnimation(R.raw.snow_sunny)
+                    }
+                    1087,1273,1276->{
+                        binding.animationView.setAnimation(R.raw.thunder)
+//                                    binding.scrollV.setBackgroundResource(R.color.thunderBackground)
+//                                    binding.recy.setBackgroundResource(R.color.thunderBackground)
+//                                    binding.recyWind.setBackgroundResource(R.color.thunderBackground)
+//                                    binding.recyRain.setBackgroundResource(R.color.thunderBackground)
+//                                    binding.relRain.setBackgroundResource(R.color.thunderBackground)
+//                                    binding.rel.setBackgroundResource(R.color.thunderBackground)
+//                                    binding.relWind.setBackgroundResource(R.color.thunderBackground)
+                    }
+                    1063,1183,1186,1189,1192,1195,1198,1201,1240,1246->{
+                        binding.animationView.setAnimation(R.raw.partly_shower)
+//                                    binding.scrollV.setBackgroundResource(R.color.rainyBackground)
+//                                    binding.recy.setBackgroundResource(R.color.rainyBackground)
+//                                    binding.recyWind.setBackgroundResource(R.color.rainyBackground)
+//                                    binding.recyRain.setBackgroundResource(R.color.rainyBackground)
+//                                    binding.relRain.setBackgroundResource(R.color.rainyBackground)
+//                                    binding.rel.setBackgroundResource(R.color.rainyBackground)
+//                                    binding.relWind.setBackgroundResource(R.color.rainyBackground)
+
+                    }
+
+                }
+
+                dialog.hide()
+            }
+        }else{
+            if (checkPermissions()) {
+                if (isLocationEnabled()) {
+                    mFusedLocationClient.lastLocation.addOnCompleteListener() { task ->
+                        val location: Location? = task.result
+                        if (location != null) {
+                            val geocoder = Geocoder(view.context, Locale.getDefault())
+                            val list: List<Address> =
+                                geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
+                            if(cityname!=null){
+                                if(cityname=="Mevcut Konum"){
+                                    str = str+"${list[0].latitude},${list[0].longitude}&days=2&aqi=yes&lang=tr"
+                                }
+                                else{
+                                    str = str+"${cityname}&days=2&aqi=yes&lang=tr"
+                                }
+
+
+                            }else{
                                 str = str+"${list[0].latitude},${list[0].longitude}&days=2&aqi=yes&lang=tr"
-                            }
-                            else{
-                                str = str+"${cityname}&days=2&aqi=yes&lang=tr"
+
                             }
 
-
-                        }else{
-                            str = str+"${list[0].latitude},${list[0].longitude}&days=2&aqi=yes&lang=tr"
-
-                        }
-
-                        val SDK_INT = Build.VERSION.SDK_INT
-                        if (SDK_INT > 8) {
-                            val policy = StrictMode.ThreadPolicy.Builder()
-                                .permitAll().build()
-                            StrictMode.setThreadPolicy(policy)
+                            val SDK_INT = Build.VERSION.SDK_INT
+                            if (SDK_INT > 8) {
+                                val policy = StrictMode.ThreadPolicy.Builder()
+                                    .permitAll().build()
+                                StrictMode.setThreadPolicy(policy)
 
 
-                            var client= OkHttpClient()
-                            val request = Request.Builder().url(str).build()
-                            val response = client.newCall(request).execute()
+                                var client= OkHttpClient()
+                                val request = Request.Builder().url(str).build()
+                                val response = client.newCall(request).execute()
 
-                            val json = response.body!!.string()
-                            val obj = JSONObject(json)
+                                val json = response.body!!.string()
+                                val obj = JSONObject(json)
 
-                            val location = obj.getJSONObject("location")
-                            val city = location.getString("name")
-                            val dh =DatabaseHelper(view.context)
+                                val location = obj.getJSONObject("location")
+                                val city = location.getString("name")
+                                val dh =DatabaseHelper(view.context)
 
-                            if(DAO().get(dh).size==0){
-                                DAO().add(dh,1,city)
+                                if(DAO().get(dh).size==0){
+                                    DAO().add(dh,1,city)
 
-                            }else
-                            {
-                                DAO().update(dh,1,city)
-                            }
+                                }else
+                                {
+                                    DAO().update(dh,1,city)
+                                }
 
-                            val forecast =obj.getJSONObject("forecast")
-                            val forecastday  = forecast.getJSONArray("forecastday")
-                            val hour = forecastday.getJSONObject(1)
-                            val hh = hour.getJSONArray("hour")
+                                val forecast =obj.getJSONObject("forecast")
+                                val forecastday  = forecast.getJSONArray("forecastday")
+                                val hour = forecastday.getJSONObject(1)
+                                val hh = hour.getJSONArray("hour")
 
-                            val date = hour.getString("date")
+                                val date = hour.getString("date")
 
-                            val day = hour.getJSONObject("day")
-                            val avghumidity=day.getInt("avghumidity")
-                            val totalprecip_mm = day.getDouble("totalprecip_mm")
-                            val uv = day.getInt("uv")
-                            val max_temp = day.getDouble("maxtemp_c")
-                            val min_temp = day.getDouble("mintemp_c")
+                                val day = hour.getJSONObject("day")
+                                val avghumidity=day.getInt("avghumidity")
+                                val totalprecip_mm = day.getDouble("totalprecip_mm")
+                                val uv = day.getInt("uv")
+                                val max_temp = day.getDouble("maxtemp_c")
+                                val min_temp = day.getDouble("mintemp_c")
 
-                            val conditionn=day.getJSONObject("condition")
-                            val code = conditionn.getInt("code")
-                            val conditionText=conditionn.getString("text")
+                                val conditionn=day.getJSONObject("condition")
+                                val code = conditionn.getInt("code")
+                                val conditionText=conditionn.getString("text")
 
 
 
 
-                            val hourly = ArrayList<Hourly>()
-                            val rainy = ArrayList<Rainy>()
-                            val wind = ArrayList<Wind>()
-                            var maxwind=0.0
-                            var minwind=0.0
+                                val hourly = ArrayList<Hourly>()
+                                val rainy = ArrayList<Rainy>()
+                                val wind = ArrayList<Wind>()
+                                var maxwind=0.0
+                                var minwind=0.0
 
                                 for(i  in 0 .. hh.length()-1){
                                     val hourSet = hh.getJSONObject(i)
@@ -140,42 +327,42 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
 
 
 
-                            binding.recyWind.apply {
-                                layoutManager=LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-                                binding.recyWind.layoutManager=layoutManager
-                                adapter= WindAdapter(wind)
-                                binding.recyWind.adapter=adapter
-                            }
+                                binding.recyWind.apply {
+                                    layoutManager=LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+                                    binding.recyWind.layoutManager=layoutManager
+                                    adapter= WindAdapter(wind)
+                                    binding.recyWind.adapter=adapter
+                                }
 
-                            binding.recyRain.apply {
-                                layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-                                binding.recyRain.layoutManager=layoutManager
-                                adapter= RainyAdapter(rainy)
-                                binding.recyRain.adapter=adapter
-                            }
-
-
-                            binding.recy.apply {
-                                layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-                                binding.recy.layoutManager=layoutManager
-                                adapter= HourlyAdapter(hourly)
-                                binding.recy.adapter=adapter
-                            }
+                                binding.recyRain.apply {
+                                    layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+                                    binding.recyRain.layoutManager=layoutManager
+                                    adapter= RainyAdapter(rainy)
+                                    binding.recyRain.adapter=adapter
+                                }
 
 
+                                binding.recy.apply {
+                                    layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+                                    binding.recy.layoutManager=layoutManager
+                                    adapter= HourlyAdapter(hourly)
+                                    binding.recy.adapter=adapter
+                                }
 
 
 
-                            binding.date.text=date
-                            binding.degree.text="Gündüz ${max_temp}, Gece ${min_temp}"
-                            binding.condition.text=conditionText
-                            binding.humidity.text="%"+avghumidity.toString()
-                            binding.uv.text=uv.toString()
-                            binding.totalprecip.text="Günlük toplam hacim "+totalprecip_mm.toString()+" mm"
-                            binding.windKph.text=minwind.toInt().toString()+"-"+maxwind.toInt().toString()
-                            when(code){
-                                1000->{
-                                    binding.animationView.setAnimation(R.raw.sunny)
+
+
+                                binding.date.text=date
+                                binding.degree.text="Gündüz ${max_temp}, Gece ${min_temp}"
+                                binding.condition.text=conditionText
+                                binding.humidity.text="%"+avghumidity.toString()
+                                binding.uv.text=uv.toString()
+                                binding.totalprecip.text="Günlük toplam hacim "+totalprecip_mm.toString()+" mm"
+                                binding.windKph.text=minwind.toInt().toString()+"-"+maxwind.toInt().toString()
+                                when(code){
+                                    1000->{
+                                        binding.animationView.setAnimation(R.raw.sunny)
 //                                    binding.scrollV.setBackgroundResource(R.color.sunBackground)
 //                                    binding.recy.setBackgroundResource(R.color.sunBackground)
 //                                    binding.recyWind.setBackgroundResource(R.color.sunBackground)
@@ -184,9 +371,9 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
 //                                    binding.rel.setBackgroundResource(R.color.sunBackground)
 //                                    binding.relWind.setBackgroundResource(R.color.sunBackground)
 
-                                }
-                                1003->{
-                                    binding.animationView.setAnimation(R.raw.partly_cloudy)
+                                    }
+                                    1003->{
+                                        binding.animationView.setAnimation(R.raw.partly_cloudy)
 //                                    binding.scrollV.setBackgroundResource(R.color.cloudBackground)
 //                                    binding.recy.setBackgroundResource(R.color.cloudBackground)
 //                                    binding.recyWind.setBackgroundResource(R.color.cloudBackground)
@@ -194,9 +381,9 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
 //                                    binding.relRain.setBackgroundResource(R.color.cloudBackground)
 //                                    binding.rel.setBackgroundResource(R.color.cloudBackground)
 //                                    binding.relWind.setBackgroundResource(R.color.cloudBackground)
-                                }
-                                1006->{
-                                    binding.animationView.setAnimation(R.raw.cloudy)
+                                    }
+                                    1006->{
+                                        binding.animationView.setAnimation(R.raw.cloudy)
 //                                    binding.scrollV.setBackgroundResource(R.color.cloudBackground)
 //                                    binding.recy.setBackgroundResource(R.color.cloudBackground)
 //                                    binding.recyWind.setBackgroundResource(R.color.cloudBackground)
@@ -204,18 +391,18 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
 //                                    binding.relRain.setBackgroundResource(R.color.cloudBackground)
 //                                    binding.rel.setBackgroundResource(R.color.cloudBackground)
 //                                    binding.relWind.setBackgroundResource(R.color.cloudBackground)
-                                }
-                                1030,1135,1147->{
-                                    binding.animationView.setAnimation(R.raw.mist)
-                                }
-                                1114, 1117, 1204, 1207, 1213, 1219, 1225 -> {
-                                    binding.animationView.setAnimation(R.raw.snow)
-                                }
-                                1210,1216,1222,1249,1252,1255,1258 ->{
-                                    binding.animationView.setAnimation(R.raw.snow_sunny)
-                                }
-                                1087,1273,1276->{
-                                    binding.animationView.setAnimation(R.raw.thunder)
+                                    }
+                                    1030,1135,1147->{
+                                        binding.animationView.setAnimation(R.raw.mist)
+                                    }
+                                    1114, 1117, 1204, 1207, 1213, 1219, 1225 -> {
+                                        binding.animationView.setAnimation(R.raw.snow)
+                                    }
+                                    1210,1216,1222,1249,1252,1255,1258 ->{
+                                        binding.animationView.setAnimation(R.raw.snow_sunny)
+                                    }
+                                    1087,1273,1276->{
+                                        binding.animationView.setAnimation(R.raw.thunder)
 //                                    binding.scrollV.setBackgroundResource(R.color.thunderBackground)
 //                                    binding.recy.setBackgroundResource(R.color.thunderBackground)
 //                                    binding.recyWind.setBackgroundResource(R.color.thunderBackground)
@@ -223,9 +410,9 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
 //                                    binding.relRain.setBackgroundResource(R.color.thunderBackground)
 //                                    binding.rel.setBackgroundResource(R.color.thunderBackground)
 //                                    binding.relWind.setBackgroundResource(R.color.thunderBackground)
-                                }
-                                1063,1183,1186,1189,1192,1195,1198,1201,1240,1246->{
-                                    binding.animationView.setAnimation(R.raw.partly_shower)
+                                    }
+                                    1063,1183,1186,1189,1192,1195,1198,1201,1240,1246->{
+                                        binding.animationView.setAnimation(R.raw.partly_shower)
 //                                    binding.scrollV.setBackgroundResource(R.color.rainyBackground)
 //                                    binding.recy.setBackgroundResource(R.color.rainyBackground)
 //                                    binding.recyWind.setBackgroundResource(R.color.rainyBackground)
@@ -234,19 +421,22 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
 //                                    binding.rel.setBackgroundResource(R.color.rainyBackground)
 //                                    binding.relWind.setBackgroundResource(R.color.rainyBackground)
 
+                                    }
+
                                 }
 
+                                dialog.hide()
                             }
 
-                            dialog.hide()
                         }
-
                     }
                 }
+            } else {
+                requestPermissions()
             }
-        } else {
-            requestPermissions()
         }
+
+
 
     }
 

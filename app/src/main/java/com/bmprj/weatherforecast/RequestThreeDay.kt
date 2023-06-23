@@ -37,99 +37,169 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
     @SuppressLint("MissingPermission", "SetTextI18n")
     fun getLocation(binding: FragmentThreeDayBinding,dialog: AlertDialog,cityname:String?){
 
+        if(cityname!="Mevcut Konum" && cityname!=null){
 
-        if (checkPermissions()) {
-            if (isLocationEnabled()) {
-                mFusedLocationClient.lastLocation.addOnCompleteListener() { task ->
-                    val location: Location? = task.result
-                    if (location != null) {
-                        val geocoder = Geocoder(view.context, Locale.getDefault())
-                        val list: List<Address> =
-                            geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
+            str = str+"${cityname}&days=3&aqi=yes&lang=tr"
 
-                        if(cityname!=null){
-                            if(cityname=="Mevcut Konum"){
+            val SDK_INT = Build.VERSION.SDK_INT
+            if (SDK_INT > 8) {
+                val policy = StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build()
+                StrictMode.setThreadPolicy(policy)
+
+
+                var client= OkHttpClient()
+                val request = Request.Builder().url(str).build()
+                val response = client.newCall(request).execute()
+
+                val json = response.body!!.string()
+                val obj = JSONObject(json)
+
+                val forecast =obj.getJSONObject("forecast")
+                val forecastday  = forecast.getJSONArray("forecastday")
+
+
+                val threeday = ArrayList<ThreeDay>()
+                for(i in 0..2){
+
+                    val hour = forecastday.getJSONObject(i)
+
+                    val day = hour.getJSONObject("day")
+                    val date = hour.getString("date")
+
+                    val inFormat = SimpleDateFormat("yyyy-MM-dd")
+                    val dat: Date = inFormat.parse(date)
+                    val outFormatDays = SimpleDateFormat("EEEE")
+                    val goal: String = outFormatDays.format(dat)
+                    val outFormatMonth = SimpleDateFormat("MMM")
+                    val month:String = outFormatMonth.format(dat)
+                    val outFormatDay = SimpleDateFormat("dd")
+                    val dy : String = outFormatDay.format(dat)
+
+
+
+                    val maxtemp=day.getDouble("maxtemp_c")
+                    val mintemp=day.getDouble("mintemp_c")
+
+                    val condition = day.getJSONObject("condition")
+                    val icon = condition.getString("icon")
+                    val conditionText = condition.getString("text")
+
+                    val t = ThreeDay(goal+", "+month+" "+dy,conditionText,maxtemp.toString()+"°",mintemp.toString()+"°",icon)
+
+                    threeday.add(t)
+
+                }
+
+                binding.recyThreeDay.apply {
+                    layoutManager=LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+                    binding.recyThreeDay.layoutManager=layoutManager
+                    adapter = ThreeDayAdapter(threeday)
+                    binding.recyThreeDay.adapter=adapter
+                }
+
+
+
+                dialog.hide()
+
+            }
+        }else{
+
+            if (checkPermissions()) {
+                if (isLocationEnabled()) {
+                    mFusedLocationClient.lastLocation.addOnCompleteListener() { task ->
+                        val location: Location? = task.result
+                        if (location != null) {
+                            val geocoder = Geocoder(view.context, Locale.getDefault())
+                            val list: List<Address> =
+                                geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
+
+                            if(cityname!=null){
+                                if(cityname=="Mevcut Konum"){
+                                    str = str+"${list[0].latitude},${list[0].longitude}&days=3&aqi=yes&lang=tr"
+                                }
+                                else{
+                                    str = str+"${cityname}&days=3&aqi=yes&lang=tr"
+                                }
+
+
+                            }else{
                                 str = str+"${list[0].latitude},${list[0].longitude}&days=3&aqi=yes&lang=tr"
-                            }
-                            else{
-                                str = str+"${cityname}&days=3&aqi=yes&lang=tr"
+
                             }
 
+                            val SDK_INT = Build.VERSION.SDK_INT
+                            if (SDK_INT > 8) {
+                                val policy = StrictMode.ThreadPolicy.Builder()
+                                    .permitAll().build()
+                                StrictMode.setThreadPolicy(policy)
 
-                        }else{
-                            str = str+"${list[0].latitude},${list[0].longitude}&days=3&aqi=yes&lang=tr"
+
+                                var client= OkHttpClient()
+                                val request = Request.Builder().url(str).build()
+                                val response = client.newCall(request).execute()
+
+                                val json = response.body!!.string()
+                                val obj = JSONObject(json)
+
+                                val forecast =obj.getJSONObject("forecast")
+                                val forecastday  = forecast.getJSONArray("forecastday")
+
+
+                                val threeday = ArrayList<ThreeDay>()
+                                for(i in 0..2){
+
+                                    val hour = forecastday.getJSONObject(i)
+
+                                    val day = hour.getJSONObject("day")
+                                    val date = hour.getString("date")
+
+                                    val inFormat = SimpleDateFormat("yyyy-MM-dd")
+                                    val dat: Date = inFormat.parse(date)
+                                    val outFormatDays = SimpleDateFormat("EEEE")
+                                    val goal: String = outFormatDays.format(dat)
+                                    val outFormatMonth = SimpleDateFormat("MMM")
+                                    val month:String = outFormatMonth.format(dat)
+                                    val outFormatDay = SimpleDateFormat("dd")
+                                    val dy : String = outFormatDay.format(dat)
+
+
+
+                                    val maxtemp=day.getDouble("maxtemp_c")
+                                    val mintemp=day.getDouble("mintemp_c")
+
+                                    val condition = day.getJSONObject("condition")
+                                    val icon = condition.getString("icon")
+                                    val conditionText = condition.getString("text")
+
+                                    val t = ThreeDay(goal+", "+month+" "+dy,conditionText,maxtemp.toString()+"°",mintemp.toString()+"°",icon)
+
+                                    threeday.add(t)
+
+                                }
+
+                                binding.recyThreeDay.apply {
+                                    layoutManager=LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+                                    binding.recyThreeDay.layoutManager=layoutManager
+                                    adapter = ThreeDayAdapter(threeday)
+                                    binding.recyThreeDay.adapter=adapter
+                                }
+
+
+
+                                dialog.hide()
+
+                            }
 
                         }
-
-                        val SDK_INT = Build.VERSION.SDK_INT
-                        if (SDK_INT > 8) {
-                            val policy = StrictMode.ThreadPolicy.Builder()
-                                .permitAll().build()
-                            StrictMode.setThreadPolicy(policy)
-
-
-                            var client= OkHttpClient()
-                            val request = Request.Builder().url(str).build()
-                            val response = client.newCall(request).execute()
-
-                            val json = response.body!!.string()
-                            val obj = JSONObject(json)
-
-                            val forecast =obj.getJSONObject("forecast")
-                            val forecastday  = forecast.getJSONArray("forecastday")
-
-
-                            val threeday = ArrayList<ThreeDay>()
-                            for(i in 0..2){
-
-                                val hour = forecastday.getJSONObject(i)
-
-                                val day = hour.getJSONObject("day")
-                                val date = hour.getString("date")
-
-                                val inFormat = SimpleDateFormat("yyyy-MM-dd")
-                                val dat: Date = inFormat.parse(date)
-                                val outFormatDays = SimpleDateFormat("EEEE")
-                                val goal: String = outFormatDays.format(dat)
-                                val outFormatMonth = SimpleDateFormat("MMM")
-                                val month:String = outFormatMonth.format(dat)
-                                val outFormatDay = SimpleDateFormat("dd")
-                                val dy : String = outFormatDay.format(dat)
-
-
-
-                                val maxtemp=day.getDouble("maxtemp_c")
-                                val mintemp=day.getDouble("mintemp_c")
-
-                                val condition = day.getJSONObject("condition")
-                                val icon = condition.getString("icon")
-                                val conditionText = condition.getString("text")
-
-                                val t = ThreeDay(goal+", "+month+" "+dy,conditionText,maxtemp.toString()+"°",mintemp.toString()+"°",icon)
-
-                                threeday.add(t)
-
-                            }
-
-                            binding.recyThreeDay.apply {
-                                layoutManager=LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-                                binding.recyThreeDay.layoutManager=layoutManager
-                                adapter = ThreeDayAdapter(threeday)
-                                binding.recyThreeDay.adapter=adapter
-                            }
-
-
-
-                            dialog.hide()
-
-                        }
-
                     }
                 }
+            } else {
+                requestPermissions()
             }
-        } else {
-            requestPermissions()
         }
+
+
 
     }
 

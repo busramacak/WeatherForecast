@@ -97,11 +97,31 @@ class TodayFragment() : Fragment() {
         }
 
     }
-
-    override fun onResume() {
-        super.onResume()
-        binding.animationView.playAnimation()
-    }
+//
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    override fun onResume() {
+//        super.onResume()
+//        val mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+//        val r = RequestCurrent(binding.animationView,mFusedLocationClient)
+//
+//        binding.animationView.playAnimation()
+//        val dh = DatabaseHelper(requireContext())
+//        val search = DAO().get(dh)
+//        var city:String? = null
+//        if(search.size>0){
+//            for(i in search){
+//                if(i.id==1){
+//                    city=i.search
+//                    r.getLocation(binding,null,city)
+//
+//                    break
+//                }
+//            }
+//        }else{
+//            r.getLocation(binding,null,city)
+//        }
+//
+//    }
 
 
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SplashActivity"
-    android:background="#A1D3FF">
+    android:background="#BADDFB">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationView"
@@ -18,8 +18,7 @@
         app:lottie_autoPlay="true"
         android:layout_marginBottom="200dp"
         app:lottie_loop="false"
-        app:lottie_rawRes="@raw/splash"
-        tools:ignore="MissingConstraints" />
+        app:lottie_rawRes="@raw/splash" />
 
     <ImageView
         android:layout_width="wrap_content"

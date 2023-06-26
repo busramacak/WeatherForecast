@@ -11,19 +11,21 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
-import android.os.StrictMode
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.bmprj.weatherforecast.databinding.FragmentTomorrowBinding
 import com.google.android.gms.location.FusedLocationProviderClient
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import org.json.JSONObject
+import java.net.URLDecoder
+import java.net.URLEncoder
 import java.util.*
 
 
+@Suppress("DEPRECATION", "NAME_SHADOWING")
 class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationProviderClient) {
 
 
@@ -33,17 +35,19 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission", "SetTextI18n", "ResourceAsColor")
     fun getLocation(binding: FragmentTomorrowBinding,dialog: AlertDialog,cityname:String?){
+        val queue = Volley.newRequestQueue(view.context)
 
         if(cityname!="Mevcut Konum" && cityname!=null){
 
             str = str+"${cityname}&days=2&aqi=yes&lang=tr"
 
 
-                var client= OkHttpClient()
-                val request = Request.Builder().url(str).build()
-                val response = client.newCall(request).execute()
+            val req = StringRequest(com.android.volley.Request.Method.GET,str,{
+                response ->
 
-                val json = response.body!!.string()
+
+                val json = URLDecoder.decode(URLEncoder.encode(response, "iso8859-1"),"UTF-8")
+
                 val obj = JSONObject(json)
 
                 val location = obj.getJSONObject("location")
@@ -151,34 +155,13 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
                 when(code){
                     1000->{
                         binding.animationView.setAnimation(R.raw.sunny)
-//                                    binding.scrollV.setBackgroundResource(R.color.sunBackground)
-//                                    binding.recy.setBackgroundResource(R.color.sunBackground)
-//                                    binding.recyWind.setBackgroundResource(R.color.sunBackground)
-//                                    binding.recyRain.setBackgroundResource(R.color.sunBackground)
-//                                    binding.relRain.setBackgroundResource(R.color.sunBackground)
-//                                    binding.rel.setBackgroundResource(R.color.sunBackground)
-//                                    binding.relWind.setBackgroundResource(R.color.sunBackground)
 
                     }
                     1003->{
                         binding.animationView.setAnimation(R.raw.partly_cloudy)
-//                                    binding.scrollV.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.recy.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.recyWind.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.recyRain.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.relRain.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.rel.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.relWind.setBackgroundResource(R.color.cloudBackground)
                     }
                     1006->{
                         binding.animationView.setAnimation(R.raw.cloudy)
-//                                    binding.scrollV.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.recy.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.recyWind.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.recyRain.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.relRain.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.rel.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.relWind.setBackgroundResource(R.color.cloudBackground)
                     }
                     1030,1135,1147->{
                         binding.animationView.setAnimation(R.raw.mist)
@@ -191,29 +174,21 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
                     }
                     1087,1273,1276->{
                         binding.animationView.setAnimation(R.raw.thunder)
-//                                    binding.scrollV.setBackgroundResource(R.color.thunderBackground)
-//                                    binding.recy.setBackgroundResource(R.color.thunderBackground)
-//                                    binding.recyWind.setBackgroundResource(R.color.thunderBackground)
-//                                    binding.recyRain.setBackgroundResource(R.color.thunderBackground)
-//                                    binding.relRain.setBackgroundResource(R.color.thunderBackground)
-//                                    binding.rel.setBackgroundResource(R.color.thunderBackground)
-//                                    binding.relWind.setBackgroundResource(R.color.thunderBackground)
                     }
                     1063,1183,1186,1189,1192,1195,1198,1201,1240,1246->{
                         binding.animationView.setAnimation(R.raw.partly_shower)
-//                                    binding.scrollV.setBackgroundResource(R.color.rainyBackground)
-//                                    binding.recy.setBackgroundResource(R.color.rainyBackground)
-//                                    binding.recyWind.setBackgroundResource(R.color.rainyBackground)
-//                                    binding.recyRain.setBackgroundResource(R.color.rainyBackground)
-//                                    binding.relRain.setBackgroundResource(R.color.rainyBackground)
-//                                    binding.rel.setBackgroundResource(R.color.rainyBackground)
-//                                    binding.relWind.setBackgroundResource(R.color.rainyBackground)
-
                     }
 
                 }
 
-                dialog.hide()
+
+
+
+            },{ })
+
+            queue.add(req)
+
+            dialog.hide()
 
         }else{
             if (checkPermissions()) {
@@ -224,6 +199,7 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
                             val geocoder = Geocoder(view.context, Locale.getDefault())
                             val list: List<Address> =
                                 geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
+
                             if(cityname!=null){
                                 if(cityname=="Mevcut Konum"){
                                     str = str+"${list[0].latitude},${list[0].longitude}&days=2&aqi=yes&lang=tr"
@@ -231,19 +207,16 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
                                 else{
                                     str = str+"${cityname}&days=2&aqi=yes&lang=tr"
                                 }
-
-
                             }else{
                                 str = str+"${list[0].latitude},${list[0].longitude}&days=2&aqi=yes&lang=tr"
-
                             }
 
 
-                                var client= OkHttpClient()
-                                val request = Request.Builder().url(str).build()
-                                val response = client.newCall(request).execute()
+                            val req = StringRequest(com.android.volley.Request.Method.GET,str,{
+                                response->
 
-                                val json = response.body!!.string()
+                                val json = URLDecoder.decode(URLEncoder.encode(response, "iso8859-1"),"UTF-8")
+
                                 val obj = JSONObject(json)
 
                                 val location = obj.getJSONObject("location")
@@ -378,7 +351,11 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
 
                                 }
 
-                                dialog.hide()
+                            },{ })
+
+
+                            queue.add(req)
+                            dialog.hide()
 
 
                         }

@@ -11,19 +11,21 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
-import android.os.StrictMode
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.bmprj.weatherforecast.databinding.FragmentThreeDayBinding
 import com.google.android.gms.location.FusedLocationProviderClient
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import org.json.JSONObject
+import java.net.URLDecoder
+import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 
+@Suppress("DEPRECATION")
 class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProviderClient) {
 
 
@@ -31,19 +33,20 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
     val permissionId=2
 
     @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("MissingPermission", "SetTextI18n")
+    @SuppressLint("MissingPermission", "SetTextI18n", "SimpleDateFormat")
     fun getLocation(binding: FragmentThreeDayBinding,dialog: AlertDialog,cityname:String?){
+
+        val queue = Volley.newRequestQueue(view.context)
 
         if(cityname!="Mevcut Konum" && cityname!=null){
 
             str = str+"${cityname}&days=3&aqi=yes&lang=tr"
 
+            val req = StringRequest(com.android.volley.Request.Method.GET,str,{
+                response ->
 
-                var client= OkHttpClient()
-                val request = Request.Builder().url(str).build()
-                val response = client.newCall(request).execute()
+                val json = URLDecoder.decode(URLEncoder.encode(response, "iso8859-1"),"UTF-8")
 
-                val json = response.body!!.string()
                 val obj = JSONObject(json)
 
                 val forecast =obj.getJSONObject("forecast")
@@ -59,7 +62,7 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
                     val date = hour.getString("date")
 
                     val inFormat = SimpleDateFormat("yyyy-MM-dd")
-                    val dat: Date = inFormat.parse(date)
+                    val dat: Date = inFormat.parse(date) as Date
                     val outFormatDays = SimpleDateFormat("EEEE")
                     val goal: String = outFormatDays.format(dat)
                     val outFormatMonth = SimpleDateFormat("MMM")
@@ -89,9 +92,11 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
                     binding.recyThreeDay.adapter=adapter
                 }
 
+            },{ })
 
+            queue.add(req)
 
-                dialog.hide()
+            dialog.hide()
 
 
         }else{
@@ -120,11 +125,12 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
                             }
 
 
-                                var client= OkHttpClient()
-                                val request = Request.Builder().url(str).build()
-                                val response = client.newCall(request).execute()
 
-                                val json = response.body!!.string()
+                            val req = StringRequest(com.android.volley.Request.Method.GET,str,{
+                                response->
+
+                                val json = URLDecoder.decode(URLEncoder.encode(response, "iso8859-1"),"UTF-8")
+
                                 val obj = JSONObject(json)
 
                                 val forecast =obj.getJSONObject("forecast")
@@ -140,7 +146,7 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
                                     val date = hour.getString("date")
 
                                     val inFormat = SimpleDateFormat("yyyy-MM-dd")
-                                    val dat: Date = inFormat.parse(date)
+                                    val dat: Date = inFormat.parse(date) as Date
                                     val outFormatDays = SimpleDateFormat("EEEE")
                                     val goal: String = outFormatDays.format(dat)
                                     val outFormatMonth = SimpleDateFormat("MMM")
@@ -171,10 +177,10 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
                                 }
 
 
+                            }, {   })
 
-                                dialog.hide()
-
-
+                            queue.add(req)
+                            dialog.hide()
 
                         }
                     }

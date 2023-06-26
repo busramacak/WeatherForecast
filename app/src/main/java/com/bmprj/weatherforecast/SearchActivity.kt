@@ -1,18 +1,17 @@
 package com.bmprj.weatherforecast
 
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.StrictMode
-import android.provider.ContactsContract.Data
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.bmprj.weatherforecast.databinding.ActivitySearchBinding
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import org.json.JSONArray
+import java.net.URLDecoder
+import java.net.URLEncoder
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var binding:ActivitySearchBinding
@@ -33,6 +32,11 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
         startActivity(Intent(this,MainActivity::class.java))
@@ -44,24 +48,17 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    fun onQueryTextSubmit(query: String): Boolean {
+    fun onQueryTextChange(query: String): Boolean {
 
         var str = ""
         if(query!=""){
-            str = "https://api.weatherapi.com/v1/search.json?key=3d94ea89afba4d1b8bf85744232605&q=${query}"
+            str = "https://api.weatherapi.com/v1/search.json?key=904aa43adf804caf913131326232306&q=${query}"
 
-            val SDK_INT = Build.VERSION.SDK_INT
-            if (SDK_INT > 8) {
-                val policy = StrictMode.ThreadPolicy.Builder()
-                    .permitAll().build()
-                StrictMode.setThreadPolicy(policy)
+            val queue = Volley.newRequestQueue(this)
+            val req = StringRequest(com.android.volley.Request.Method.GET,str,{
+                response ->
+                val json = URLDecoder.decode(URLEncoder.encode(response, "iso8859-1"),"UTF-8")
 
-
-                var client = OkHttpClient()
-                val request = Request.Builder().url(str).build()
-                val response = client.newCall(request).execute()
-
-                val json = response.body!!.string()
                 val obj = JSONArray(json)
 
                 val search = ArrayList<SearchV>()
@@ -84,11 +81,12 @@ class SearchActivity : AppCompatActivity() {
                     binding.recyS.adapter = adapter
                 }
 
+            }, { })
 
+            queue.add(req)
 
-
-            }
         }
+
 
         return false
     }

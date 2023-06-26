@@ -48,7 +48,7 @@
                     android:layout_gravity="center"
                     android:textColorHint="@color/white"
                     android:iconifiedByDefault="false"
-                    android:onQueryTextSubmit="@{() -> search.onQueryTextSubmit(searchView.getQuery().toString())}"
+                    android:onQueryTextChange="@{() -> search.onQueryTextChange(searchView.getQuery().toString())}"
                     android:queryHint="Yer Arama"
                     app:showAsAction="always|ifRoom"/>
 

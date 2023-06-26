@@ -11,10 +11,16 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.bmprj.weatherforecast.databinding.FragmentThreeDayBinding
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class ThreeDayFragment : Fragment() {
 
     private lateinit var binding: FragmentThreeDayBinding
+    val job = Job()
+    val uiScope = CoroutineScope(Dispatchers.Main + job)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,17 +45,25 @@ class ThreeDayFragment : Fragment() {
         dialog.setCancelable(false)
         dialog.setInverseBackgroundForced(false)
         dialog.show()
-        val dh = DatabaseHelper(requireContext())
-        val search = DAO().get(dh)
-        var city:String? = null
-        for(i in search){
-            if(i.id==1){
-                city=i.search
+        uiScope.launch(Dispatchers.Main) {
+            val dh = DatabaseHelper(requireContext())
+            val search = DAO().get(dh)
+            var city:String? = null
+            if(search.size>0){
+                for(i in search){
+                    if(i.id==1){
+                        city=i.search
+                        r.getLocation(binding,dialog,city)
+                        break
+                    }
+                }
+            }else{
                 r.getLocation(binding,dialog,city)
-                break
             }
-
         }
+
+
+
 
 
     }

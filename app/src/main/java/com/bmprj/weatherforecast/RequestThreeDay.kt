@@ -27,7 +27,7 @@ import java.util.*
 class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProviderClient) {
 
 
-    var str="https://api.weatherapi.com/v1/forecast.json?key=3d94ea89afba4d1b8bf85744232605&q="
+    var str="https://api.weatherapi.com/v1/forecast.json?key=904aa43adf804caf913131326232306&q="
     val permissionId=2
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -37,12 +37,6 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
         if(cityname!="Mevcut Konum" && cityname!=null){
 
             str = str+"${cityname}&days=3&aqi=yes&lang=tr"
-
-            val SDK_INT = Build.VERSION.SDK_INT
-            if (SDK_INT > 8) {
-                val policy = StrictMode.ThreadPolicy.Builder()
-                    .permitAll().build()
-                StrictMode.setThreadPolicy(policy)
 
 
                 var client= OkHttpClient()
@@ -99,7 +93,7 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
 
                 dialog.hide()
 
-            }
+
         }else{
 
             if (checkPermissions()) {
@@ -124,12 +118,6 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
                                 str += "${list[0].latitude},${list[0].longitude}&days=3&aqi=yes&lang=tr"
 
                             }
-
-                            val SDK_INT = Build.VERSION.SDK_INT
-                            if (SDK_INT > 8) {
-                                val policy = StrictMode.ThreadPolicy.Builder()
-                                    .permitAll().build()
-                                StrictMode.setThreadPolicy(policy)
 
 
                                 var client= OkHttpClient()
@@ -186,7 +174,7 @@ class RequestThreeDay(val view: View, val mFusedLocationClient:FusedLocationProv
 
                                 dialog.hide()
 
-                            }
+
 
                         }
                     }

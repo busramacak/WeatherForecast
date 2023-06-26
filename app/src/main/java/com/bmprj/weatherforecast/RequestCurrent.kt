@@ -34,7 +34,7 @@ import java.util.*
 class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProviderClient) {
 
 
-    var str="https://api.weatherapi.com/v1/forecast.json?key=3d94ea89afba4d1b8bf85744232605&q="
+    var str="https://api.weatherapi.com/v1/forecast.json?key=904aa43adf804caf913131326232306&q="
     val permissionId=2
     var time=""
     var tempature=""
@@ -46,12 +46,6 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
 
         if(cityname!="Mevcut Konum" && cityname!=null){
             str = str+"${cityname}&days=1&aqi=yes&lang=tr"
-
-            val SDK_INT = Build.VERSION.SDK_INT
-            if (SDK_INT > 8) {
-                val policy = StrictMode.ThreadPolicy.Builder()
-                    .permitAll().build()
-                StrictMode.setThreadPolicy(policy)
 
 
                 var client= OkHttpClient()
@@ -224,7 +218,7 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
 
                 dialog?.hide()
 
-            }
+
 
         }else{
             if (checkPermissions()) {
@@ -252,11 +246,6 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
 
                             }
 
-                            val SDK_INT = Build.VERSION.SDK_INT
-                            if (SDK_INT > 8) {
-                                val policy = StrictMode.ThreadPolicy.Builder()
-                                    .permitAll().build()
-                                StrictMode.setThreadPolicy(policy)
 
 
                                 var client= OkHttpClient()
@@ -429,7 +418,6 @@ class RequestCurrent(val view: View, val mFusedLocationClient:FusedLocationProvi
 
                                 dialog?.hide()
 
-                            }
 
                         }
                     }

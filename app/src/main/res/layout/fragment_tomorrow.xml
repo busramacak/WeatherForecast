@@ -21,15 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:onClick="@{(V)->tomorrow.refreshCurrentClick(V)}"
-                android:id="@+id/refresh"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/refresh"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_margin="20dp"/>
 
             <TextView
                 android:id="@+id/date"
@@ -73,7 +64,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/animationView"
-                app:layout_constraintStart_toStartOf="@+id/refresh"
+                app:layout_constraintStart_toStartOf="@id/degree"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="100dp"

@@ -27,7 +27,7 @@ import java.util.*
 class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationProviderClient) {
 
 
-    var str="https://api.weatherapi.com/v1/forecast.json?key=3d94ea89afba4d1b8bf85744232605&q="
+    var str="https://api.weatherapi.com/v1/forecast.json?key=904aa43adf804caf913131326232306&q="
     val permissionId=2
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -37,12 +37,6 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
         if(cityname!="Mevcut Konum" && cityname!=null){
 
             str = str+"${cityname}&days=2&aqi=yes&lang=tr"
-
-            val SDK_INT = Build.VERSION.SDK_INT
-            if (SDK_INT > 8) {
-                val policy = StrictMode.ThreadPolicy.Builder()
-                    .permitAll().build()
-                StrictMode.setThreadPolicy(policy)
 
 
                 var client= OkHttpClient()
@@ -220,7 +214,7 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
                 }
 
                 dialog.hide()
-            }
+
         }else{
             if (checkPermissions()) {
                 if (isLocationEnabled()) {
@@ -243,12 +237,6 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
                                 str = str+"${list[0].latitude},${list[0].longitude}&days=2&aqi=yes&lang=tr"
 
                             }
-
-                            val SDK_INT = Build.VERSION.SDK_INT
-                            if (SDK_INT > 8) {
-                                val policy = StrictMode.ThreadPolicy.Builder()
-                                    .permitAll().build()
-                                StrictMode.setThreadPolicy(policy)
 
 
                                 var client= OkHttpClient()
@@ -363,34 +351,13 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
                                 when(code){
                                     1000->{
                                         binding.animationView.setAnimation(R.raw.sunny)
-//                                    binding.scrollV.setBackgroundResource(R.color.sunBackground)
-//                                    binding.recy.setBackgroundResource(R.color.sunBackground)
-//                                    binding.recyWind.setBackgroundResource(R.color.sunBackground)
-//                                    binding.recyRain.setBackgroundResource(R.color.sunBackground)
-//                                    binding.relRain.setBackgroundResource(R.color.sunBackground)
-//                                    binding.rel.setBackgroundResource(R.color.sunBackground)
-//                                    binding.relWind.setBackgroundResource(R.color.sunBackground)
 
                                     }
                                     1003->{
                                         binding.animationView.setAnimation(R.raw.partly_cloudy)
-//                                    binding.scrollV.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.recy.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.recyWind.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.recyRain.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.relRain.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.rel.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.relWind.setBackgroundResource(R.color.cloudBackground)
                                     }
                                     1006->{
                                         binding.animationView.setAnimation(R.raw.cloudy)
-//                                    binding.scrollV.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.recy.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.recyWind.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.recyRain.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.relRain.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.rel.setBackgroundResource(R.color.cloudBackground)
-//                                    binding.relWind.setBackgroundResource(R.color.cloudBackground)
                                     }
                                     1030,1135,1147->{
                                         binding.animationView.setAnimation(R.raw.mist)
@@ -403,30 +370,16 @@ class RequestTomorrow (val view: View, val mFusedLocationClient:FusedLocationPro
                                     }
                                     1087,1273,1276->{
                                         binding.animationView.setAnimation(R.raw.thunder)
-//                                    binding.scrollV.setBackgroundResource(R.color.thunderBackground)
-//                                    binding.recy.setBackgroundResource(R.color.thunderBackground)
-//                                    binding.recyWind.setBackgroundResource(R.color.thunderBackground)
-//                                    binding.recyRain.setBackgroundResource(R.color.thunderBackground)
-//                                    binding.relRain.setBackgroundResource(R.color.thunderBackground)
-//                                    binding.rel.setBackgroundResource(R.color.thunderBackground)
-//                                    binding.relWind.setBackgroundResource(R.color.thunderBackground)
                                     }
                                     1063,1183,1186,1189,1192,1195,1198,1201,1240,1246->{
                                         binding.animationView.setAnimation(R.raw.partly_shower)
-//                                    binding.scrollV.setBackgroundResource(R.color.rainyBackground)
-//                                    binding.recy.setBackgroundResource(R.color.rainyBackground)
-//                                    binding.recyWind.setBackgroundResource(R.color.rainyBackground)
-//                                    binding.recyRain.setBackgroundResource(R.color.rainyBackground)
-//                                    binding.relRain.setBackgroundResource(R.color.rainyBackground)
-//                                    binding.rel.setBackgroundResource(R.color.rainyBackground)
-//                                    binding.relWind.setBackgroundResource(R.color.rainyBackground)
 
                                     }
 
                                 }
 
                                 dialog.hide()
-                            }
+
 
                         }
                     }

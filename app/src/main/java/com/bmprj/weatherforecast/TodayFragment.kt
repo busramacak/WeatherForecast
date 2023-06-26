@@ -13,11 +13,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.util.*
 
 
 class TodayFragment() : Fragment() {
     private lateinit var binding: FragmentTodayBinding
+    val job = Job()
+    val uiScope = CoroutineScope(Dispatchers.Main + job)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,22 +49,24 @@ class TodayFragment() : Fragment() {
         dialog.setInverseBackgroundForced(false)
         dialog.show()
 
-
-        val dh = DatabaseHelper(requireContext())
-        val search = DAO().get(dh)
-        var city:String? = null
-        if(search.size>0){
-            for(i in search){
-                if(i.id==1){
-                    city=i.search
-                    r.getLocation(binding,dialog,city)
-
-                    break
+        uiScope.launch(Dispatchers.Main){
+            val dh = DatabaseHelper(requireContext())
+            val search = DAO().get(dh)
+            var city:String? = null
+            if(search.size>0){
+                for(i in search){
+                    if(i.id==1){
+                        city=i.search
+                        r.getLocation(binding,dialog,city)
+                        break
+                    }
                 }
+            }else{
+                r.getLocation(binding,dialog,city)
             }
-        }else{
-            r.getLocation(binding,dialog,city)
+
         }
+
 
 
     }
@@ -70,29 +78,33 @@ class TodayFragment() : Fragment() {
 
         val mFusedLocationClient = LocationServices.getFusedLocationProviderClient(view.context)
         val r = RequestCurrent(view,mFusedLocationClient)
-
-
         val dialog = ProgressDialog(context)
         dialog.setMessage("Yükleniyor...")
         dialog.setCancelable(false)
         dialog.setInverseBackgroundForced(false)
         dialog.show()
 
-        val dh = DatabaseHelper(requireContext())
-        val search = DAO().get(dh)
-        var city:String? = null
-        if(search.size>0){
-            for(i in search){
-                if(i.id==1){
-                    city=i.search
-                    r.getLocation(binding,dialog,city)
+        uiScope.launch(Dispatchers.Main){
+            val dh = DatabaseHelper(requireContext())
+            val search = DAO().get(dh)
+            var city:String? = null
+            if(search.size>0){
+                for(i in search){
+                    if(i.id==1){
+                        city=i.search
+                        r.getLocation(binding,dialog,city)
 
-                    break
+                        break
+                    }
                 }
+            }else{
+                r.getLocation(binding,dialog,city)
             }
-        }else{
-            r.getLocation(binding,dialog,city)
+
         }
+
+
+
 
     }
 

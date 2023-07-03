@@ -1,14 +1,14 @@
-package com.bmprj.weatherforecast
+package com.bmprj.weatherforecast.Model
 
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 
-data class ThreeDay(val day:String?, val condition:String,val maxTemp:String,val minTemp:String, val image:String)
 
-@BindingAdapter("imageUrll")
-fun setImageUrll(imgView: ImageView, imgUrl: String?){
+data class Hourly(val weatherimgHourly:String?,val time:String,val temp:String )
+@BindingAdapter("imageUrl")
+fun setImageUrl(imgView: ImageView, imgUrl: String?){
 
     imgUrl?.let {
         val imgUri = it.toUri().buildUpon().scheme("https").build()

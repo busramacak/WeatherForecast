@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast
+package com.bmprj.weatherforecast.Model
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

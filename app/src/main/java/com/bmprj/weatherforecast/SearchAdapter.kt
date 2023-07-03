@@ -2,10 +2,10 @@ package com.bmprj.weatherforecast
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bmprj.weatherforecast.Model.SearchV
 import com.bmprj.weatherforecast.databinding.SearchLayoutBinding
 
 class SearchAdapter(private val list:ArrayList<SearchV>)

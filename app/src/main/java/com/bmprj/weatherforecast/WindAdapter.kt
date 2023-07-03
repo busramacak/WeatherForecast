@@ -3,6 +3,7 @@ package com.bmprj.weatherforecast
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bmprj.weatherforecast.Model.Wind
 import com.bmprj.weatherforecast.databinding.WindLayoutBinding
 
 class WindAdapter(private val list:ArrayList<Wind>)

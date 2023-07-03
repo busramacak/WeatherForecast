@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.bmprj.weatherforecast.Model.SearchV
 import com.bmprj.weatherforecast.databinding.ActivitySearchBinding
 import org.json.JSONArray
 import java.net.URLDecoder

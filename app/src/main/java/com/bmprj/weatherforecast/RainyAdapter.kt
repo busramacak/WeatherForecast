@@ -3,6 +3,7 @@ package com.bmprj.weatherforecast
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bmprj.weatherforecast.Model.Rainy
 import com.bmprj.weatherforecast.databinding.RainyLayoutBinding
 
 class RainyAdapter(private val list:ArrayList<Rainy>)

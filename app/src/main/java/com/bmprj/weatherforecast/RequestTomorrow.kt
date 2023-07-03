@@ -17,6 +17,9 @@ import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.bmprj.weatherforecast.Model.Hourly
+import com.bmprj.weatherforecast.Model.Rainy
+import com.bmprj.weatherforecast.Model.Wind
 import com.bmprj.weatherforecast.databinding.FragmentTomorrowBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import org.json.JSONObject

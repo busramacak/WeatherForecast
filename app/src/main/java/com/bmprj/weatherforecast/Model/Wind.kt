@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast
+package com.bmprj.weatherforecast.Model
 
 import android.view.ViewGroup
 import android.widget.ImageView

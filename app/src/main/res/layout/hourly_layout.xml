@@ -6,7 +6,7 @@
     <data>
         <variable
             name="hourly"
-            type="com.bmprj.weatherforecast.Hourly" />
+            type="com.bmprj.weatherforecast.Model.Hourly" />
 
     </data>
 

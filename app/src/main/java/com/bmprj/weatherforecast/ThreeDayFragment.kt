@@ -1,20 +1,32 @@
 package com.bmprj.weatherforecast
 
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bmprj.weatherforecast.adapter.ThreeDayAdapter
 import com.bmprj.weatherforecast.databinding.FragmentThreeDayBinding
+import com.bmprj.weatherforecast.model.ThreeDay
+import com.bmprj.weatherforecast.model.Weather
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.ArrayList
+import java.util.Date
 
 class ThreeDayFragment : Fragment() {
 
@@ -36,10 +48,6 @@ class ThreeDayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val mFusedLocationClient = LocationServices.getFusedLocationProviderClient(view.context)
-        val r = RequestThreeDay(view,mFusedLocationClient)
-
-
         val dialog = ProgressDialog(context)
         dialog.setMessage("Yükleniyor...")
         dialog.setCancelable(false)
@@ -53,18 +61,78 @@ class ThreeDayFragment : Fragment() {
                 for(i in search){
                     if(i.id==1){
                         city=i.search
-                        r.getLocation(binding,dialog,city)
+                        getWeather(city,dialog)
                         break
                     }
                 }
             }else{
-                r.getLocation(binding,dialog,city)
+//                r.getLocation(binding,dialog,city)
             }
         }
 
 
 
 
+
+    }
+
+    fun getWeather(city:String?,dialog: AlertDialog){
+
+        val kdi = ApiUtils.getUrlInterface()
+        kdi.getWeather("904aa43adf804caf913131326232306",city,3,"no","tr").enqueue(object :
+            Callback<Weather>{
+            override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
+
+
+                val forecastday = response.body()?.forecast?.forecastday
+
+
+
+                val threeday = ArrayList<ThreeDay>()
+                for(i in 0..forecastday!!.size-1){
+
+                    val hour = forecastday?.get(i)
+
+                    val day = hour?.day
+                    val date = hour?.date
+
+                    val inFormat = SimpleDateFormat("yyyy-MM-dd")
+                    val dat: Date = inFormat.parse(date) as Date
+                    val outFormatDays = SimpleDateFormat("EEEE")
+                    val goal: String = outFormatDays.format(dat)
+                    val outFormatMonth = SimpleDateFormat("MMM")
+                    val month:String = outFormatMonth.format(dat)
+                    val outFormatDay = SimpleDateFormat("dd")
+                    val dy : String = outFormatDay.format(dat)
+
+                    val max_temp = day?.maxtemp_c
+                    val min_temp = day?.mintemp_c
+
+                    val condition =day?.condition
+                    val icon = condition?.icon
+                    val conditionText = condition?.text
+
+                    val t = ThreeDay(goal+", "+month+" "+dy,conditionText,max_temp.toString()+"°",min_temp.toString()+"°",icon)
+
+                    threeday.add(t)
+                }
+
+                binding.recyThreeDay.apply {
+                    layoutManager= LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
+                    binding.recyThreeDay.layoutManager=layoutManager
+                    adapter = ThreeDayAdapter(threeday)
+                    binding.recyThreeDay.adapter=adapter
+                }
+
+
+                dialog.hide()
+            }
+
+            override fun onFailure(call: Call<Weather>, t: Throwable) {
+                Log.e("threeday","Erroroorroor")
+            }
+
+        })
 
     }
 

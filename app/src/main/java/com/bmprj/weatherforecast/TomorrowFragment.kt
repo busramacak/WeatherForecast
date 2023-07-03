@@ -63,19 +63,16 @@ class TomorrowFragment : Fragment() {
             val dh = DatabaseHelper(requireContext())
             val search = DAO().get(dh)
             var city:String? = null
-            if(search.size>0){
-                for(i in search){
-                    if(i.id==1){
-                        city=i.search
-                        getWeather(city,dialog)
+            for(i in search){
+                if(i.id==1){
+                    city=i.search
+                    getWeather(city,dialog)
 
-                        break
-                    }
+                    break
                 }
-            }else{
-//                r.getLocation(binding,dialog,city)
             }
         }
+
 
 
     }
@@ -199,7 +196,7 @@ class TomorrowFragment : Fragment() {
 
             override fun onFailure(call: Call<Weather>, t: Throwable) {
 
-                Log.e("response",t.message.toString())
+                Log.e("tomorrow",t.message.toString())
             }
         })
 

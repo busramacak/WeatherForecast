@@ -16,4 +16,10 @@ interface APIService {
         @Query("lang") lang:String
 
     ): Call<Weather>
+
+    @GET("search.json")
+    fun getSearch(
+        @Query("key") key:String ,
+        @Query("q") q:String
+    ) : Call<searchCity>
 }

@@ -17,7 +17,8 @@ import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.bmprj.weatherforecast.Model.ThreeDay
+import com.bmprj.weatherforecast.adapter.ThreeDayAdapter
+import com.bmprj.weatherforecast.model.ThreeDay
 import com.bmprj.weatherforecast.databinding.FragmentThreeDayBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import org.json.JSONObject

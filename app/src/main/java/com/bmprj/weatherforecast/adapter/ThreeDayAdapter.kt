@@ -1,9 +1,9 @@
-package com.bmprj.weatherforecast
+package com.bmprj.weatherforecast.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bmprj.weatherforecast.Model.ThreeDay
+import com.bmprj.weatherforecast.model.ThreeDay
 import com.bmprj.weatherforecast.databinding.ThreeDaysLayoutBinding
 
 class ThreeDayAdapter(private val list:ArrayList<ThreeDay>)

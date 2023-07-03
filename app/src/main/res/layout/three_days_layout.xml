@@ -5,7 +5,7 @@
     <data>
         <variable
             name="threeday"
-            type="com.bmprj.weatherforecast.Model.ThreeDay" />
+            type="com.bmprj.weatherforecast.model.ThreeDay" />
 
     </data>
 

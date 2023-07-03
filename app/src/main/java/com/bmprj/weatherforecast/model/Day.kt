@@ -1,7 +1,6 @@
-package com.bmprj.weatherforecast.Model
+package com.bmprj.weatherforecast.model
 
 
-import com.bmprj.weatherforecast.Model.Condition
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

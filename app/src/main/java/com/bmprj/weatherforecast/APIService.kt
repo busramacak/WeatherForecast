@@ -1,6 +1,6 @@
 package com.bmprj.weatherforecast
 
-import com.bmprj.weatherforecast.Model.Weather
+import com.bmprj.weatherforecast.model.Weather
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -1,9 +1,9 @@
-package com.bmprj.weatherforecast
+package com.bmprj.weatherforecast.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bmprj.weatherforecast.Model.Hourly
+import com.bmprj.weatherforecast.model.Hourly
 import com.bmprj.weatherforecast.databinding.HourlyLayoutBinding
 
 class HourlyAdapter(private val list:ArrayList<Hourly>)

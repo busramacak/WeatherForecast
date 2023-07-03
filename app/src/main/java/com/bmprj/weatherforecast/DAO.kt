@@ -2,7 +2,7 @@ package com.bmprj.weatherforecast
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import com.bmprj.weatherforecast.Model.Search
+import com.bmprj.weatherforecast.model.Search
 
 class DAO {
 

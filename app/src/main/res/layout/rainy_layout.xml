@@ -5,7 +5,7 @@
     <data>
         <variable
             name="rainy"
-            type="com.bmprj.weatherforecast.Model.Rainy" />
+            type="com.bmprj.weatherforecast.model.Rainy" />
 
     </data>
 

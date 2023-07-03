@@ -1,11 +1,14 @@
-package com.bmprj.weatherforecast
+package com.bmprj.weatherforecast.adapter
 
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bmprj.weatherforecast.Model.SearchV
+import com.bmprj.weatherforecast.DAO
+import com.bmprj.weatherforecast.DatabaseHelper
+import com.bmprj.weatherforecast.MainActivity
+import com.bmprj.weatherforecast.model.SearchV
 import com.bmprj.weatherforecast.databinding.SearchLayoutBinding
 
 class SearchAdapter(private val list:ArrayList<SearchV>)
@@ -20,7 +23,7 @@ class SearchAdapter(private val list:ArrayList<SearchV>)
                     binding.executePendingBindings()
 
                     context = itemView.context
-                    val intent = Intent(context,MainActivity::class.java)
+                    val intent = Intent(context, MainActivity::class.java)
                     val dh = DatabaseHelper(binding.root.context)
 
                     binding.constrain.setOnClickListener {
@@ -43,7 +46,7 @@ class SearchAdapter(private val list:ArrayList<SearchV>)
             }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater= LayoutInflater.from(parent.context)
         val itemBinding: SearchLayoutBinding = SearchLayoutBinding.inflate(layoutInflater,parent,false)
         return ViewHolder(itemBinding)

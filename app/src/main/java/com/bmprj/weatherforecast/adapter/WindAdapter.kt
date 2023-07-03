@@ -1,26 +1,26 @@
-package com.bmprj.weatherforecast
+package com.bmprj.weatherforecast.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bmprj.weatherforecast.Model.Rainy
-import com.bmprj.weatherforecast.databinding.RainyLayoutBinding
+import com.bmprj.weatherforecast.model.Wind
+import com.bmprj.weatherforecast.databinding.WindLayoutBinding
 
-class RainyAdapter(private val list:ArrayList<Rainy>)
-    :RecyclerView.Adapter<RainyAdapter.ViewHolder>(){
+class WindAdapter(private val list:ArrayList<Wind>)
+    :RecyclerView.Adapter<WindAdapter.ViewHolder>(){
 
-        class ViewHolder(private val binding:RainyLayoutBinding)
+        class ViewHolder(private val binding:WindLayoutBinding)
             :RecyclerView.ViewHolder(binding.root){
 
-                fun bind(rainy: Rainy){
-                    binding.rainy=rainy
+                fun bind(wind: Wind?){
+                    binding.wind=wind
                     binding.executePendingBindings()
                 }
             }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layoutInflater=LayoutInflater.from(parent.context)
-        val itemBinding:RainyLayoutBinding= RainyLayoutBinding.inflate(layoutInflater,parent,false)
+        val layoutInflater= LayoutInflater.from(parent.context)
+        val itemBinding:WindLayoutBinding= WindLayoutBinding.inflate(layoutInflater,parent,false)
         return ViewHolder(itemBinding)
     }
 

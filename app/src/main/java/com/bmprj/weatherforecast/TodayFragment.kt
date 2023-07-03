@@ -20,10 +20,13 @@ import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bmprj.weatherforecast.Model.Hourly
-import com.bmprj.weatherforecast.Model.Rainy
-import com.bmprj.weatherforecast.Model.Weather
-import com.bmprj.weatherforecast.Model.Wind
+import com.bmprj.weatherforecast.adapter.HourlyAdapter
+import com.bmprj.weatherforecast.adapter.RainyAdapter
+import com.bmprj.weatherforecast.adapter.WindAdapter
+import com.bmprj.weatherforecast.model.Hourly
+import com.bmprj.weatherforecast.model.Rainy
+import com.bmprj.weatherforecast.model.Weather
+import com.bmprj.weatherforecast.model.Wind
 import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope

@@ -49,8 +49,6 @@ class TomorrowFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mFusedLocationClient = LocationServices.getFusedLocationProviderClient(view.context)
-        val r = RequestTomorrow(view,mFusedLocationClient)
 
 
         val dialog = ProgressDialog(context)

@@ -1,5 +1,5 @@
 
-package com.bmprj.weatherforecast
+package com.bmprj.weatherforecast.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -19,10 +19,18 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.HourlyAdapter
 import com.bmprj.weatherforecast.adapter.RainyAdapter
 import com.bmprj.weatherforecast.adapter.WindAdapter
+import com.bmprj.weatherforecast.data.db.DAO
+import com.bmprj.weatherforecast.data.db.DatabaseHelper
+import com.bmprj.weatherforecast.data.remote.ApiUtils
 import com.bmprj.weatherforecast.model.Hourly
 import com.bmprj.weatherforecast.model.Rainy
 import com.bmprj.weatherforecast.model.Weather
@@ -40,8 +48,18 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+class MyViewModel : ViewModel() {
+    private val data = MutableLiveData<String?>()
+
+    val ddd: LiveData<String?> = data
+
+    fun update(data: String?){
+        this.data.value = data
+    }
+}
 
 class TodayFragment() : Fragment() {
+    private val viewModel: MyViewModel by viewModels()
     private lateinit var binding: FragmentTodayBinding
     val job = Job()
     val uiScope = CoroutineScope(Dispatchers.Main + job)
@@ -58,6 +76,7 @@ class TodayFragment() : Fragment() {
 
         return binding.root
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun refreshCurrentClick(view:View){
@@ -133,6 +152,16 @@ class TodayFragment() : Fragment() {
                     Log.e("response",response.body().toString())
                     val current = response.body()?.current
 
+                    val cityname = response.body()?.location?.name
+                    val dh = DatabaseHelper(dialog.context)
+
+                    if(DAO().get(dh).size==0){
+                        DAO().add(dh,1,cityname)
+
+                    }else
+                    {
+                        DAO().update(dh,1,cityname)
+                    }
 
                     val last_updated = current?.last_updated
                     val temp_c = current?.temp_c
@@ -218,6 +247,9 @@ class TodayFragment() : Fragment() {
                     }
 
 
+                    dialog.dismiss()
+
+
                     binding.recyWind.apply {
                         layoutManager= LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
                         binding.recyWind.layoutManager=layoutManager
@@ -280,7 +312,7 @@ class TodayFragment() : Fragment() {
                     }
                 }
 
-                dialog.dismiss()
+
             }
 
             override fun onFailure(call: Call<Weather>, t: Throwable) {
@@ -301,7 +333,7 @@ class TodayFragment() : Fragment() {
                     val location: Location? = task.result
                     if (location != null) {
 
-                        getWeather(location.latitude.toString()+","+location.longitude.toString(), dialog)
+                        getWeather("${location.latitude},${location.longitude}", dialog)
 
                     }
                 }

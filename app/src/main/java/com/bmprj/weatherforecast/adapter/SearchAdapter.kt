@@ -5,9 +5,9 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bmprj.weatherforecast.DAO
-import com.bmprj.weatherforecast.DatabaseHelper
-import com.bmprj.weatherforecast.MainActivity
+import com.bmprj.weatherforecast.data.db.DAO
+import com.bmprj.weatherforecast.data.db.DatabaseHelper
+import com.bmprj.weatherforecast.ui.MainActivity
 import com.bmprj.weatherforecast.model.SearchV
 import com.bmprj.weatherforecast.databinding.SearchLayoutBinding
 

@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast
+package com.bmprj.weatherforecast.data.db
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast
+package com.bmprj.weatherforecast.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.SearchAdapter
 import com.bmprj.weatherforecast.model.SearchV
 import com.bmprj.weatherforecast.databinding.ActivitySearchBinding
@@ -20,7 +21,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=DataBindingUtil.setContentView(this,R.layout.activity_search)
+        binding=DataBindingUtil.setContentView(this, R.layout.activity_search)
         binding.search=this
 
         binding.recyS.apply {
@@ -41,12 +42,12 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        startActivity(Intent(this,MainActivity::class.java))
+        startActivity(Intent(this, MainActivity::class.java))
     }
 
 
     fun backClick(view: View) {
-        startActivity(Intent(this,MainActivity::class.java))
+        startActivity(Intent(this, MainActivity::class.java))
 
     }
 

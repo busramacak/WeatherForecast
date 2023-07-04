@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast
+package com.bmprj.weatherforecast.ui
 
 import android.app.AlertDialog
 import android.app.ProgressDialog
@@ -12,15 +12,18 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.HourlyAdapter
 import com.bmprj.weatherforecast.adapter.RainyAdapter
 import com.bmprj.weatherforecast.adapter.WindAdapter
+import com.bmprj.weatherforecast.data.remote.ApiUtils
+import com.bmprj.weatherforecast.data.db.DAO
+import com.bmprj.weatherforecast.data.db.DatabaseHelper
 import com.bmprj.weatherforecast.model.Hourly
 import com.bmprj.weatherforecast.model.Rainy
 import com.bmprj.weatherforecast.model.Weather
 import com.bmprj.weatherforecast.model.Wind
 import com.bmprj.weatherforecast.databinding.FragmentTomorrowBinding
-import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

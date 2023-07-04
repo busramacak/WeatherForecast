@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast
+package com.bmprj.weatherforecast.ui
 
 import android.app.AlertDialog
 import android.app.ProgressDialog
@@ -12,11 +12,14 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.ThreeDayAdapter
+import com.bmprj.weatherforecast.data.remote.ApiUtils
+import com.bmprj.weatherforecast.data.db.DAO
+import com.bmprj.weatherforecast.data.db.DatabaseHelper
 import com.bmprj.weatherforecast.databinding.FragmentThreeDayBinding
 import com.bmprj.weatherforecast.model.ThreeDay
 import com.bmprj.weatherforecast.model.Weather
-import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -65,8 +68,6 @@ class ThreeDayFragment : Fragment() {
                         break
                     }
                 }
-            }else{
-//                r.getLocation(binding,dialog,city)
             }
         }
 
@@ -116,6 +117,7 @@ class ThreeDayFragment : Fragment() {
 
                     threeday.add(t)
                 }
+                dialog.dismiss()
 
                 binding.recyThreeDay.apply {
                     layoutManager= LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
@@ -125,7 +127,7 @@ class ThreeDayFragment : Fragment() {
                 }
 
 
-                dialog.hide()
+
             }
 
             override fun onFailure(call: Call<Weather>, t: Throwable) {

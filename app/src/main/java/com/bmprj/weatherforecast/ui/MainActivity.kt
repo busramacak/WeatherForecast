@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast
+package com.bmprj.weatherforecast.ui
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -10,22 +10,25 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.Html
 import android.view.View
+import com.bmprj.weatherforecast.data.db.DatabaseHelper
+import com.bmprj.weatherforecast.data.db.DAO
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= DataBindingUtil.setContentView(this,R.layout.activity_main)
+        binding= DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.main=this
 
 

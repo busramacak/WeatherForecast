@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast
+package com.bmprj.weatherforecast.data.db
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
@@ -6,7 +6,7 @@ import com.bmprj.weatherforecast.model.Search
 
 class DAO {
 
-    fun add(dh:DatabaseHelper, id:Int,search:String?){
+    fun add(dh: DatabaseHelper, id:Int, search:String?){
         val db = dh.writableDatabase
         val values =ContentValues()
         values.put("id",id)
@@ -17,7 +17,7 @@ class DAO {
     }
 
 
-    fun update(dh:DatabaseHelper,id:Int,search: String?){
+    fun update(dh: DatabaseHelper, id:Int, search: String?){
         val db = dh.writableDatabase
         val values = ContentValues()
         values.put("search",search)
@@ -42,7 +42,7 @@ class DAO {
         return searchList
     }
 
-    fun delete(dh:DatabaseHelper){
+    fun delete(dh: DatabaseHelper){
         val db = dh.writableDatabase
         db.delete("weatherSearch",null,null)
     }

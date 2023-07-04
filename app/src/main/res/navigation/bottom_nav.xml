@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/todayFragment"
-        android:name="com.bmprj.weatherforecast.TodayFragment"
+        android:name="com.bmprj.weatherforecast.ui.TodayFragment"
         android:label="fragment_today"
         tools:layout="@layout/fragment_today"/>
     <fragment
         android:id="@+id/tomorrowFragment"
-        android:name="com.bmprj.weatherforecast.TomorrowFragment"
+        android:name="com.bmprj.weatherforecast.ui.TomorrowFragment"
         android:label="TomorrowFragment"
         tools:layout="@layout/fragment_tomorrow"/>
     <fragment
         android:id="@+id/threeDayFragment"
-        android:name="com.bmprj.weatherforecast.ThreeDayFragment"
+        android:name="com.bmprj.weatherforecast.ui.ThreeDayFragment"
         android:label="ThreeDayFragment"
         tools:layout="@layout/fragment_three_day"/>
 

@@ -8,17 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bmprj.weatherforecast.data.db.DAO
 import com.bmprj.weatherforecast.data.db.DatabaseHelper
 import com.bmprj.weatherforecast.ui.MainActivity
-import com.bmprj.weatherforecast.model.SearchV
 import com.bmprj.weatherforecast.databinding.SearchLayoutBinding
+import com.bmprj.weatherforecast.model.SearchCity
+import com.bmprj.weatherforecast.model.SearchCityItem
 
-class SearchAdapter(private val list:ArrayList<SearchV>)
+class SearchAdapter(private val list:ArrayList<SearchCityItem>)
     :RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
 
 
         class ViewHolder(private val binding: SearchLayoutBinding)
             :RecyclerView.ViewHolder(binding.root){
             private lateinit var context: Context
-                fun bind(searchV: SearchV?){
+                fun bind(searchV: SearchCityItem?){
                     binding.searchV=searchV
                     binding.executePendingBindings()
 

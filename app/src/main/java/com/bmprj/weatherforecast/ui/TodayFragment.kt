@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION")
 
 package com.bmprj.weatherforecast.ui
 
@@ -19,10 +20,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.HourlyAdapter
@@ -79,7 +76,7 @@ class TodayFragment() : Fragment() {
         uiScope.launch(Dispatchers.Main){
             val dh = DatabaseHelper(requireContext())
             val search = DAO().get(dh)
-            var city:String? = null
+            val city:String?
             if(search.size>0){
                 for(i in search){
                     if(i.id==1){
@@ -111,7 +108,7 @@ class TodayFragment() : Fragment() {
         uiScope.launch(Dispatchers.Main){
             val dh = DatabaseHelper(requireContext())
             val search = DAO().get(dh)
-            var city:String? = null
+            val city:String?
             if(search.size>0){
                 for(i in search){
                     if(i.id==1){
@@ -155,7 +152,7 @@ class TodayFragment() : Fragment() {
                 }
 
                 val last_updated = current?.last_updated
-                val temp_c = current?.temp_c
+                val temp_c = current?.temp_c.toString()
 
                 val condition = current?.condition
                 val condition_text = condition?.text
@@ -165,7 +162,7 @@ class TodayFragment() : Fragment() {
                 val hour = forecast?.forecastday?.get(0)?.hour
 
                 val day = forecast?.forecastday?.get(0)?.day
-                val avghumidity = day?.avghumidity
+                val avghumidity = day?.avghumidity.toString()
                 val totalprecip_mm = day?.totalprecip_mm
                 val uv = day?.uv
 
@@ -227,11 +224,11 @@ class TodayFragment() : Fragment() {
                         val wind_degr_hour = hourSet.wind_degree
                         val wind_kph_hour = hourSet.wind_kph
 
-                        val r = Rainy("%"+ rain,i.toString()+":00", precip_hour.toString(),precip_hour.toFloat())
+                        val r = Rainy("%"+ rain,getString(R.string.time,i.toString()), precip_hour.toString(),precip_hour.toFloat())
                         rainy.add(r)
-                        val w = Wind(wind_kph_hour.toString(),wind_kph_hour.toInt()*3,wind_degr_hour.toFloat(),i.toString()+":00")
+                        val w = Wind(wind_kph_hour.toString(),wind_kph_hour.toInt()*3,wind_degr_hour.toFloat(),getString(R.string.time, i.toString()))
                         wind.add(w)
-                        val h = Hourly(cond_icon,i.toString()+":00",temp_hour.toString()+"°")
+                        val h = Hourly(cond_icon,getString(R.string.time,i.toString()),getString(R.string.degre,temp_hour.toString()))
                         hourly.add(h)
 
                     }
@@ -265,11 +262,11 @@ class TodayFragment() : Fragment() {
 
                 binding.title.text=cityname
                 binding.date.text = last_updated
-                binding.degree.text=temp_c.toString()+"°"
+                binding.degree.text=getString(R.string.degre,temp_c)
                 binding.condition.text=condition_text
-                binding.humidity.text="%"+avghumidity.toString()
+                binding.humidity.text=getString(R.string.humidity,avghumidity)
                 binding.uv.text=uv.toString()
-                binding.totalprecip.text="Günlük Toplam hacim "+totalprecip_mm.toString()+" mm"
+                binding.totalprecip.text=getString(R.string.totalPrecip,totalprecip_mm.toString())
                 binding.windKph.text=wind_kp.toString()
                 binding.windDir.rotation=wind_degree.toFloat()
                 binding.direction.text=windDirection

@@ -3,5 +3,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="degre"> %1$ d°</string>
+    <string name="CurrentDetails">Güncel Detaylar</string>
+    <string name="humidityTxt">Nem Oranı (%)</string>
+    <string name="uvTxt">UV İndeksi</string>
+    <string name="rainTxt">Yağış</string>
+    <string name="windTxt">Rüzgar</string>
+    <string name="kphTxt">km/h</string>
+    <string name="degre"> %1$s°</string>
+    <string name="humidity"> %1$s</string>
+    <string name="totalPrecip">Günlük Toplam hacim %1$s mm</string>
+    <string name="time">%1$s:00</string>
 </resources>

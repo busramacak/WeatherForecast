@@ -1,29 +1,26 @@
 package com.bmprj.weatherforecast.ui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.SearchAdapter
 import com.bmprj.weatherforecast.data.remote.ApiUtils
 import com.bmprj.weatherforecast.databinding.FragmentSearchBinding
 import com.bmprj.weatherforecast.model.SearchCity
 import com.bmprj.weatherforecast.model.SearchCityItem
-import org.json.JSONArray
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.net.URLDecoder
-import java.net.URLEncoder
 
 
 class SearchFragment : Fragment() {
@@ -35,6 +32,7 @@ class SearchFragment : Fragment() {
     ): View? {
         binding=DataBindingUtil.inflate(inflater,R.layout.fragment_search,container,false)
         binding.search=this
+
 
         return binding.root
     }
@@ -53,6 +51,8 @@ class SearchFragment : Fragment() {
             binding.recyS.adapter=adapter
         }
     }
+
+
 
 
     fun onQueryTextChange(query: String): Boolean {
@@ -78,6 +78,13 @@ class SearchFragment : Fragment() {
                         searchh.add(s)
                     }
 
+                    binding.recyS.apply {
+                        layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                        binding.recyS.layoutManager = layoutManager
+                        adapter = SearchAdapter(searchh)
+                        binding.recyS.adapter = adapter
+                    }
+
 
 
                 }
@@ -88,12 +95,7 @@ class SearchFragment : Fragment() {
 
 
         }
-        binding.recyS.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            binding.recyS.layoutManager = layoutManager
-            adapter = SearchAdapter(searchh)
-            binding.recyS.adapter = adapter
-        }
+
 
 
         return false
@@ -101,7 +103,9 @@ class SearchFragment : Fragment() {
 
 
 
+
     fun backClick(view: View) {
+
         startActivity(Intent(view.context, MainActivity::class.java))
 
     }

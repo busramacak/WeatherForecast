@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         binding.main=this
 
 
+
         islocationenabled()
 
 
@@ -56,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
 
     fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager =
@@ -85,10 +87,13 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+
     fun searchClick(){
 
         binding.bottomNav.visibility=View.GONE
+
         supportFragmentManager.beginTransaction().add(R.id.constrainMain, SearchFragment()).commit()
+
     }
 
 

@@ -48,18 +48,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class MyViewModel : ViewModel() {
-    private val data = MutableLiveData<String?>()
-
-    val ddd: LiveData<String?> = data
-
-    fun update(data: String?){
-        this.data.value = data
-    }
-}
 
 class TodayFragment() : Fragment() {
-    private val viewModel: MyViewModel by viewModels()
     private lateinit var binding: FragmentTodayBinding
     val job = Job()
     val uiScope = CoroutineScope(Dispatchers.Main + job)

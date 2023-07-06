@@ -10,17 +10,20 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.Html
 import android.view.View
-import com.bmprj.weatherforecast.data.db.DatabaseHelper
-import com.bmprj.weatherforecast.data.db.DAO
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.bmprj.weatherforecast.R
+import com.bmprj.weatherforecast.data.db.DAO
+import com.bmprj.weatherforecast.data.db.DatabaseHelper
 import com.bmprj.weatherforecast.databinding.ActivityMainBinding
 
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -82,13 +85,10 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
-
     fun searchClick(){
 
-        startActivity(Intent(this,SearchActivity::class.java))
-
+        binding.bottomNav.visibility=View.GONE
+        supportFragmentManager.beginTransaction().add(R.id.constrainMain, SearchFragment()).commit()
     }
 
 

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="searchV"
-            type="com.bmprj.weatherforecast.model.SearchV" />
+            type="com.bmprj.weatherforecast.model.SearchCityItem" />
 
     </data>
 
@@ -47,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="@{searchV.city,default=deneme}"
+                    android:text="@{searchV.name,default=deneme}"
                     android:textSize="20sp"
                     android:fontFamily="sans-serif-light"
                     android:textColor="@color/black"

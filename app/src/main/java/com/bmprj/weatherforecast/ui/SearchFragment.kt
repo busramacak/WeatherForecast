@@ -1,6 +1,8 @@
 package com.bmprj.weatherforecast.ui
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -56,33 +58,36 @@ class SearchFragment : Fragment() {
     fun onQueryTextChange(query: String): Boolean {
 
         val searchh = ArrayList<SearchCityItem>()
-        val kdi = ApiUtils.getUrlInterface()
-        kdi.getSearch("904aa43adf804caf913131326232306",query).enqueue(object : Callback<SearchCity>{
-            override fun onResponse(call: Call<SearchCity>, response: Response<SearchCity>) {
+        val f = SearchCityItem("",0,0.0,0.0,"Mevcut Konum","","")
+        searchh.add(f)
+
+        if(query.length>0){
+
+            val kdi = ApiUtils.getUrlInterface()
+            kdi.getSearch("904aa43adf804caf913131326232306",query).enqueue(object : Callback<SearchCity>{
+                override fun onResponse(call: Call<SearchCity>, response: Response<SearchCity>) {
 
 
-                val f = SearchCityItem("",0,0.0,0.0,"Mevcut Konum","","")
-                searchh.add(f)
 
-                for(i in 0..response.body()!!.size){
-                    val search = response.body()?.get(i)
-                    val name = search?.name
-                    val country = search?.country
+                    for(i in 0 until response.body()!!.size){
+                        val search = response.body()?.get(i)
+                        val name = search?.name
+                        val country = search?.country
 
-                    val s = SearchCityItem( country,0,0.0,0.0,name,"","")
-                    searchh.add(s)
+                        val s = SearchCityItem( country,0,0.0,0.0,name,"","")
+                        searchh.add(s)
+                    }
+
 
 
                 }
-
-            }
-            override fun onFailure(call: Call<SearchCity>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-        })
+                override fun onFailure(call: Call<SearchCity>, t: Throwable) {
+                    Log.e("searchResponse",t.message.toString())
+                }
+            })
 
 
-
+        }
         binding.recyS.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             binding.recyS.layoutManager = layoutManager
@@ -91,15 +96,13 @@ class SearchFragment : Fragment() {
         }
 
 
-
-
-
         return false
     }
 
 
+
     fun backClick(view: View) {
-//        startActivity(Intent(view.context, MainActivity::class.java))
+        startActivity(Intent(view.context, MainActivity::class.java))
 
     }
 }

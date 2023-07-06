@@ -47,8 +47,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textColorHint="@color/white"
-                    android:iconifiedByDefault="false"
                     android:onQueryTextChange="@{() -> search.onQueryTextChange(searchView.getQuery().toString())}"
+                    android:iconifiedByDefault="false"
                     android:queryHint="Yer Arama"
                     app:showAsAction="always|ifRoom"/>
 

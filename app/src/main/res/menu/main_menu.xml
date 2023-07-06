@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/todayFragment"
-        android:title="Bugün"/>
+        android:title="Bugün" />
 
     <item
         android:id="@+id/tomorrowFragment"
@@ -11,4 +11,7 @@
     <item
         android:id="@+id/threeDayFragment"
         android:title="3 Gün"/>
+    <item
+        android:id="@+id/searchFragment"
+        android:title="Ara"/>
 </menu>

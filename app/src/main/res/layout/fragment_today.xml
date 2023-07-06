@@ -10,6 +10,8 @@
 
     </data>
 
+
+
     <ScrollView
         android:id="@+id/scrollV"
         android:layout_width="match_parent"
@@ -20,23 +22,44 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
 
-            <ImageView
-                android:onClick="@{(V)->today.refreshCurrentClick(V)}"
-                android:id="@+id/refresh"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/refresh"
-                app:layout_constraintTop_toTopOf="parent"
+                android:background="#699ECC"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_margin="20dp"/>
+                app:layout_constraintTop_toTopOf="parent"
+                android:elevation="1dp">
+
+                <ImageView
+                    android:onClick="@{(V)->today.refreshCurrentClick(V)}"
+                    android:id="@+id/refresh"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/refresh"/>
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="SEHİR ADİ"
+                    android:textColor="@color/white"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="18sp" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+
 
             <TextView
                 android:textColor="@color/white"
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:text="20 Mayıs,2:40 ÖS"
                 android:layout_margin="20dp"/>

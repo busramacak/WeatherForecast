@@ -45,6 +45,8 @@ android {
         jvmTarget = '1.8'
     }
 }
+
+apply plugin: "androidx.navigation.safeargs.kotlin"
 dependencies {
 
     implementation 'com.squareup.retrofit2:retrofit:2.7.2'

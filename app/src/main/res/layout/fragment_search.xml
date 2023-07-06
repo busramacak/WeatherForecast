@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.SearchFragment"
-        android:background="#B7D4ED">
+        android:background="@color/cloudBackground">
 
         <LinearLayout
             android:id="@+id/toolbar"

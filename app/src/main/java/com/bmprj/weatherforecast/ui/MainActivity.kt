@@ -3,10 +3,12 @@ package com.bmprj.weatherforecast.ui
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.ContactsContract.Data
 import android.provider.Settings
 import android.text.Html
 import android.view.View
@@ -15,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.navigation.NavDestination
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.bmprj.weatherforecast.R
@@ -36,30 +40,34 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        islocationenabled()
 
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         NavigationUI.setupWithNavController(binding.bottomNav,navHostFragment.navController)
 
 
+        navHostFragment.navController.addOnDestinationChangedListener{ _, nd: NavDestination, _ ->
+            if( nd.id== R.id.searchFragment ){
+                binding.bottomNav.visibility= View.GONE
+
+
+
+            }else{
+                binding.bottomNav.visibility= View.VISIBLE
+            }
+
+        }
         val dh = DatabaseHelper(this)
 
         if(DAO().get(dh).size==0){
-            binding.title.text="Mevcut Konum"
-
-        }else {
-            val s = DAO().get(dh)
-            for(i in s){
-                binding.title.text=i.search
-            }
-
+            islocationenabled()
         }
 
     }
 
 
     fun isLocationEnabled(): Boolean {
+
         val locationManager: LocationManager =
             this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
@@ -80,7 +88,9 @@ class MainActivity : AppCompatActivity() {
                 this.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
 
             }
-            alertDialog.setNegativeButton(Html.fromHtml("<font color='#757474'>HAYIR</font>"),null).create()
+            alertDialog.setNegativeButton(Html.fromHtml("<font color='#757474'>HAYIR</font>")) { DialogInterface, which: Int ->
+                Navigation.findNavController(binding.navHostFragment).navigate(R.id.searchFragment)
+            }
             alertDialog.create()
             alertDialog.show()
         }
@@ -88,13 +98,13 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    fun searchClick(){
-
-        binding.bottomNav.visibility=View.GONE
-
-        supportFragmentManager.beginTransaction().add(R.id.constrainMain, SearchFragment()).commit()
-
-    }
+//    fun searchClick(){
+//
+//        binding.bottomNav.visibility=View.GONE
+//
+//        supportFragmentManager.beginTransaction().add(R.id.constrainMain, SearchFragment()).commit()
+//
+//    }
 
 
 

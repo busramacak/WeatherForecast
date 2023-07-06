@@ -263,6 +263,7 @@ class TodayFragment() : Fragment() {
                     binding.recy.adapter=adapter
                 }
 
+                binding.title.text=cityname
                 binding.date.text = last_updated
                 binding.degree.text=temp_c.toString()+"°"
                 binding.condition.text=condition_text

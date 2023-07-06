@@ -19,14 +19,14 @@
             android:id="@+id/constrain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ADBFCD">
+            android:background="#58768F">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="10dp"
-                android:background="#B7D4ED"
+                android:background="@color/cloudBackground"
                 android:layout_marginBottom="1px"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +50,7 @@
                     android:text="@{searchV.name,default=deneme}"
                     android:textSize="20sp"
                     android:fontFamily="sans-serif-light"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     app:layout_constraintStart_toEndOf="@+id/imgV"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,7 +60,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="sans-serif-light"
-                    android:textColor="@color/black"
+                    android:textColor="#CAE1F4"
                     android:text="@{searchV.country,default=denemee}"
                     app:layout_constraintStart_toEndOf="@id/imgV"
                     app:layout_constraintTop_toBottomOf="@id/city" />

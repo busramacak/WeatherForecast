@@ -163,6 +163,7 @@ class TomorrowFragment : Fragment() {
                         binding.recy.adapter=adapter
                     }
 
+                    binding.title.text=city
                     binding.date.text = date
                     binding.degree.text="Gündüz ${max_temp}, Gece ${min_temp}"
                     binding.condition.text=condition_text

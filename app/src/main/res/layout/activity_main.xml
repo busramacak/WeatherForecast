@@ -17,47 +17,21 @@
         tools:context=".ui.MainActivity">
 
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:background="@color/cloudBackground"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="SEHİR ADİ"
-                android:textColor="@color/white"
-                android:fontFamily="sans-serif-light"
-                android:textSize="18sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:onClick="@{()-> main.searchClick()}"
-                android:src="@drawable/search"
-                android:layout_marginEnd="30dp"/>
-
-        </androidx.appcompat.widget.Toolbar>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNav"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="60dp"
             app:menu="@menu/main_menu"
-            app:backgroundTint="@color/cloudBackground"
+            app:backgroundTint="#699ECC"
             app:itemTextColor="@color/white"
-            app:elevation="1px"
-            android:paddingBottom="10dp"
+            android:textSize="20sp"
+            app:labelVisibilityMode="labeled"
+            android:paddingBottom="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/navHostFragment"
@@ -67,8 +41,8 @@
             android:name="androidx.navigation.fragment.NavHostFragment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bottomNav"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent "
+            app:layout_constraintBottom_toTopOf="@+id/bottomNav"
             app:navGraph="@navigation/bottom_nav" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

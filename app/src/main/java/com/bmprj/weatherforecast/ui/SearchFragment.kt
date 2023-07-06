@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.SearchAdapter
@@ -102,11 +103,9 @@ class SearchFragment : Fragment() {
     }
 
 
-
-
     fun backClick(view: View) {
 
-        startActivity(Intent(view.context, MainActivity::class.java))
-
+        Navigation.findNavController(view).navigate(R.id.todayFragment)
     }
+
 }

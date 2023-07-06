@@ -119,6 +119,8 @@ class ThreeDayFragment : Fragment() {
                 }
                 dialog.dismiss()
 
+                binding.title.text=city
+
                 binding.recyThreeDay.apply {
                     layoutManager= LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
                     binding.recyThreeDay.layoutManager=layoutManager

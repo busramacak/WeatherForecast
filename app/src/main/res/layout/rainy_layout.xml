@@ -31,7 +31,7 @@
                 android:fontFamily="sans-serif-light"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/white"
-                android:text="@{rainy.percentageRainy, default=100}" />
+                android:text="@{rainy.percentageRainy, default=null}" />
 
             <RatingBar
                 android:layout_marginTop="10dp"
@@ -59,7 +59,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-light"
                 android:textColor="@color/white"
-                android:text="@{rainy.timeRainy, default=5.00}" />
+                android:text="@{rainy.timeRainy, default=0.00}" />
 
         </LinearLayout>
 

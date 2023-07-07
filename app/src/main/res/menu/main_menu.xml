@@ -3,15 +3,15 @@
 
     <item
         android:id="@+id/todayFragment"
-        android:title="Bugün" />
+        android:title="@string/today" />
 
     <item
         android:id="@+id/tomorrowFragment"
-        android:title="Yarın"/>
+        android:title="@string/tomorrow"/>
     <item
         android:id="@+id/threeDayFragment"
-        android:title="3 Gün"/>
+        android:title="@string/threedays"/>
     <item
         android:id="@+id/searchFragment"
-        android:title="Ara"/>
+        android:title="@string/search"/>
 </menu>

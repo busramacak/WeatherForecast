@@ -118,7 +118,7 @@ class ThreeDayFragment : Fragment() {
                     val icon = condition.icon
                     val conditionText = condition.text
 
-                    val t = ThreeDay(getString(R.string.gun_ay_dy,goal,month,dy),conditionText,
+                    val t = ThreeDay(getString(R.string.day_month_dy,goal,month,dy),conditionText,
                         getString(R.string.degre,max_temp.toString()),getString(R.string.degre, min_temp.toString()),icon)
 
                     threeday.add(t)

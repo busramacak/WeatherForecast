@@ -34,7 +34,8 @@
                 android:layout_marginEnd="15dp"
                 android:rotation="@{wind.wind_degree}"
                 android:scaleType="matrix"
-                android:src="@drawable/arrow_up" />
+                android:src="@drawable/arrow_up"
+                android:importantForAccessibility="no" />
 
             <TextView
                 android:id="@+id/windd"
@@ -48,7 +49,7 @@
                 android:gravity="center"
                 android:fontFamily="sans-serif-light"
                 android:textColor="@color/white"
-                android:text="@{wind.wind,default=9}" />
+                android:text="@{wind.wind,default=null}" />
 
             <ImageView
                 android:id="@+id/img"
@@ -61,7 +62,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="40dp"
-                android:background="@color/wind" />
+                android:background="@color/wind"
+                android:importantForAccessibility="no" />
 
             <TextView
                 android:id="@+id/time"
@@ -77,12 +79,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
-                android:text="@{wind.time,default=11}" />
-
-
+                android:text="@{wind.time,default=null}" />
         </RelativeLayout>
-
-
 
 
     </androidx.cardview.widget.CardView>

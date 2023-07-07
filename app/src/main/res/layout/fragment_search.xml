@@ -38,7 +38,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:onClick="@{(v)-> search.backClick(v)}"
-                    android:src="@drawable/back" />
+                    android:src="@drawable/back"
+                    android:importantForAccessibility="no" />
 
 
                 <SearchView
@@ -49,7 +50,7 @@
                     android:textColorHint="@color/white"
                     android:onQueryTextChange="@{() -> search.onQueryTextChange(searchView.getQuery().toString())}"
                     android:iconifiedByDefault="false"
-                    android:queryHint="Yer Arama"
+                    android:queryHint="@string/searchViewText"
                     app:showAsAction="always|ifRoom"/>
 
 

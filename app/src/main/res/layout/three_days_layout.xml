@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -37,7 +38,8 @@
                     android:textSize="18sp"
                     android:fontFamily="sans-serif-light"
                     android:textColor="@color/white"
-                    android:text="@{threeday.day,default=cuma}" />
+                    android:text="@{threeday.day,default=null}"
+                    tools:ignore="RelativeOverlap" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -48,7 +50,7 @@
                     android:textColor="@color/white"
                     android:layout_marginBottom="10dp"
                     android:textSize="17sp"
-                    android:text="@{threeday.condition,default=Bulutlu}"/>
+                    android:text="@{threeday.condition,default=null}"/>
 
                 <ImageView
                     android:layout_width="50dp"
@@ -58,7 +60,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
                     android:src="@drawable/arrow_up"
-                    imageUrll="@{threeday.image}"/>
+                    imageUrll="@{threeday.image}"
+                    android:importantForAccessibility="no" />
 
                 <TextView
                     android:id="@+id/maxTemp"

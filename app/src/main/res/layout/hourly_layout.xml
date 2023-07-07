@@ -47,7 +47,7 @@
                 android:fontFamily="sans-serif-light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="__________"/>
+                android:text="@string/houryl_line"/>
 
             <TextView
                 android:textColor="@color/white"

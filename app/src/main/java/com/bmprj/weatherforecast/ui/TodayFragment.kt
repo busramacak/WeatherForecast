@@ -181,7 +181,7 @@ class TodayFragment() : Fragment() {
                 if(t<17){
 
 
-                    for(i in t..hour!!.size-1){
+                    for(i in t until hour!!.size){
 
                         val hourSet = hour.get(i)
                         val hf = hour.get(t)
@@ -197,18 +197,18 @@ class TodayFragment() : Fragment() {
                         val wind_degr_hour = hourSet.wind_degree
                         val wind_kph_hour = hourSet.wind_kph
 
-                        val r = Rainy("%"+ rain,i.toString()+":00", precip_hour.toString(),precip_hour.toFloat())
+                        val r = Rainy("%$rain",getString(R.string.time,i.toString()), precip_hour.toString(),precip_hour.toFloat())
                         rainy.add(r)
-                        val w = Wind(wind_kph_hour.toString(),wind_kph_hour.toInt()*3,wind_degr_hour.toFloat(),i.toString()+":00")
+                        val w = Wind(wind_kph_hour.toString(),wind_kph_hour.toInt()*3,wind_degr_hour.toFloat(),getString(R.string.time,i.toString()))
                         wind.add(w)
-                        val h = Hourly(cond_icon,i.toString()+":00",temp_hour.toString()+"°")
+                        val h = Hourly(cond_icon,getString(R.string.time,i.toString()),getString(R.string.degre,temp_hour.toString()))
                         hourly.add(h)
 
                     }
                 }
                 else{
 
-                    for( i in 17 .. hour!!.size-1){
+                    for( i in 17 until hour!!.size){
 
                         val hourSet = hour.get(i)
                         val hf = hour.get(t)
@@ -224,7 +224,7 @@ class TodayFragment() : Fragment() {
                         val wind_degr_hour = hourSet.wind_degree
                         val wind_kph_hour = hourSet.wind_kph
 
-                        val r = Rainy("%"+ rain,getString(R.string.time,i.toString()), precip_hour.toString(),precip_hour.toFloat())
+                        val r = Rainy("%$rain",getString(R.string.time,i.toString()), precip_hour.toString(),precip_hour.toFloat())
                         rainy.add(r)
                         val w = Wind(wind_kph_hour.toString(),wind_kph_hour.toInt()*3,wind_degr_hour.toFloat(),getString(R.string.time, i.toString()))
                         wind.add(w)

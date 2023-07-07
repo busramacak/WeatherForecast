@@ -36,7 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="SEHİR ADİ"
+                    tools:text="SEHİR ADİ"
                     android:textColor="@color/white"
                     android:fontFamily="sans-serif-light"
                     android:textSize="18sp" />
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:text="20 Mayıs,2:40 ÖS"
+                tools:text="20 Mayıs,2:40 ÖS"
                 android:textColor="@color/white"
                 android:fontFamily="sans-serif-light"
                 android:layout_margin="20dp"/>
@@ -59,7 +59,7 @@
                 android:id="@+id/degree"
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
-                android:text="2°"
+                tools:text="2°"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="100dp"
                 android:textColor="@color/white"
@@ -95,7 +95,7 @@
                 android:textSize="25sp"
                 android:textColor="@color/white"
                 android:fontFamily="sans-serif-light"
-                android:text="Parçalı Bulutlu"/>
+                tools:text="Parçalı Bulutlu"/>
 
 
 
@@ -116,7 +116,8 @@
                 app:layout_constraintTop_toBottomOf="@id/recy"
                 app:layout_constraintStart_toStartOf="parent"
                 android:background="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:importantForAccessibility="no" />
 
             <RelativeLayout
                 android:id="@+id/rel"
@@ -138,7 +139,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="10dp"
-                    android:text="Güncel Detaylar" />
+                    android:text="@string/CurrentDetails" />
 
                 <TextView
                     android:id="@+id/humiditytxt"
@@ -151,7 +152,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="Nem Oranı" />
+                    android:text="@string/humidityTxt" />
 
                 <TextView
                     android:id="@+id/humidity"
@@ -178,7 +179,7 @@
                     android:textSize="17sp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="UV İndeksi" />
+                    android:text="@string/uvTxt" />
 
                 <TextView
                     android:id="@+id/uv"
@@ -205,7 +206,8 @@
                 app:layout_constraintTop_toBottomOf="@id/rel"
                 app:layout_constraintStart_toStartOf="parent"
                 android:background="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:importantForAccessibility="no" />
 
             <RelativeLayout
                 android:id="@+id/relRain"
@@ -220,7 +222,7 @@
                     android:id="@+id/raintxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Yağış"
+                    android:text="@string/rainTxt"
                     android:textColor="@color/white"
                     android:fontFamily="sans-serif-light"
                     android:textSize="19sp"
@@ -248,7 +250,7 @@
                     android:layout_marginBottom="10dp"
                     android:textColor="@color/white"
                     android:fontFamily="sans-serif-light"
-                    android:text="Günlük toplam hacim"
+                    tools:text="Günlük toplam hacim"
                     android:layout_below="@id/recyRain"/>
 
             </RelativeLayout>
@@ -260,7 +262,8 @@
                 app:layout_constraintTop_toBottomOf="@id/relRain"
                 app:layout_constraintStart_toStartOf="parent"
                 android:background="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:importantForAccessibility="no" />
 
             <RelativeLayout
                 android:id="@+id/relWind"
@@ -276,7 +279,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="10dp"
-                    android:text="Rüzgar"
+                    android:text="@string/windTxt"
                     android:textColor="@color/white"
                     android:fontFamily="sans-serif-light"
                     android:textSize="19sp"
@@ -288,7 +291,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="50sp"
                     android:fontFamily="sans-serif-light"
-                    android:text="7"
+                    tools:text="7"
                     android:textColor="@color/wind"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="10dp"
@@ -297,14 +300,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="km/h"
+                    tools:text="km/h"
                     android:textColor="@color/white"
                     android:fontFamily="sans-serif-light"
                     android:layout_below="@id/wind"
                     android:layout_marginTop="47dp"
                     android:textSize="17sp"
                     android:layout_toEndOf="@id/wind_kph"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginBottom="10dp"/>
 
 

@@ -13,4 +13,8 @@
     <string name="humidity"> %1$s</string>
     <string name="totalPrecip">Günlük Toplam hacim %1$s mm</string>
     <string name="time">%1$s:00</string>
+
+<!--    tomorrow-->
+    <string name="max_minTemp">Gündüz %1$s, Gece %2$s</string>
+    <string name="max_minWind">%1$s - %2$s</string>
 </resources>

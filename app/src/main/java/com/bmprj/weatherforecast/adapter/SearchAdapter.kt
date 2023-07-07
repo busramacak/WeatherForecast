@@ -8,6 +8,7 @@ import android.content.Intent.getIntent
 import android.location.LocationManager
 import android.provider.Settings
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,13 @@ class SearchAdapter(private val list:ArrayList<SearchCityItem>)
                     val dh = DatabaseHelper(binding.root.context)
 
                     binding.constrain.setOnClickListener {
+                        if(DAO().get(dh).size==0){
+                            DAO().add(dh,1,binding.city.text.toString())
+
+                        }else
+                        {
+                            DAO().update(dh,1,binding.city.text.toString())
+                        }
 
                         if(binding.city.text=="Mevcut Konum"){
 
@@ -54,37 +62,46 @@ class SearchAdapter(private val list:ArrayList<SearchCityItem>)
                                 val customLayout: View = LayoutInflater.from(it.context).inflate(R.layout.alert_dialog_layout, null)
                                 alertDialog.setView(customLayout)
 
-                                alertDialog.setPositiveButton(Html.fromHtml("<font color='#757474'>AYARLARI AÇ</font>")){ DialogInterface, which:Int ->
-                                    it.context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                                alertDialog.setPositiveButton(Html.fromHtml("<font color='#757474'>AYARLARI AÇ</font>"))
+                                { DialogInterface, which:Int ->
+
                                     DAO().delete(dh)
+                                    it.context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                                    val dialog = ProgressDialog(it.context)
                                     CoroutineScope(Dispatchers.Main).launch {
-                                        val dialog = ProgressDialog(it.context)
+
                                         dialog.setMessage("Yükleniyor...")
                                         dialog.setCancelable(false)
                                         dialog.setInverseBackgroundForced(false)
                                         dialog.show()
-                                        delay(4000)
-                                        Navigation.findNavController(itemView).navigate(R.id.todayFragment)
+                                        delay(5000)
                                         dialog.dismiss()
-                                    }
 
+                                    }
 
 
                                 }
 
                                 alertDialog.create()
                                 alertDialog.show()
+
+
                             }
+                            val dialog = ProgressDialog(it.context)
+                            CoroutineScope(Dispatchers.Main).launch{dialog.setMessage("Yükleniyor...")
+                                dialog.setCancelable(false)
+                                dialog.setInverseBackgroundForced(false)
+                                dialog.show()
+                                delay(5000)
+                                Navigation.findNavController(itemView).navigate(R.id.todayFragment)
+                                dialog.dismiss()
+
+                            }
+
+
                         }else{
-                            if(DAO().get(dh).size==0){
-                                DAO().add(dh,1,binding.city.text.toString())
 
-                            }else
-                            {
-                                DAO().update(dh,1,binding.city.text.toString())
-                            }
                             Navigation.findNavController(itemView).navigate(R.id.todayFragment)
-
                         }
 
 

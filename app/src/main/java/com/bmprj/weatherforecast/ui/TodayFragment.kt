@@ -7,11 +7,14 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +23,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.HourlyAdapter
@@ -37,6 +41,7 @@ import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -313,14 +318,14 @@ class TodayFragment() : Fragment() {
 
     @SuppressLint("MissingPermission")
     fun getLocation(view:View,dialog: AlertDialog){
-        dialog.dismiss()
+
         val mFusedLocationClient = LocationServices.getFusedLocationProviderClient(view.context)
         if (checkPermissions(view)) {
             if (isLocationEnabled(view)) {
                 mFusedLocationClient.lastLocation.addOnCompleteListener() { task ->
                     val location: Location? = task.result
                     if (location != null) {
-
+                        dialog.dismiss()
                         getWeather("${location.latitude},${location.longitude}", dialog)
 
                     }

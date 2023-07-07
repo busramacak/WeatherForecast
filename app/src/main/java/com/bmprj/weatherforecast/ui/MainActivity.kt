@@ -15,6 +15,7 @@ import android.text.Html
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
@@ -64,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         }
         val dh = DatabaseHelper(this)
 
-        if(DAO().get(dh).size==0){
+        if(DAO().get(dh).size==0 || DAO().get(dh).get(0).search=="Mevcut Konum"){
             islocationenabled()
         }
 
@@ -92,20 +93,10 @@ class MainActivity : AppCompatActivity() {
 
             alertDialog.setPositiveButton(Html.fromHtml("<font color='#757474'>AYARLARI AÇ</font>")){ DialogInterface,which:Int ->
                 this.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-
-                val dialog = ProgressDialog(this@MainActivity)
                 CoroutineScope(Dispatchers.Main).launch {
-
-                    dialog.setMessage("Yükleniyor...")
-                    dialog.setCancelable(false)
-                    dialog.setInverseBackgroundForced(false)
-                    dialog.show()
                     delay(5000)
                     Navigation.findNavController(binding.navHostFragment).navigate(R.id.todayFragment)
-                    dialog.dismiss()
-
                 }
-
 
             }
             alertDialog.setNegativeButton(Html.fromHtml("<font color='#757474'>HAYIR</font>")) { DialogInterface, which: Int ->

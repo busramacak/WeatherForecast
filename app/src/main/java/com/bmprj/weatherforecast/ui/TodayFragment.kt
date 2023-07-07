@@ -21,6 +21,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -72,6 +73,7 @@ class TodayFragment() : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun refreshCurrentClick(view:View){
+        onViewCreated(view, bundleOf())
         val dialog = ProgressDialog(context)
         dialog.setMessage("Yükleniyor...")
         dialog.setCancelable(false)
@@ -104,20 +106,24 @@ class TodayFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dialog = ProgressDialog(context)
-        dialog.setMessage("Yükleniyor...")
-        dialog.setCancelable(false)
-        dialog.setInverseBackgroundForced(false)
-        dialog.show()
+
 
         uiScope.launch(Dispatchers.Main){
             val dh = DatabaseHelper(requireContext())
             val search = DAO().get(dh)
             val city:String?
+
+            val dialog = ProgressDialog(context)
+            dialog.setMessage("Yükleniyor...")
+            dialog.setCancelable(false)
+            dialog.setInverseBackgroundForced(false)
+            dialog.show()
+
             if(search.size>0){
                 for(i in search){
                     if(i.id==1){
                         if(i.search==null || i.search =="Mevcut Konum"){
+
                             getLocation(view,dialog)
                         }else{
                             city=i.search
@@ -330,6 +336,8 @@ class TodayFragment() : Fragment() {
 
                     }
                 }
+            }else{
+                dialog.dismiss()
             }
         } else {
             requestPermissions(view)

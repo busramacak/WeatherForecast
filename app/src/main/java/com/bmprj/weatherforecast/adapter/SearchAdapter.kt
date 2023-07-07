@@ -70,13 +70,7 @@ class SearchAdapter(private val list:ArrayList<SearchCityItem>)
                                     val dialog = ProgressDialog(it.context)
                                     CoroutineScope(Dispatchers.Main).launch {
 
-                                        dialog.setMessage("Yükleniyor...")
-                                        dialog.setCancelable(false)
-                                        dialog.setInverseBackgroundForced(false)
-                                        dialog.show()
                                         delay(5000)
-                                        dialog.dismiss()
-
                                     }
 
 
@@ -87,14 +81,13 @@ class SearchAdapter(private val list:ArrayList<SearchCityItem>)
 
 
                             }
-                            val dialog = ProgressDialog(it.context)
-                            CoroutineScope(Dispatchers.Main).launch{dialog.setMessage("Yükleniyor...")
-                                dialog.setCancelable(false)
-                                dialog.setInverseBackgroundForced(false)
-                                dialog.show()
+
+                            CoroutineScope(Dispatchers.Main).launch{
+
+
                                 delay(5000)
                                 Navigation.findNavController(itemView).navigate(R.id.todayFragment)
-                                dialog.dismiss()
+
 
                             }
 

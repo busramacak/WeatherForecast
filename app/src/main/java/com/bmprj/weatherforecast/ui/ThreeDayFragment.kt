@@ -1,5 +1,8 @@
+@file:Suppress("DEPRECATION")
+
 package com.bmprj.weatherforecast.ui
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.os.Build
@@ -34,8 +37,8 @@ import java.util.Date
 class ThreeDayFragment : Fragment() {
 
     private lateinit var binding: FragmentThreeDayBinding
-    val job = Job()
-    val uiScope = CoroutineScope(Dispatchers.Main + job)
+    private val job = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,7 +62,7 @@ class ThreeDayFragment : Fragment() {
         uiScope.launch(Dispatchers.Main) {
             val dh = DatabaseHelper(requireContext())
             val search = DAO().get(dh)
-            var city:String? = null
+            val city:String?
             if(search.size>0){
                 for(i in search){
                     if(i.id==1){
@@ -77,25 +80,27 @@ class ThreeDayFragment : Fragment() {
 
     }
 
-    fun getWeather(city:String?,dialog: AlertDialog){
+    private fun getWeather(city:String?,dialog: AlertDialog){
 
         val kdi = ApiUtils.getUrlInterface()
         kdi.getWeather("904aa43adf804caf913131326232306",city,3,"no","tr").enqueue(object :
             Callback<Weather>{
+            @SuppressLint("SimpleDateFormat")
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
 
 
                 val forecastday = response.body()?.forecast?.forecastday
 
-
+                val cityName = response.body()?.location?.name
+                binding.title.text=cityName
 
                 val threeday = ArrayList<ThreeDay>()
-                for(i in 0..forecastday!!.size-1){
+                for(i in 0 until forecastday!!.size){
 
-                    val hour = forecastday?.get(i)
+                    val hour = forecastday[i]
 
-                    val day = hour?.day
-                    val date = hour?.date
+                    val day = hour.day
+                    val date = hour.date
 
                     val inFormat = SimpleDateFormat("yyyy-MM-dd")
                     val dat: Date = inFormat.parse(date) as Date
@@ -106,14 +111,15 @@ class ThreeDayFragment : Fragment() {
                     val outFormatDay = SimpleDateFormat("dd")
                     val dy : String = outFormatDay.format(dat)
 
-                    val max_temp = day?.maxtemp_c
-                    val min_temp = day?.mintemp_c
+                    val max_temp = day.maxtemp_c
+                    val min_temp = day.mintemp_c
 
-                    val condition =day?.condition
-                    val icon = condition?.icon
-                    val conditionText = condition?.text
+                    val condition =day.condition
+                    val icon = condition.icon
+                    val conditionText = condition.text
 
-                    val t = ThreeDay(goal+", "+month+" "+dy,conditionText,max_temp.toString()+"°",min_temp.toString()+"°",icon)
+                    val t = ThreeDay(getString(R.string.gun_ay_dy,goal,month,dy),conditionText,
+                        getString(R.string.degre,max_temp.toString()),getString(R.string.degre, min_temp.toString()),icon)
 
                     threeday.add(t)
                 }

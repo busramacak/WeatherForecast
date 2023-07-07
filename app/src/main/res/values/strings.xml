@@ -17,4 +17,7 @@
 <!--    tomorrow-->
     <string name="max_minTemp">Gündüz %1$s, Gece %2$s</string>
     <string name="max_minWind">%1$s - %2$s</string>
+
+<!--    three day-->
+    <string name="gun_ay_dy">%1$s, %2$s %3$s </string>
 </resources>

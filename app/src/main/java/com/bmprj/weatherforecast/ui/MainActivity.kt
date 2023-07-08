@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         }
         val dh = DatabaseHelper(this)
 
-        if(DAO().get(dh).size==0 || DAO().get(dh).get(0).search=="Mevcut Konum"){
+        if(DAO().get(dh).size==0|| DAO().get(dh).get(0).search==null || DAO().get(dh).get(0).search=="Mevcut Konum"){
             islocationenabled()
         }
 
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
             alertDialog.setPositiveButton(Html.fromHtml("<font color='#757474'>AYARLARI AÇ</font>")){ DialogInterface,which:Int ->
                 this.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                 CoroutineScope(Dispatchers.Main).launch {
-                    delay(5000)
+                    delay(3000)
                     Navigation.findNavController(binding.navHostFragment).navigate(R.id.todayFragment)
                 }
 

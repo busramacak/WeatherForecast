@@ -4,15 +4,15 @@ import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.getIntent
+import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.net.Uri
 import android.provider.Settings
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
+import androidx.core.app.ActivityCompat
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bmprj.weatherforecast.R
@@ -20,9 +20,9 @@ import com.bmprj.weatherforecast.data.db.DAO
 import com.bmprj.weatherforecast.data.db.DatabaseHelper
 import com.bmprj.weatherforecast.databinding.SearchLayoutBinding
 import com.bmprj.weatherforecast.model.SearchCityItem
-import com.bmprj.weatherforecast.ui.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -67,10 +67,11 @@ class SearchAdapter(private val list:ArrayList<SearchCityItem>)
 
                                     DAO().delete(dh)
                                     it.context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-                                    val dialog = ProgressDialog(it.context)
+
                                     CoroutineScope(Dispatchers.Main).launch {
 
                                         delay(5000)
+                                        Navigation.findNavController(itemView).navigate(R.id.todayFragment)
                                     }
 
 
@@ -80,21 +81,65 @@ class SearchAdapter(private val list:ArrayList<SearchCityItem>)
                                 alertDialog.show()
 
 
+                            }else{
+                                if (!(ActivityCompat.checkSelfPermission(
+                                        itemView.context,
+                                        android.Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) == PackageManager.PERMISSION_GRANTED &&
+                                            ActivityCompat.checkSelfPermission(
+                                                itemView.context,
+                                                android.Manifest.permission.ACCESS_FINE_LOCATION
+                                            ) == PackageManager.PERMISSION_GRANTED)
+                                ){
+                                    CoroutineScope(Dispatchers.Main).launch{
+
+                                        DAO().delete(dh)
+
+                                        itemView.context.startActivity(
+                                            Intent(
+                                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                                Uri.parse("package:"+itemView.context.packageName))
+                                        )
+                                        delay(5000)
+                                        Navigation.findNavController(itemView).navigate(R.id.todayFragment)
+
+//                                    Toast.makeText(itemView.context,getString(R.string.requestPermission))
+
+                                    }
+                                }else{
+
+                                    CoroutineScope(Dispatchers.Main).launch {
+                                        val dialog = ProgressDialog(itemView.context)
+                                        dialog.setMessage("Yükleniyor...")
+                                        dialog.setCancelable(false)
+                                        dialog.setInverseBackgroundForced(false)
+                                        dialog.show()
+                                        delay(1000)
+                                        Navigation.findNavController(itemView).navigate(R.id.todayFragment)
+                                        dialog.dismiss()
+
+                                    }
+                                }
+
                             }
 
-                            CoroutineScope(Dispatchers.Main).launch{
 
-
-                                delay(5000)
-                                Navigation.findNavController(itemView).navigate(R.id.todayFragment)
-
-
-                            }
 
 
                         }else{
 
-                            Navigation.findNavController(itemView).navigate(R.id.todayFragment)
+                            CoroutineScope(Dispatchers.Main).launch{
+                                val dialog = ProgressDialog(itemView.context)
+                                dialog.setMessage("Yükleniyor...")
+                                dialog.setCancelable(false)
+                                dialog.setInverseBackgroundForced(false)
+                                dialog.show()
+                                delay(1000)
+                                Navigation.findNavController(itemView).navigate(R.id.todayFragment)
+
+                                dialog.dismiss()
+                            }
+
                         }
 
 
@@ -122,3 +167,4 @@ class SearchAdapter(private val list:ArrayList<SearchCityItem>)
     }
 
 }
+

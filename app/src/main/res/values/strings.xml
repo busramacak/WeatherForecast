@@ -32,6 +32,7 @@
 
 <!--    konum aç isteği-->
     <string name="location_enabled_request">Size en iyi hizmeti sağlamak için uygulamanın cihazınızın konumuna erişmesine izin verin.</string>
+<string name="requestPermission">Uygulamanın k</string>
 
 
 </resources>

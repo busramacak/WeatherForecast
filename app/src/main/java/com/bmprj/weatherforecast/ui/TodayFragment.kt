@@ -113,6 +113,7 @@ class TodayFragment() : Fragment() {
             val search = DAO().get(dh)
             val city:String?
 
+
             val dialog = ProgressDialog(context)
             dialog.setMessage("Yükleniyor...")
             dialog.setCancelable(false)
@@ -331,16 +332,18 @@ class TodayFragment() : Fragment() {
                 mFusedLocationClient.lastLocation.addOnCompleteListener() { task ->
                     val location: Location? = task.result
                     if (location != null) {
-                        dialog.dismiss()
                         getWeather("${location.latitude},${location.longitude}", dialog)
 
                     }
                 }
             }else{
+                Navigation.findNavController(view).navigate(R.id.searchFragment)
                 dialog.dismiss()
             }
         } else {
             requestPermissions(view)
+            Navigation.findNavController(view).navigate(R.id.searchFragment)
+            dialog.dismiss()
 
         }
     }

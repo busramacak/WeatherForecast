@@ -6,14 +6,14 @@
     <data>
         <variable
             name="search"
-            type="com.bmprj.weatherforecast.ui.SearchFragment" />
+            type="com.bmprj.weatherforecast.ui.fragment.SearchFragment" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.SearchFragment"
+        tools:context=".ui.fragment.SearchFragment"
         android:background="@color/cloudBackground">
 
         <LinearLayout

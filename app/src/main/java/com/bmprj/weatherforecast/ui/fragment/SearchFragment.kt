@@ -1,7 +1,5 @@
-package com.bmprj.weatherforecast.ui
+package com.bmprj.weatherforecast.ui.fragment
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.R
@@ -18,7 +15,6 @@ import com.bmprj.weatherforecast.data.remote.ApiUtils
 import com.bmprj.weatherforecast.databinding.FragmentSearchBinding
 import com.bmprj.weatherforecast.model.SearchCity
 import com.bmprj.weatherforecast.model.SearchCityItem
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

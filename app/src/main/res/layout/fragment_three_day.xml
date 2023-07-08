@@ -6,7 +6,7 @@
     <data>
         <variable
             name="threeDay"
-            type="com.bmprj.weatherforecast.ui.ThreeDayFragment" />
+            type="com.bmprj.weatherforecast.ui.fragment.ThreeDayFragment" />
 
     </data>
 

@@ -1,24 +1,18 @@
-package com.bmprj.weatherforecast.ui
+package com.bmprj.weatherforecast.ui.activity
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
-import android.provider.ContactsContract.Data
 import android.provider.Settings
 import android.text.Html
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment

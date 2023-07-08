@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/todayFragment"
-        android:name="com.bmprj.weatherforecast.ui.TodayFragment"
+        android:name="com.bmprj.weatherforecast.ui.fragment.TodayFragment"
         android:label="fragment_today"
         tools:layout="@layout/fragment_today"/>
     <fragment
         android:id="@+id/tomorrowFragment"
-        android:name="com.bmprj.weatherforecast.ui.TomorrowFragment"
+        android:name="com.bmprj.weatherforecast.ui.fragment.TomorrowFragment"
         android:label="TomorrowFragment"
         tools:layout="@layout/fragment_tomorrow"/>
     <fragment
         android:id="@+id/threeDayFragment"
-        android:name="com.bmprj.weatherforecast.ui.ThreeDayFragment"
+        android:name="com.bmprj.weatherforecast.ui.fragment.ThreeDayFragment"
         android:label="ThreeDayFragment"
         tools:layout="@layout/fragment_three_day"/>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.bmprj.weatherforecast.ui.SearchFragment"
+        android:name="com.bmprj.weatherforecast.ui.fragment.SearchFragment"
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search">
         <action

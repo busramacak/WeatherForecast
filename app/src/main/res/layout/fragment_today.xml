@@ -6,7 +6,7 @@
     <data>
         <variable
             name="today"
-            type="com.bmprj.weatherforecast.ui.TodayFragment" />
+            type="com.bmprj.weatherforecast.ui.fragment.TodayFragment" />
 
     </data>
 
@@ -16,7 +16,7 @@
         android:id="@+id/scrollV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.TodayFragment"
+        tools:context=".ui.fragment.TodayFragment"
         android:background="@color/cloudBackground">
 
         <androidx.constraintlayout.widget.ConstraintLayout

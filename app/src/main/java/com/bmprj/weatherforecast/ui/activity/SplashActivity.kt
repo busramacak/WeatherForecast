@@ -1,5 +1,6 @@
-package com.bmprj.weatherforecast.ui
+package com.bmprj.weatherforecast.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +12,8 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@Suppress("DEPRECATION")
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
     val cs = CoroutineScope(Dispatchers.Main)

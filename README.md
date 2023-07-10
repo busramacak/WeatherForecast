@@ -5,8 +5,9 @@ weather, Tomorrow and Three Days weather forecast screen information. Weather fo
 the search button on the toolbar.
 
 Features:
-Made with https://www.weatherapi.com, SQlite, Retrofit, Lottie, Location,Coroutines, DataBinding, MVVM architecture, Recyclerview, Navigation 
+* Made with https://www.weatherapi.com, SQlite, Retrofit, Lottie, Location, Coroutines, DataBinding, MVVM architecture, Recyclerview, Navigation 
 Component(NavGraph, BottomNav), SearchView...
+* English and Turkish language support available.
 
 ### ________ Today ______________ Tomorrow ____________ Next 3 Days ______ Different Locations _
 

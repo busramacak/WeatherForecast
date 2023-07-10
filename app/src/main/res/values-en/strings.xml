@@ -7,8 +7,8 @@
 
     <string name="lang">en</string>
     <string name="mevcutKonum">Current Location</string>
-    <string name="no">NO</string>
-    <string name="openSettings">OPEN SETTİNGS</string>
+    <string name="no">SEARCH CITY</string>
+    <string name="openSettings">OPEN SETTINGS</string>
     <string name="CurrentDetails">Current Delatils</string>
     <string name="humidityTxt">Humidity (%)</string>
     <string name="uvTxt">UV Index</string>

@@ -40,8 +40,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
-
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         NavigationUI.setupWithNavController(binding.bottomNav,navHostFragment.navController)
 
@@ -59,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         }
         val dh = DatabaseHelper(this)
 
-        if(DAO().get(dh).size==0|| DAO().get(dh).get(0).search==null || DAO().get(dh).get(0).search=="Mevcut Konum"){
+        if(DAO().get(dh).size==0|| DAO().get(dh).get(0).search==null || DAO().get(dh).get(0).search==getString(R.string.mevcutKonum)){
             islocationenabled()
         }
 
@@ -85,7 +83,7 @@ class MainActivity : AppCompatActivity() {
             val customLayout: View = layoutInflater.inflate(R.layout.alert_dialog_layout, null)
             alertDialog.setView(customLayout)
 
-            alertDialog.setPositiveButton(Html.fromHtml("<font color='#757474'>AYARLARI AÇ</font>")){ DialogInterface,which:Int ->
+            alertDialog.setPositiveButton(Html.fromHtml("<font color='#757474'>"+getString(R.string.openSettings)+"</font>")){ DialogInterface,which:Int ->
                 this.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                 CoroutineScope(Dispatchers.Main).launch {
                     delay(3000)
@@ -93,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
             }
-            alertDialog.setNegativeButton(Html.fromHtml("<font color='#757474'>HAYIR</font>")) { DialogInterface, which: Int ->
+            alertDialog.setNegativeButton(Html.fromHtml("<font color='#757474'>"+getString(R.string.no)+"</font>")) { DialogInterface, which: Int ->
                 Navigation.findNavController(binding.navHostFragment).navigate(R.id.searchFragment)
             }
             alertDialog.create()

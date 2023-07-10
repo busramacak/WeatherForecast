@@ -83,7 +83,7 @@ class TomorrowFragment : Fragment() {
     fun getWeather(city:String?,dialog: AlertDialog){
 
         val kdi = ApiUtils.getUrlInterface()
-        kdi.getWeather("904aa43adf804caf913131326232306",city,2,"no","tr").enqueue(object :
+        kdi.getWeather("904aa43adf804caf913131326232306",city,2,"no",getString(R.string.lang)).enqueue(object :
             Callback<Weather> {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {

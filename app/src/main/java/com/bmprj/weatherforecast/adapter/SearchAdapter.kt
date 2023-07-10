@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.bmprj.weatherforecast.adapter
 
 import android.app.AlertDialog
@@ -20,9 +22,9 @@ import com.bmprj.weatherforecast.data.db.DAO
 import com.bmprj.weatherforecast.data.db.DatabaseHelper
 import com.bmprj.weatherforecast.databinding.SearchLayoutBinding
 import com.bmprj.weatherforecast.model.SearchCityItem
+import com.bmprj.weatherforecast.ui.fragment.SearchFragmentDirections
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -38,6 +40,7 @@ class SearchAdapter(private val list:ArrayList<SearchCityItem>)
                     binding.searchV=searchV
                     binding.executePendingBindings()
                     val dh = DatabaseHelper(binding.root.context)
+                    val gecis = SearchFragmentDirections.actionSearchFragmentToTodayFragment()
 
                     binding.constrain.setOnClickListener {
                         if(DAO().get(dh).size==0){
@@ -48,7 +51,7 @@ class SearchAdapter(private val list:ArrayList<SearchCityItem>)
                             DAO().update(dh,1,binding.city.text.toString())
                         }
 
-                        if(binding.city.text=="Mevcut Konum"){
+                        if(binding.city.text==itemView.context.getString(R.string.mevcutKonum)){
 
 
                             val locationManager: LocationManager =
@@ -62,7 +65,9 @@ class SearchAdapter(private val list:ArrayList<SearchCityItem>)
                                 val customLayout: View = LayoutInflater.from(it.context).inflate(R.layout.alert_dialog_layout, null)
                                 alertDialog.setView(customLayout)
 
-                                alertDialog.setPositiveButton(Html.fromHtml("<font color='#757474'>AYARLARI AÇ</font>"))
+
+
+                                alertDialog.setPositiveButton(Html.fromHtml("<font color='#757474'>"+itemView.context.getString(R.string.openSettings)+"</font>"))
                                 { DialogInterface, which:Int ->
 
                                     DAO().delete(dh)
@@ -71,7 +76,7 @@ class SearchAdapter(private val list:ArrayList<SearchCityItem>)
                                     CoroutineScope(Dispatchers.Main).launch {
 
                                         delay(5000)
-                                        Navigation.findNavController(itemView).navigate(R.id.todayFragment)
+                                        Navigation.findNavController(itemView).navigate(gecis)
                                     }
 
 
@@ -101,7 +106,7 @@ class SearchAdapter(private val list:ArrayList<SearchCityItem>)
                                                 Uri.parse("package:"+itemView.context.packageName))
                                         )
                                         delay(5000)
-                                        Navigation.findNavController(itemView).navigate(R.id.todayFragment)
+                                        Navigation.findNavController(itemView).navigate(gecis)
 
 //                                    Toast.makeText(itemView.context,getString(R.string.requestPermission))
 
@@ -115,7 +120,7 @@ class SearchAdapter(private val list:ArrayList<SearchCityItem>)
                                         dialog.setInverseBackgroundForced(false)
                                         dialog.show()
                                         delay(1000)
-                                        Navigation.findNavController(itemView).navigate(R.id.todayFragment)
+                                        Navigation.findNavController(itemView).navigate(gecis)
                                         dialog.dismiss()
 
                                     }
@@ -135,15 +140,13 @@ class SearchAdapter(private val list:ArrayList<SearchCityItem>)
                                 dialog.setInverseBackgroundForced(false)
                                 dialog.show()
                                 delay(1000)
-                                Navigation.findNavController(itemView).navigate(R.id.todayFragment)
+
+                                Navigation.findNavController(itemView).navigate(gecis)
 
                                 dialog.dismiss()
                             }
 
                         }
-
-
-
 
                     }
 

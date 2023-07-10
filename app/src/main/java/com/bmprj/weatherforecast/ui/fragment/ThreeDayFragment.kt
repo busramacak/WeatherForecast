@@ -83,7 +83,7 @@ class ThreeDayFragment : Fragment() {
     private fun getWeather(city:String?,dialog: AlertDialog){
 
         val kdi = ApiUtils.getUrlInterface()
-        kdi.getWeather("904aa43adf804caf913131326232306",city,3,"no","tr").enqueue(object :
+        kdi.getWeather("904aa43adf804caf913131326232306",city,3,"no",getString(R.string.lang)).enqueue(object :
             Callback<Weather>{
             @SuppressLint("SimpleDateFormat")
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {

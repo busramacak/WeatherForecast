@@ -42,7 +42,7 @@ class SearchFragment : Fragment() {
             layoutManager=LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
             binding.recyS.layoutManager=layoutManager
             val list = ArrayList<SearchCityItem>()
-            val s = SearchCityItem("",0,0.0,0.0,"Mevcut Konum","","")
+            val s = SearchCityItem("",0,0.0,0.0, getString(R.string.mevcutKonum),"","")
             list.add(s)
             adapter = SearchAdapter(list)
             binding.recyS.adapter=adapter
@@ -55,7 +55,7 @@ class SearchFragment : Fragment() {
     fun onQueryTextChange(query: String): Boolean {
 
         val searchh = ArrayList<SearchCityItem>()
-        val f = SearchCityItem("",0,0.0,0.0,"Mevcut Konum","","")
+        val f = SearchCityItem("",0,0.0,0.0,getString(R.string.mevcutKonum),"","")
         searchh.add(f)
 
         if(query.length>0){

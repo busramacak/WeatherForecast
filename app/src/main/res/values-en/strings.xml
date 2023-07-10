@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Weather Forecast</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="lang">en</string>
+    <string name="mevcutKonum">Current Location</string>
+    <string name="no">NO</string>
+    <string name="openSettings">OPEN SETTİNGS</string>
+    <string name="CurrentDetails">Current Delatils</string>
+    <string name="humidityTxt">Humidity (%)</string>
+    <string name="uvTxt">UV Index</string>
+    <string name="rainTxt">Rain</string>
+    <string name="windTxt">Wind</string>
+    <string name="kphTxt">km/h</string>
+    <string name="degre"> %1$s°</string>
+    <string name="humidity">%1$s</string>
+    <string name="totalPrecip">Daily total precip %1$s mm</string>
+    <string name="time">%1$s:00</string>
+    <string name="houryl_line">__________</string>
+
+    <!--    menu item title-->
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="threedays">3 Days</string>
+    <string name="search">Search City</string>
+
+    <!--    tomorrow-->
+    <string name="max_minTemp">Day %1$s, Night %2$s</string>
+    <string name="max_minWind">%1$s - %2$s</string>
+
+    <!--    three day-->
+    <string name="day_month_dy">%1$s, %2$s %3$s </string>
+    <!--    search -->
+    <string name="searchViewText">Place search</string>
+
+    <!--    konum aç isteği-->
+    <string name="location_enabled_request">Allow the app to access your device\'s location to provide you with the best service.</string>
+
+
+</resources>

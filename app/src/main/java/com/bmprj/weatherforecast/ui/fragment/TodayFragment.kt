@@ -119,7 +119,7 @@ class TodayFragment() : Fragment() {
             if(search.size>0){
                 for(i in search){
                     if(i.id==1){
-                        if(i.search==null || i.search =="Mevcut Konum"){
+                        if(i.search==null || i.search ==getString(R.string.mevcutKonum)){
 
                             getLocation(view,dialog)
                         }else{
@@ -141,7 +141,7 @@ class TodayFragment() : Fragment() {
     fun getWeather(city:String?,dialog: AlertDialog){
 
         val kdi = ApiUtils.getUrlInterface()
-        kdi.getWeather("904aa43adf804caf913131326232306",city,1,"no","tr").enqueue(object : Callback<Weather>{
+        kdi.getWeather("904aa43adf804caf913131326232306",city,1,"no",getString(R.string.lang)).enqueue(object : Callback<Weather>{
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
 

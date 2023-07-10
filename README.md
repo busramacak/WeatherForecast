@@ -1,8 +1,8 @@
 # WeatherForecast 🌤️
 
 Weather Forecast a weather forecast application written in Kotlin, prepared with SQLite & API data. In the app, there are Today 
-weather, Tomorrow and Three Days weather forecast screen information. Weather forecast for a different location can be searched with 
-the search button on the toolbar.
+weather, Tomorrow and Three Days weather forecast screen information. Weather forecast for a different location can be searched 
+with the Search City section in the bottom navigation bar.
 
 Features:
 * Made with https://www.weatherapi.com, SQlite, Retrofit, Lottie, Location, Coroutines, DataBinding, MVVM architecture, Recyclerview, Navigation 

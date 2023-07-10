@@ -5,14 +5,30 @@ weather, Tomorrow and Three Days weather forecast screen information. Weather fo
 the search button on the toolbar.
 
 Features:
-Made with https://www.weatherapi.com, SQlite, Retrofit, Lottie, Location,Coroutines, DataBinding, MVVM architecture, Recyclerview, Navigation 
+* Made with https://www.weatherapi.com, SQlite, Retrofit, Lottie, Location, Coroutines, DataBinding, MVVM architecture, Recyclerview, Navigation 
 Component(NavGraph, BottomNav), SearchView...
+* English and Turkish language support available.
 
-### ________ Today ______________ Tomorrow ____________ Next 3 Days ______ Different Locations _
+### Today 
 
 
-<img width="200" src="https://github.com/busramacak/WeatherForecast/assets/115944594/e73a795d-872b-4325-b644-82fb97cae1b9" />
-<img width="200" src="https://github.com/busramacak/WeatherForecast/assets/115944594/a072cf5e-8fe5-4acd-a54c-5b4e19373f94" />
-<img width="200" src="https://github.com/busramacak/WeatherForecast/assets/115944594/39a86a07-0aeb-48bb-afdd-4c2f69329b53" />
-<img width="200" src="https://github.com/busramacak/WeatherForecast/assets/115944594/7676dff5-7a9b-49cc-903f-a92d07201c57" />
+<img width="200" src="https://github.com/busramacak/WeatherForecast/assets/115944594/c628c770-ac98-4be9-93d1-5edeac381557" />
+
+<img width="200" src="https://github.com/busramacak/WeatherForecast/assets/115944594/c353c051-e66b-4cd1-8df5-e3a254b2441c" />
+
+### Tomorrow 
+
+<img width="200" src="https://github.com/busramacak/WeatherForecast/assets/115944594/146b9c15-ffe8-41b6-8d6a-554e986bc637" />
+
+<img width="200" src="https://github.com/busramacak/WeatherForecast/assets/115944594/a11805e8-50ee-4c02-b8ac-b47f841d9b0c" />
+
+### ____ Next 3 Days ______ Different Locations ________ Device location openning request Dialog __
+
+<img width="200" src="https://github.com/busramacak/WeatherForecast/assets/115944594/1e797fc6-d6ac-473e-bab4-506dce939384" />
+
+<img width="200" src="https://github.com/busramacak/WeatherForecast/assets/115944594/2b4307b7-bb29-46be-93e8-74a5d88f2054" />
+_________________
+<img width="200" src="https://github.com/busramacak/WeatherForecast/assets/115944594/58170be6-f558-43f3-ad2d-bbdc04e58cd7" />
+
+
 

@@ -1,8 +1,6 @@
-package com.bmprj.weatherforecast
+package com.bmprj.weatherforecast.base
 
 import android.os.Bundle
-import android.os.Parcel
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 
-abstract class BaseFragment<DBinding:ViewDataBinding>(private val layout:Int): Fragment(){
+open class BaseFragment<DBinding:ViewDataBinding>(private val layout:Int): Fragment(){
 
     protected lateinit var binding: DBinding
 

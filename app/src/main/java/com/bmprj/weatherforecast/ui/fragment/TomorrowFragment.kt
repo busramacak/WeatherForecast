@@ -5,16 +5,11 @@ package com.bmprj.weatherforecast.ui.fragment
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.os.Build
-import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bmprj.weatherforecast.BaseFragment
+import com.bmprj.weatherforecast.base.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.HourlyAdapter
 import com.bmprj.weatherforecast.adapter.RainyAdapter

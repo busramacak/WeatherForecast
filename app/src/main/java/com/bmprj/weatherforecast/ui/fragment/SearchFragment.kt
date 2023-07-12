@@ -1,15 +1,10 @@
 package com.bmprj.weatherforecast.ui.fragment
 
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bmprj.weatherforecast.BaseFragment
+import com.bmprj.weatherforecast.base.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.SearchAdapter
 import com.bmprj.weatherforecast.data.remote.ApiUtils

@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bmprj.weatherforecast.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.ThreeDayAdapter
 import com.bmprj.weatherforecast.data.remote.ApiUtils
@@ -34,28 +35,17 @@ import java.text.SimpleDateFormat
 import java.util.ArrayList
 import java.util.Date
 
-class ThreeDayFragment : Fragment() {
-
-    private lateinit var binding: FragmentThreeDayBinding
+class ThreeDayFragment : BaseFragment<FragmentThreeDayBinding>(R.layout.fragment_three_day) {
     private val job = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_three_day, container, false)
+    override fun setUpViews(view:View) {
+        super.setUpViews(view)
+
         binding.threeDay=this
-        return binding.root
-    }
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         val dialog = ProgressDialog(context)
-        dialog.setMessage("Yükleniyor...")
+        dialog.setMessage(getString(R.string.yukleniyor))
         dialog.setCancelable(false)
         dialog.setInverseBackgroundForced(false)
         dialog.show()
@@ -73,11 +63,6 @@ class ThreeDayFragment : Fragment() {
                 }
             }
         }
-
-
-
-
-
     }
 
     private fun getWeather(city:String?,dialog: AlertDialog){
@@ -87,7 +72,6 @@ class ThreeDayFragment : Fragment() {
             Callback<Weather>{
             @SuppressLint("SimpleDateFormat")
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
-
 
                 val forecastday = response.body()?.forecast?.forecastday
 
@@ -133,18 +117,11 @@ class ThreeDayFragment : Fragment() {
                     adapter = ThreeDayAdapter(threeday)
                     binding.recyThreeDay.adapter=adapter
                 }
-
-
-
             }
 
             override fun onFailure(call: Call<Weather>, t: Throwable) {
                 Log.e("threeday","Erroroorroor")
             }
-
         })
-
     }
-
-
 }

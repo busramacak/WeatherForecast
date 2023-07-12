@@ -23,6 +23,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bmprj.weatherforecast.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.HourlyAdapter
 import com.bmprj.weatherforecast.adapter.RainyAdapter
@@ -48,61 +49,14 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-class TodayFragment() : Fragment() {
-    private lateinit var binding: FragmentTodayBinding
+class TodayFragment() : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today) {
     val job = Job()
     val uiScope = CoroutineScope(Dispatchers.Main + job)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
+    override fun setUpViews(view:View) {
+        super.setUpViews(view)
 
-        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_today, container, false)
         binding.today=this
-
-
-
-        return binding.root
-    }
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun refreshCurrentClick(view:View){
-        onViewCreated(view, bundleOf())
-        val dialog = ProgressDialog(context)
-        dialog.setMessage("Yükleniyor...")
-        dialog.setCancelable(false)
-        dialog.setInverseBackgroundForced(false)
-        dialog.show()
-
-        uiScope.launch(Dispatchers.Main){
-            val dh = DatabaseHelper(requireContext())
-            val search = DAO().get(dh)
-            val city:String?
-            if(search.size>0){
-                for(i in search){
-                    if(i.id==1){
-                        city=i.search
-                        getWeather(city,dialog)
-                        break
-                    }
-                }
-            }else{
-                getLocation(view,dialog)
-            }
-
-        }
-
-
-
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
 
         uiScope.launch(Dispatchers.Main){
             val dh = DatabaseHelper(requireContext())
@@ -111,7 +65,7 @@ class TodayFragment() : Fragment() {
 
 
             val dialog = ProgressDialog(context)
-            dialog.setMessage("Yükleniyor...")
+            dialog.setMessage(getString(R.string.yukleniyor))
             dialog.setCancelable(false)
             dialog.setInverseBackgroundForced(false)
             dialog.show()
@@ -133,8 +87,34 @@ class TodayFragment() : Fragment() {
                 getLocation(view,dialog)
             }
         }
+    }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun refreshCurrentClick(view:View){
+        onViewCreated(view, bundleOf())
+        val dialog = ProgressDialog(context)
+        dialog.setMessage(getString(R.string.yukleniyor))
+        dialog.setCancelable(false)
+        dialog.setInverseBackgroundForced(false)
+        dialog.show()
+
+        uiScope.launch(Dispatchers.Main){
+            val dh = DatabaseHelper(requireContext())
+            val search = DAO().get(dh)
+            val city:String?
+            if(search.size>0){
+                for(i in search){
+                    if(i.id==1){
+                        city=i.search
+                        getWeather(city,dialog)
+                        break
+                    }
+                }
+            }else{
+                getLocation(view,dialog)
+            }
+        }
     }
 
 
@@ -188,7 +168,6 @@ class TodayFragment() : Fragment() {
 
                 if(t<17){
 
-
                     for(i in t until hour!!.size){
 
                         val hourSet = hour.get(i)
@@ -211,7 +190,6 @@ class TodayFragment() : Fragment() {
                         wind.add(w)
                         val h = Hourly(cond_icon,getString(R.string.time,i.toString()),getString(R.string.degre,temp_hour.toString()))
                         hourly.add(h)
-
                     }
                 }
                 else{
@@ -238,13 +216,10 @@ class TodayFragment() : Fragment() {
                         wind.add(w)
                         val h = Hourly(cond_icon,getString(R.string.time,i.toString()),getString(R.string.degre,temp_hour.toString()))
                         hourly.add(h)
-
                     }
                 }
 
-
                 dialog.dismiss()
-
 
                 binding.recyWind.apply {
                     layoutManager= LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
@@ -259,7 +234,6 @@ class TodayFragment() : Fragment() {
                     adapter= RainyAdapter(rainy)
                     binding.recyRain.adapter=adapter
                 }
-
 
                 binding.recy.apply {
                     layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
@@ -307,8 +281,6 @@ class TodayFragment() : Fragment() {
                         binding.animationView.setAnimation(R.raw.partly_shower)
                     }
                 }
-
-
             }
 
             override fun onFailure(call: Call<Weather>, t: Throwable) {
@@ -316,7 +288,6 @@ class TodayFragment() : Fragment() {
                 Log.e("response",t.message.toString())
             }
         })
-
     }
 
     @SuppressLint("MissingPermission")
@@ -329,7 +300,6 @@ class TodayFragment() : Fragment() {
                     val location: Location? = task.result
                     if (location != null) {
                         getWeather("${location.latitude},${location.longitude}", dialog)
-
                     }
                 }
             }else{
@@ -340,7 +310,6 @@ class TodayFragment() : Fragment() {
             requestPermissions(view)
             Navigation.findNavController(view).navigate(R.id.searchFragment)
             dialog.dismiss()
-
         }
     }
 
@@ -376,8 +345,6 @@ class TodayFragment() : Fragment() {
             2
         )
     }
-
-
 }
 
 

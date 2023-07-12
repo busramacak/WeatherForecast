@@ -115,7 +115,7 @@ class SearchAdapter(private val list:ArrayList<SearchCityItem>)
 
                                     CoroutineScope(Dispatchers.Main).launch {
                                         val dialog = ProgressDialog(itemView.context)
-                                        dialog.setMessage("Yükleniyor...")
+                                        dialog.setMessage(itemView.context.getString(R.string.yukleniyor))
                                         dialog.setCancelable(false)
                                         dialog.setInverseBackgroundForced(false)
                                         dialog.show()
@@ -135,7 +135,7 @@ class SearchAdapter(private val list:ArrayList<SearchCityItem>)
 
                             CoroutineScope(Dispatchers.Main).launch{
                                 val dialog = ProgressDialog(itemView.context)
-                                dialog.setMessage("Yükleniyor...")
+                                dialog.setMessage(itemView.context.getString(R.string.yukleniyor))
                                 dialog.setCancelable(false)
                                 dialog.setInverseBackgroundForced(false)
                                 dialog.show()

@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bmprj.weatherforecast.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.HourlyAdapter
 import com.bmprj.weatherforecast.adapter.RainyAdapter
@@ -36,28 +37,17 @@ import retrofit2.Response
 import java.util.ArrayList
 
 @Suppress("DEPRECATION")
-class TomorrowFragment : Fragment() {
-    private lateinit var binding: FragmentTomorrowBinding
+class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(R.layout.fragment_tomorrow) {
     val job = Job()
     val uiScope = CoroutineScope(Dispatchers.Main+job)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_tomorrow, container, false)
+    override fun setUpViews(view: View) {
+        super.setUpViews(view)
+
         binding.tomorrow=this
-        return binding.root
-    }
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
 
         val dialog = ProgressDialog(context)
-        dialog.setMessage("Yükleniyor...")
+        dialog.setMessage(getString(R.string.yukleniyor))
         dialog.setCancelable(false)
         dialog.setInverseBackgroundForced(false)
         dialog.show()
@@ -75,8 +65,6 @@ class TomorrowFragment : Fragment() {
                 }
             }
         }
-
-
 
     }
 

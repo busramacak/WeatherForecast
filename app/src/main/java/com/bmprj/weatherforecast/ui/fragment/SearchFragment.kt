@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bmprj.weatherforecast.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.SearchAdapter
 import com.bmprj.weatherforecast.data.remote.ApiUtils
@@ -20,23 +21,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class SearchFragment : Fragment() {
-    private lateinit var binding:FragmentSearchBinding
+class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_search,container,false)
+
+    override fun setUpViews(view:View) {
+        super.setUpViews(view)
+
         binding.search=this
-
-
-        return binding.root
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         binding.recyS.apply {
             layoutManager=LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
@@ -48,9 +39,6 @@ class SearchFragment : Fragment() {
             binding.recyS.adapter=adapter
         }
     }
-
-
-
 
     fun onQueryTextChange(query: String): Boolean {
 

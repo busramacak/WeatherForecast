@@ -8,15 +8,15 @@ import android.app.ProgressDialog
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bmprj.weatherforecast.base.BaseFragment
+import com.bmprj.weatherforecast.ui.base.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.ThreeDayAdapter
 import com.bmprj.weatherforecast.data.remote.ApiUtils
 import com.bmprj.weatherforecast.data.db.DAO
-import com.bmprj.weatherforecast.data.db.DatabaseHelper
+import com.bmprj.weatherforecast.data.db.DataBase
 import com.bmprj.weatherforecast.databinding.FragmentThreeDayBinding
-import com.bmprj.weatherforecast.model.ThreeDay
-import com.bmprj.weatherforecast.model.Weather
+import com.bmprj.weatherforecast.data.model.ThreeDay
+import com.bmprj.weatherforecast.data.model.Weather
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -43,7 +43,7 @@ class ThreeDayFragment : BaseFragment<FragmentThreeDayBinding>(R.layout.fragment
         dialog.setInverseBackgroundForced(false)
         dialog.show()
         uiScope.launch(Dispatchers.Main) {
-            val dh = DatabaseHelper(requireContext())
+            val dh = DataBase.getInstance(requireContext())
             val search = DAO().get(dh)
             val city:String?
             if(search.size>0){

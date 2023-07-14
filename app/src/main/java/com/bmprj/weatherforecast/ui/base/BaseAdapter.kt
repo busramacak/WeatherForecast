@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast.base
+package com.bmprj.weatherforecast.ui.base
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -2,7 +2,7 @@ package com.bmprj.weatherforecast.data.db
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import com.bmprj.weatherforecast.model.Search
+import com.bmprj.weatherforecast.data.model.Search
 
 class DAO {
 
@@ -27,7 +27,7 @@ class DAO {
     }
 
 
-    @SuppressLint("Range")
+    @SuppressLint("Range", "Recycle")
     fun get(dh : DatabaseHelper):ArrayList<Search>{
         val searchList = ArrayList<Search>()
         val db = dh.writableDatabase

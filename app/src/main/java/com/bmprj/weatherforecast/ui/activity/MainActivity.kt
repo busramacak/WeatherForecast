@@ -19,7 +19,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.data.db.DAO
-import com.bmprj.weatherforecast.data.db.DatabaseHelper
+import com.bmprj.weatherforecast.data.db.DataBase
 import com.bmprj.weatherforecast.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-        val dh = DatabaseHelper(this)
+        val dh = DataBase.getInstance(this)
 
         if(DAO().get(dh).size==0|| DAO().get(dh).get(0).search==null || DAO().get(dh).get(0).search==getString(R.string.mevcutKonum)){
             islocationenabled()

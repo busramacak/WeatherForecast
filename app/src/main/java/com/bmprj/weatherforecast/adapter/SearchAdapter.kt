@@ -15,12 +15,12 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.navigation.Navigation
-import com.bmprj.weatherforecast.base.BaseAdapter
+import com.bmprj.weatherforecast.ui.base.BaseAdapter
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.data.db.DAO
-import com.bmprj.weatherforecast.data.db.DatabaseHelper
+import com.bmprj.weatherforecast.data.db.DataBase
 import com.bmprj.weatherforecast.databinding.SearchLayoutBinding
-import com.bmprj.weatherforecast.model.SearchCityItem
+import com.bmprj.weatherforecast.data.model.SearchCityItem
 import com.bmprj.weatherforecast.ui.fragment.SearchFragmentDirections
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +40,7 @@ class SearchAdapter(override var list:List<SearchCityItem>)
             executePendingBindings()
         }
 
-        val dh = DatabaseHelper(binding.root.context)
+        val dh = DataBase.getInstance(binding.root.context)
         val gecis = SearchFragmentDirections.actionSearchFragmentToTodayFragment()
 
         binding.constrain.setOnClickListener {

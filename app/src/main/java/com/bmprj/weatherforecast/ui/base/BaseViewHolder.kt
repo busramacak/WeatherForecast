@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast.base
+package com.bmprj.weatherforecast.ui.base
 
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView

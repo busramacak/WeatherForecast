@@ -9,18 +9,18 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bmprj.weatherforecast.base.BaseFragment
+import com.bmprj.weatherforecast.ui.base.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.HourlyAdapter
 import com.bmprj.weatherforecast.adapter.RainyAdapter
 import com.bmprj.weatherforecast.adapter.WindAdapter
 import com.bmprj.weatherforecast.data.remote.ApiUtils
 import com.bmprj.weatherforecast.data.db.DAO
-import com.bmprj.weatherforecast.data.db.DatabaseHelper
-import com.bmprj.weatherforecast.model.Hourly
-import com.bmprj.weatherforecast.model.Rainy
-import com.bmprj.weatherforecast.model.Weather
-import com.bmprj.weatherforecast.model.Wind
+import com.bmprj.weatherforecast.data.db.DataBase
+import com.bmprj.weatherforecast.data.model.Hourly
+import com.bmprj.weatherforecast.data.model.Rainy
+import com.bmprj.weatherforecast.data.model.Weather
+import com.bmprj.weatherforecast.data.model.Wind
 import com.bmprj.weatherforecast.databinding.FragmentTomorrowBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,8 +33,8 @@ import java.util.ArrayList
 
 @Suppress("DEPRECATION")
 class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(R.layout.fragment_tomorrow) {
-    val job = Job()
-    val uiScope = CoroutineScope(Dispatchers.Main+job)
+    private val job = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main+job)
 
     override fun setUpViews(view: View) {
         super.setUpViews(view)
@@ -48,7 +48,7 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(R.layout.fragment
         dialog.show()
 
         uiScope.launch(Dispatchers.Main){
-            val dh = DatabaseHelper(requireContext())
+            val dh = DataBase.getInstance(requireContext())
             val search = DAO().get(dh)
             val city:String?
             for(i in search){
@@ -63,7 +63,7 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(R.layout.fragment
 
     }
 
-    fun getWeather(city:String?,dialog: AlertDialog){
+    private fun getWeather(city:String?, dialog: AlertDialog){
 
         val kdi = ApiUtils.getUrlInterface()
         kdi.getWeather("904aa43adf804caf913131326232306",city,2,"no",getString(R.string.lang)).enqueue(object :
@@ -98,7 +98,7 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(R.layout.fragment
 
                 for(i in 0 until hour!!.size){
 
-                    val hourSet = hour.get(i)
+                    val hourSet = hour[i]
 
                     val temp_hour = hourSet.temp_c
                     val cond_hour = hourSet.condition

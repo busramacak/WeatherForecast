@@ -1,27 +1,26 @@
-package com.bmprj.weatherforecast.model
+package com.bmprj.weatherforecast.data.model
 
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@Suppress("PLUGIN_IS_NOT_ENABLED")
 @Serializable
-data class Hour(
-    @SerialName("chance_of_rain")
-    val chance_of_rain: Int,
+data class Current(
     @SerialName("condition")
     val condition: Condition,
     @SerialName("is_day")
     val is_day: Int,
-    @SerialName("precip_mm")
-    val precip_mm: Double,
+    @SerialName("last_updated")
+    val last_updated: String,
+    @SerialName("pressure_mb")
+    val pressure_mb: Double,
     @SerialName("temp_c")
     val temp_c: Double,
-    @SerialName("time")
-    val time: String,
+    @SerialName("uv")
+    val uv: Double,
     @SerialName("wind_degree")
     val wind_degree: Int,
-    @SerialName("wind_dir")
-    val wind_dir: String,
     @SerialName("wind_kph")
     val wind_kph: Double
 )

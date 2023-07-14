@@ -4,13 +4,13 @@ import android.util.Log
 import android.view.View
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bmprj.weatherforecast.base.BaseFragment
+import com.bmprj.weatherforecast.ui.base.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.SearchAdapter
 import com.bmprj.weatherforecast.data.remote.ApiUtils
 import com.bmprj.weatherforecast.databinding.FragmentSearchBinding
-import com.bmprj.weatherforecast.model.SearchCity
-import com.bmprj.weatherforecast.model.SearchCityItem
+import com.bmprj.weatherforecast.data.model.SearchCity
+import com.bmprj.weatherforecast.data.model.SearchCityItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

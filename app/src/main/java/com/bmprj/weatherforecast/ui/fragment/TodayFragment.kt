@@ -18,18 +18,18 @@ import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bmprj.weatherforecast.base.BaseFragment
+import com.bmprj.weatherforecast.ui.base.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.HourlyAdapter
 import com.bmprj.weatherforecast.adapter.RainyAdapter
 import com.bmprj.weatherforecast.adapter.WindAdapter
 import com.bmprj.weatherforecast.data.db.DAO
-import com.bmprj.weatherforecast.data.db.DatabaseHelper
+import com.bmprj.weatherforecast.data.db.DataBase
 import com.bmprj.weatherforecast.data.remote.ApiUtils
-import com.bmprj.weatherforecast.model.Hourly
-import com.bmprj.weatherforecast.model.Rainy
-import com.bmprj.weatherforecast.model.Weather
-import com.bmprj.weatherforecast.model.Wind
+import com.bmprj.weatherforecast.data.model.Hourly
+import com.bmprj.weatherforecast.data.model.Rainy
+import com.bmprj.weatherforecast.data.model.Weather
+import com.bmprj.weatherforecast.data.model.Wind
 import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
@@ -54,7 +54,7 @@ class TodayFragment() : BaseFragment<FragmentTodayBinding>(R.layout.fragment_tod
         binding.today=this
 
         uiScope.launch(Dispatchers.Main){
-            val dh = DatabaseHelper(requireContext())
+            val dh = DataBase.getInstance(requireContext())
             val search = DAO().get(dh)
             val city:String?
 
@@ -95,7 +95,7 @@ class TodayFragment() : BaseFragment<FragmentTodayBinding>(R.layout.fragment_tod
         dialog.show()
 
         uiScope.launch(Dispatchers.Main){
-            val dh = DatabaseHelper(requireContext())
+            val dh = DataBase.getInstance(requireContext())
             val search = DAO().get(dh)
             val city:String?
             if(search.size>0){
@@ -124,7 +124,7 @@ class TodayFragment() : BaseFragment<FragmentTodayBinding>(R.layout.fragment_tod
                 val current = response.body()?.current
 
                 val cityname = response.body()?.location?.name
-                val dh = DatabaseHelper(dialog.context)
+                val dh = DataBase.getInstance(dialog.context)
 
                 if(DAO().get(dh).size==0){
                     DAO().add(dh,1,cityname)

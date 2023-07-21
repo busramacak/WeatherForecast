@@ -11,13 +11,10 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
-import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.get
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.ui.base.BaseFragment
@@ -27,11 +24,6 @@ import com.bmprj.weatherforecast.adapter.RainyAdapter
 import com.bmprj.weatherforecast.adapter.WindAdapter
 import com.bmprj.weatherforecast.data.db.DAO
 import com.bmprj.weatherforecast.data.db.DataBase
-import com.bmprj.weatherforecast.data.remote.ApiUtils
-import com.bmprj.weatherforecast.data.model.Hourly
-import com.bmprj.weatherforecast.data.model.Rainy
-import com.bmprj.weatherforecast.data.model.Weather
-import com.bmprj.weatherforecast.data.model.Wind
 import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
 import com.bmprj.weatherforecast.viewmodel.TodayViewModel
 import com.google.android.gms.location.LocationServices
@@ -39,9 +31,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -65,6 +54,7 @@ class TodayFragment() : BaseFragment<FragmentTodayBinding>(R.layout.fragment_tod
 
         binding.today=this
         viewModel = ViewModelProviders.of(this@TodayFragment).get(TodayViewModel::class.java)
+
 
 
         binding.recyRain.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
@@ -110,25 +100,93 @@ class TodayFragment() : BaseFragment<FragmentTodayBinding>(R.layout.fragment_tod
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun observeLiveData(){
-        viewModel.hourly.observe(viewLifecycleOwner, androidx.lifecycle.Observer { hourly ->
+        viewModel.hourly.observe(viewLifecycleOwner){ hourly ->
             hourly?.let{
                 hourlyAdapter.updateList(hourly)
             }
-        })
+        }
 
-        viewModel.rainy.observe(viewLifecycleOwner, androidx.lifecycle.Observer { rainy ->
+        viewModel.rainy.observe(viewLifecycleOwner) { rainy ->
             rainy?.let{
                 rainyAdapter.updateList(rainy)
             }
-        })
-        viewModel.windy.observe(viewLifecycleOwner, androidx.lifecycle.Observer { windy ->
+        }
+        viewModel.windy.observe(viewLifecycleOwner) { windy ->
             windy?.let{
                 windAdapter.updateList(windy)
             }
-        })
+        }
 
-        viewModel.today.observe(viewLifecycleOwner, androidx.lifecycle.Observer {  })
+        val formatter = DateTimeFormatter.ofPattern("HH")
+                val currentt = LocalDateTime.now().format(formatter)
+                val t = currentt.toInt()
+
+        viewModel.today.observe(viewLifecycleOwner) { today ->
+            today?.let {
+                binding.date.text = today.date
+                binding.title.text = today.cityname
+                binding.degree.text = today.degree
+                binding.condition.text = today.conditionText
+                binding.humidity.text = today.humidity
+                binding.uv.text = today.uv
+                binding.totalprecip.text = today.totalPrecip
+                binding.windKph.text = today.wind_kph
+                binding.windDir.rotation = today.wind_dir
+                binding.direction.text = today.wind_direction
+
+                when (today.code) {
+                    1000 -> {
+                        if (t > 6 && t < 21) {
+                            binding.animationView.setAnimation(R.raw.sunny)
+                        } else {
+                            binding.animationView.setAnimation(R.raw.night)
+                        }
+                    }
+
+                    1003 -> {
+                        if (t > 6 && t < 21) {
+                            binding.animationView.setAnimation(R.raw.partly_cloudy)
+                        } else {
+                            binding.animationView.setAnimation(R.raw.cloudynight)
+                        }
+                    }
+
+                    1006 -> {
+                        binding.animationView.setAnimation(R.raw.cloudy)
+                    }
+
+                    1030, 1135, 1147 -> {
+                        binding.animationView.setAnimation(R.raw.mist)
+                    }
+
+                    1114, 1117, 1204, 1207, 1213, 1219, 1225 -> {
+                        if (t > 6 && t < 21) {
+                            binding.animationView.setAnimation(R.raw.snow)
+                        } else {
+                            binding.animationView.setAnimation(R.raw.snownight)
+                        }
+                    }
+
+                    1210, 1216, 1222, 1249, 1252, 1255, 1258 -> {
+                        binding.animationView.setAnimation(
+                            R.raw.snow_sunny
+                        )
+                    }
+
+                    1087, 1273, 1276 -> {
+                        binding.animationView.setAnimation(R.raw.thunder)
+
+                    }
+
+                    1183, 1186, 1189, 1192, 1195, 1198, 1201, 1240, 1243, 1246 -> {
+                        binding.animationView.setAnimation(R.raw.partly_shower)
+                    }
+                }
+            }
+
+        }
     }
 
 
@@ -307,6 +365,7 @@ class TodayFragment() : BaseFragment<FragmentTodayBinding>(R.layout.fragment_tod
 //        })
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission")
     fun getLocation(view:View,dialog: AlertDialog){
 

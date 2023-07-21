@@ -1,7 +1,5 @@
 package com.bmprj.weatherforecast.data.model
 
-import kotlinx.serialization.Serializable
-
 data class Today(
     val cityname:String?,
     val date:String?,
@@ -11,6 +9,7 @@ data class Today(
     val uv:String?,
     val totalPrecip:String?,
     val wind_kph:String?,
-    val wind_dir:Int,
-    val wind_direction:String?
+    val wind_dir:Float,
+    val wind_direction:String,
+    val code : Int?
 )

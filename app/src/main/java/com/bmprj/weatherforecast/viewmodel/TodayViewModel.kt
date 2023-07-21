@@ -1,6 +1,5 @@
 package com.bmprj.weatherforecast.viewmodel
 
-import android.app.Application
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -53,7 +52,7 @@ class TodayViewModel: ViewModel() {
         val a = currentt.toInt()
 
         var wind_kp=""
-        var wind_degree = 0
+        var wind_degree = 0.0f
         var windDirection=""
 
 
@@ -68,7 +67,7 @@ class TodayViewModel: ViewModel() {
                     val cityName = response.body()?.location?.name
                     val current = response.body()?.current
                     val last_updated = response.body()?.current?.last_updated
-                    val temp_c = current?.temp_c.toString()
+                    val temp_c = current?.temp_c?.toInt().toString()
 
                     val condition = current?.condition
                     val condition_text = condition?.text
@@ -82,44 +81,87 @@ class TodayViewModel: ViewModel() {
 
 
                     val hour = response.body()?.forecast?.forecastday?.get(0)?.hour
-                    for (i in 0 until hour?.size!!) {
-                        val hourSet = hour.get(i)
+                    if(a<17){
+                        for(i in a until hour?.size!!){
+                            val hourSet = hour.get(i)
                             val hf = hour.get(a)
                             wind_kp = hf.wind_kph.toString()
-                            wind_degree = hf.wind_degree
+                            wind_degree = hf.wind_degree.toFloat()
                             windDirection = hf.wind_dir
 
-                        val temp_hour = hourSet.temp_c
-                        val cond_hour = hourSet.condition
-                        val cond_icon = cond_hour.icon
-                        val rain = hourSet.chance_of_rain
-                        val precip_hour = hourSet.precip_mm
-                        val wind_degr_hour = hourSet.wind_degree
-                        val wind_kph_hour = hourSet.wind_kph
+                            val temp_hour = hourSet.temp_c
+                            val cond_hour = hourSet.condition
+                            val cond_icon = cond_hour.icon
+                            val rain = hourSet.chance_of_rain
+                            val precip_hour = hourSet.precip_mm
+                            val wind_degr_hour = hourSet.wind_degree
+                            val wind_kph_hour = hourSet.wind_kph
 
-                        val r = Rainy(
-                            "%$rain",
-                            context.getString(R.string.time, i.toString()),
-                            precip_hour.toString(),
-                            precip_hour.toFloat()
-                        )
-                        rainn.add(r)
-                        val w = Wind(
-                            wind_kph_hour.toString(),
-                            wind_kph_hour.toInt() * 3,
-                            wind_degr_hour.toFloat(),
-                            context.getString(R.string.time, i.toString())
-                        )
-                        wind.add(w)
-                        val h = Hourly(
-                            cond_icon,
-                            context.getString(R.string.time, i.toString()),
-                            context.getString(R.string.degre, temp_hour.toString())
-                        )
-                        hourl.add(h)
+                            val r = Rainy(
+                                "%$rain",
+                                context.getString(R.string.time, i.toString()),
+                                precip_hour.toString(),
+                                precip_hour.toFloat()
+                            )
+                            rainn.add(r)
+                            val w = Wind(
+                                wind_kph_hour.toString(),
+                                wind_kph_hour.toInt() * 3,
+                                wind_degr_hour.toFloat(),
+                                context.getString(R.string.time, i.toString())
+                            )
+                            wind.add(w)
+                            val h = Hourly(
+                                cond_icon,
+                                context.getString(R.string.time, i.toString()),
+                                context.getString(R.string.degre, temp_hour.toString())
+                            )
+                            hourl.add(h)
+
+                        }
+                    }else{
+
+                        for (i in 17 until hour?.size!!) {
+                            val hourSet = hour.get(i)
+                            val hf = hour.get(a)
+                            wind_kp = hf.wind_kph.toString()
+                            wind_degree = hf.wind_degree.toFloat()
+                            windDirection = hf.wind_dir
+
+                            val temp_hour = hourSet.temp_c
+                            val cond_hour = hourSet.condition
+                            val cond_icon = cond_hour.icon
+                            val rain = hourSet.chance_of_rain
+                            val precip_hour = hourSet.precip_mm
+                            val wind_degr_hour = hourSet.wind_degree
+                            val wind_kph_hour = hourSet.wind_kph
+
+                            val r = Rainy(
+                                "%$rain",
+                                context.getString(R.string.time, i.toString()),
+                                precip_hour.toString(),
+                                precip_hour.toFloat()
+                            )
+                            rainn.add(r)
+                            val w = Wind(
+                                wind_kph_hour.toString(),
+                                wind_kph_hour.toInt() * 3,
+                                wind_degr_hour.toFloat(),
+                                context.getString(R.string.time, i.toString())
+                            )
+                            wind.add(w)
+                            val h = Hourly(
+                                cond_icon,
+                                context.getString(R.string.time, i.toString()),
+                                context.getString(R.string.degre, temp_hour.toString())
+                            )
+                            hourl.add(h)
+                        }
+
                     }
 
-                    val t = Today(cityName,last_updated,context.getString(R.string.degre,temp_c),condition_text,humidity,uv,context.getString(R.string.totalPrecip,totalPrecip),wind_kp,wind_degree,windDirection)
+
+                    val t = Today(cityName,last_updated,context.getString(R.string.degre,temp_c),condition_text,humidity,uv,context.getString(R.string.totalPrecip,totalPrecip),wind_kp,wind_degree,windDirection,condition_code)
 
 
                     today.value = t

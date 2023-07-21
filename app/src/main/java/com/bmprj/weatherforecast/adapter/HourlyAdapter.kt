@@ -7,7 +7,7 @@ import com.bmprj.weatherforecast.databinding.HourlyLayoutBinding
 
 
 class HourlyAdapter(
-    override var list: List<Hourly>
+    override var list: ArrayList<Hourly>
     ) : BaseAdapter<HourlyLayoutBinding, Hourly>(list){
 
     override val layoutId:Int = R.layout.hourly_layout
@@ -18,5 +18,10 @@ class HourlyAdapter(
             hourly=item
             executePendingBindings()
         }
+
     }
+
+
+
+
 }

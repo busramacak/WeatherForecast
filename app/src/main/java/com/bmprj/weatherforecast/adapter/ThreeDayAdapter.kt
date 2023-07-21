@@ -6,7 +6,7 @@ import com.bmprj.weatherforecast.data.model.ThreeDay
 import com.bmprj.weatherforecast.databinding.ThreeDaysLayoutBinding
 
 class ThreeDayAdapter(
-    override var list:List<ThreeDay>
+    override var list:ArrayList<ThreeDay>
     ) : BaseAdapter<ThreeDaysLayoutBinding, ThreeDay>(list){
 
     override val layoutId: Int = R.layout.three_days_layout

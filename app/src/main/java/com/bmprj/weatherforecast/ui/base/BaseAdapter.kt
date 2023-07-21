@@ -6,8 +6,9 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import com.bmprj.weatherforecast.data.model.Hourly
 
-abstract class BaseAdapter<DBinding:ViewDataBinding, T : Any>(open var list: List<T>)
+abstract class BaseAdapter<DBinding:ViewDataBinding, T : Any>(open var list: ArrayList<T>)
     : RecyclerView.Adapter<BaseViewHolder<DBinding>>() {
 
     @get:LayoutRes
@@ -31,5 +32,18 @@ abstract class BaseAdapter<DBinding:ViewDataBinding, T : Any>(open var list: Lis
     override fun onBindViewHolder(holder: BaseViewHolder<DBinding>, position: Int) {
 
         bind(holder.binder,list[position])
+
+
     }
+
+
+    fun updateList(newList:ArrayList<T>){
+        list.clear()
+        list.addAll(newList)
+        notifyDataSetChanged()
+    }
+
+
+
 }
+

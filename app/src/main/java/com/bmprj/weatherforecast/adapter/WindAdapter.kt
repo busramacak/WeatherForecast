@@ -5,7 +5,7 @@ import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.data.model.Wind
 import com.bmprj.weatherforecast.databinding.WindLayoutBinding
 
-class WindAdapter(override var list:List<Wind>)
+class WindAdapter(override var list:ArrayList<Wind>)
     : BaseAdapter<WindLayoutBinding, Wind>(list){
 
     override val layoutId: Int = R.layout.wind_layout

@@ -6,7 +6,7 @@ import com.bmprj.weatherforecast.data.model.Rainy
 import com.bmprj.weatherforecast.databinding.RainyLayoutBinding
 
 class RainyAdapter(
-    override var list:List<Rainy>
+    override var list:ArrayList<Rainy>
     ) : BaseAdapter<RainyLayoutBinding, Rainy>(list){
 
     override val layoutId: Int = R.layout.rainy_layout

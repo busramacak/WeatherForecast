@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 
 
 @Suppress("DEPRECATION")
-class SearchAdapter(override var list:List<SearchCityItem>)
+class SearchAdapter(override var list:ArrayList<SearchCityItem>)
     : BaseAdapter<SearchLayoutBinding, SearchCityItem>(list) {
 
     override val layoutId: Int = R.layout.search_layout

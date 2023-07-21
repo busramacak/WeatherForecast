@@ -8,6 +8,10 @@
             name="today"
             type="com.bmprj.weatherforecast.ui.fragment.TodayFragment" />
 
+        <variable
+            name="viewmodel"
+            type="com.bmprj.weatherforecast.viewmodel.TodayViewModel" />
+
     </data>
 
 
@@ -33,7 +37,7 @@
                 android:elevation="1dp">
 
                 <ImageView
-                    android:onClick="@{(V)->today.refreshCurrentClick(V)}"
+
                     android:id="@+id/refresh"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
@@ -45,6 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:text="@{viewmodel.today.cityname}"
                     tools:text="SEHİR ADİ"
                     android:textColor="@color/white"
                     android:fontFamily="sans-serif-light"
@@ -59,6 +64,7 @@
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{viewmodel.today.date}"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="20 Mayıs,2:40 ÖS"
@@ -72,6 +78,7 @@
                 android:layout_marginTop="50dp"
                 android:fontFamily="sans-serif-light"
                 tools:text="2°"
+                android:text="@{viewmodel.today.degree}"
                 android:textColor="@color/white"
                 android:textSize="80sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -103,6 +110,7 @@
                 app:layout_constraintStart_toEndOf="@id/degree"
                 app:layout_constraintTop_toBottomOf="@id/animationView"
                 tools:ignore="TextSizeCheck"
+                android:text="@{viewmodel.today.conditionText}"
                 tools:text="Parçalı Bulutlu" />
 
 
@@ -174,7 +182,7 @@
                     android:fontFamily="sans-serif-light"
                     android:layout_toEndOf="@+id/humiditytxt"
                     android:layout_below="@id/timelytxt"
-                    android:text="" />
+                    android:text="@{viewmodel.today.humidity}" />
 
                 <TextView
                     android:id="@+id/uvtxt"
@@ -202,7 +210,7 @@
                     android:fontFamily="sans-serif-light"
                     android:layout_toEndOf="@+id/humiditytxt"
                     android:layout_below="@id/humidity"
-                    android:text="" />
+                    android:text="@{viewmodel.today.uv}" />
                     
 
             </RelativeLayout>
@@ -258,6 +266,7 @@
                     android:textColor="@color/white"
                     android:layout_marginBottom="10dp"
                     android:fontFamily="sans-serif-light"
+                    android:text="@{viewmodel.today.totalPrecip}"
                     tools:text="Günlük toplam hacim"
                     android:layout_below="@id/recyRain"/>
 
@@ -299,6 +308,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="50sp"
                     tools:text="7"
+                    android:text="@{viewmodel.today.wind_kph}"
                     android:fontFamily="sans-serif-light"
                     android:textColor="@color/wind"
                     android:layout_marginTop="10dp"
@@ -311,6 +321,7 @@
                     android:layout_height="30dp"
                     android:layout_below="@+id/windTxt"
                     android:scaleType="matrix"
+                    android:rotation="@{viewmodel.today.wind_dir}"
                     android:layout_marginTop="17dp"
                     android:layout_marginStart="20dp"
                     android:layout_toEndOf="@+id/wind_kph"
@@ -335,6 +346,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="N"
+                    android:text="@{viewmodel.today.wind_direction}"
                     android:textSize="17sp"
                     android:fontFamily="sans-serif-light"
                     android:layout_below="@id/windDir"

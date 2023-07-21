@@ -43,35 +43,35 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
         if(query.length>0){
 
-            val kdi = ApiUtils.getUrlInterface()
-            kdi.getSearch("904aa43adf804caf913131326232306",query).enqueue(object : Callback<SearchCity>{
-                override fun onResponse(call: Call<SearchCity>, response: Response<SearchCity>) {
-
-
-
-                    for(i in 0 until response.body()!!.size){
-                        val search = response.body()?.get(i)
-                        val name = search?.name
-                        val country = search?.country
-
-                        val s = SearchCityItem( country,0,0.0,0.0,name,"","")
-                        searchh.add(s)
-                    }
-
-                    binding.recyS.apply {
-                        layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                        binding.recyS.layoutManager = layoutManager
-                        adapter = SearchAdapter(searchh)
-                        binding.recyS.adapter = adapter
-                    }
-
-
-
-                }
-                override fun onFailure(call: Call<SearchCity>, t: Throwable) {
-                    Log.e("searchResponse",t.message.toString())
-                }
-            })
+//            val kdi = ApiUtils.getUrlInterface()
+//            kdi.getSearch("904aa43adf804caf913131326232306",query).enqueue(object : Callback<SearchCity>{
+//                override fun onResponse(call: Call<SearchCity>, response: Response<SearchCity>) {
+//
+//
+//
+//                    for(i in 0 until response.body()!!.size){
+//                        val search = response.body()?.get(i)
+//                        val name = search?.name
+//                        val country = search?.country
+//
+//                        val s = SearchCityItem( country,0,0.0,0.0,name,"","")
+//                        searchh.add(s)
+//                    }
+//
+//                    binding.recyS.apply {
+//                        layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+//                        binding.recyS.layoutManager = layoutManager
+//                        adapter = SearchAdapter(searchh)
+//                        binding.recyS.adapter = adapter
+//                    }
+//
+//
+//
+//                }
+//                override fun onFailure(call: Call<SearchCity>, t: Throwable) {
+//                    Log.e("searchResponse",t.message.toString())
+//                }
+//            })
 
 
         }

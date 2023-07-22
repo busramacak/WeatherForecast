@@ -8,10 +8,6 @@
             name="today"
             type="com.bmprj.weatherforecast.ui.fragment.TodayFragment" />
 
-        <variable
-            name="viewmodel"
-            type="com.bmprj.weatherforecast.viewmodel.TodayViewModel" />
-
     </data>
 
 

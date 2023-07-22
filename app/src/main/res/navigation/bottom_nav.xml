@@ -9,12 +9,22 @@
         android:id="@+id/todayFragment"
         android:name="com.bmprj.weatherforecast.ui.fragment.TodayFragment"
         android:label="fragment_today"
-        tools:layout="@layout/fragment_today"/>
+        tools:layout="@layout/fragment_today">
+
+        <action
+            android:id="@+id/action_todayFragment_to_tomorrowFragment"
+            app:destination="@id/tomorrowFragment" />
+    </fragment>
     <fragment
         android:id="@+id/tomorrowFragment"
         android:name="com.bmprj.weatherforecast.ui.fragment.TomorrowFragment"
         android:label="TomorrowFragment"
-        tools:layout="@layout/fragment_tomorrow"/>
+        tools:layout="@layout/fragment_tomorrow">
+        <argument
+            android:name="cityName"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/threeDayFragment"
         android:name="com.bmprj.weatherforecast.ui.fragment.ThreeDayFragment"

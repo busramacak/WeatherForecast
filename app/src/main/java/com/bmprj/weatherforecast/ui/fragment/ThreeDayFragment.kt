@@ -7,7 +7,11 @@ import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.bmprj.weatherforecast.ui.base.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.ThreeDayAdapter
@@ -17,6 +21,7 @@ import com.bmprj.weatherforecast.data.db.DataBase
 import com.bmprj.weatherforecast.databinding.FragmentThreeDayBinding
 import com.bmprj.weatherforecast.data.model.ThreeDay
 import com.bmprj.weatherforecast.data.model.Weather
+import com.bmprj.weatherforecast.viewmodel.ThreeDaysViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,17 +36,26 @@ import java.util.Date
 class ThreeDayFragment : BaseFragment<FragmentThreeDayBinding>(R.layout.fragment_three_day) {
     private val job = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
+    private lateinit var viewModel:ThreeDaysViewModel
+    private val threedaysAdapter = ThreeDayAdapter(arrayListOf())
 
     override fun setUpViews(view:View) {
         super.setUpViews(view)
 
         binding.threeDay=this
 
+        viewModel = ViewModelProviders.of(this@ThreeDayFragment)[ThreeDaysViewModel::class.java]
+
+        binding.recyThreeDay.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+        binding.recyThreeDay.adapter=threedaysAdapter
+
+
         val dialog = ProgressDialog(context)
-        dialog.setMessage(getString(R.string.yukleniyor))
-        dialog.setCancelable(false)
-        dialog.setInverseBackgroundForced(false)
-        dialog.show()
+//        dialog.setMessage(getString(R.string.yukleniyor))
+//        dialog.setCancelable(false)
+//        dialog.setInverseBackgroundForced(false)
+//        dialog.show()
+
         uiScope.launch(Dispatchers.Main) {
             val dh = DataBase.getInstance(requireContext())
             val search = DAO().get(dh)
@@ -50,15 +64,28 @@ class ThreeDayFragment : BaseFragment<FragmentThreeDayBinding>(R.layout.fragment
                 for(i in search){
                     if(i.id==1){
                         city=i.search
-                        getWeather(city,dialog)
+                        getWeather(city)
                         break
                     }
                 }
             }
         }
+
+        observeLiveData()
     }
 
-    private fun getWeather(city:String?,dialog: AlertDialog){
+    private fun observeLiveData(){
+        viewModel.threeDay.observe(viewLifecycleOwner, Observer { threeDay ->
+            threeDay?.let{
+                threedaysAdapter.updateList(threeDay)
+                binding.title.text= threeDay[0].cityName
+            }
+        })
+    }
+
+    private fun getWeather(city:String?){
+
+        viewModel.refreshData(requireContext(),"904aa43adf804caf913131326232306",city,3,"no",getString(R.string.lang))
 
 //        val kdi = ApiUtils.getUrlInterface()
 //        kdi.getWeather("904aa43adf804caf913131326232306",city,3,"no",getString(R.string.lang)).enqueue(object :

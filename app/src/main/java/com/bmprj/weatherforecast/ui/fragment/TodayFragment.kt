@@ -76,7 +76,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
             dialog.setMessage(getString(R.string.yukleniyor))
             dialog.setCancelable(false)
             dialog.setInverseBackgroundForced(false)
-            dialog.show()
+//            dialog.show()
 
             if(search.size>0){
                 for(i in search){

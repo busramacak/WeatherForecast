@@ -1,5 +1,6 @@
 package com.bmprj.weatherforecast.viewmodel
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -65,6 +66,7 @@ class TodayViewModel: ViewModel() {
 
         weatherApiUtils.getData(key, q, days, aqi, lang)
             .enqueue(object : Callback<Weather> {
+                @SuppressLint("SuspiciousIndentation")
                 override fun onResponse(
                     call: Call<Weather>,
                     response: Response<Weather>,

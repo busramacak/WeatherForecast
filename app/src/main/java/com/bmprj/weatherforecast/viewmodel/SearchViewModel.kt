@@ -1,0 +1,59 @@
+package com.bmprj.weatherforecast.viewmodel
+
+import android.content.Context
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.bmprj.weatherforecast.R
+import com.bmprj.weatherforecast.data.model.SearchCity
+import com.bmprj.weatherforecast.data.model.SearchCityItem
+import com.bmprj.weatherforecast.data.remote.ApiUtils
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+class SearchViewModel : ViewModel() {
+
+    private val searchUtils = ApiUtils()
+
+//
+//    val searchCity = MutableLiveData<SearchCity>()
+
+    val search = MutableLiveData<ArrayList<SearchCityItem>>()
+
+    fun refreshData(context:Context,key:String,query:String){
+        getDataFromApi(context,key, query)
+    }
+
+    private fun getDataFromApi(context: Context, key:String, query:String){
+        val searchh = ArrayList<SearchCityItem>()
+
+        val s = SearchCityItem("",0,0.0,0.0, context.getString(R.string.mevcutKonum),"","")
+
+        searchh.add(s)
+
+        if(query.isNotEmpty()){
+
+            searchUtils.getSearch(key, query).enqueue(object : Callback<SearchCity> {
+                override fun onResponse(call: Call<SearchCity>, response: Response<SearchCity>) {
+                    for(i in 0 until response.body()!!.size){
+                        val searc = response.body()?.get(i)
+                        val name = searc?.name
+                        val country = searc?.country
+
+                        val d = SearchCityItem( country,0,0.0,0.0,name,"","")
+                        searchh.add(d)
+                    }
+
+                    search.value=searchh
+
+                }
+
+                override fun onFailure(call: Call<SearchCity>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+        }
+
+    }
+}

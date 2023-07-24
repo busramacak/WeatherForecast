@@ -2,6 +2,8 @@ package com.bmprj.weatherforecast.ui.fragment
 
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.ui.base.BaseFragment
@@ -11,6 +13,8 @@ import com.bmprj.weatherforecast.data.remote.ApiUtils
 import com.bmprj.weatherforecast.databinding.FragmentSearchBinding
 import com.bmprj.weatherforecast.data.model.SearchCity
 import com.bmprj.weatherforecast.data.model.SearchCityItem
+import com.bmprj.weatherforecast.viewmodel.SearchViewModel
+import com.bmprj.weatherforecast.viewmodel.TodayViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,28 +22,45 @@ import retrofit2.Response
 
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
 
+    private lateinit var viewModel : SearchViewModel
+    val list = ArrayList<SearchCityItem>()
+
+    private lateinit var searchAdapter :SearchAdapter
 
     override fun setUpViews(view:View) {
         super.setUpViews(view)
 
         binding.search=this
 
-        binding.recyS.apply {
-            layoutManager=LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-            binding.recyS.layoutManager=layoutManager
-            val list = ArrayList<SearchCityItem>()
-            val s = SearchCityItem("",0,0.0,0.0, getString(R.string.mevcutKonum),"","")
-            list.add(s)
-            adapter = SearchAdapter(list)
-            binding.recyS.adapter=adapter
-        }
+        viewModel=ViewModelProviders.of(this@SearchFragment)[SearchViewModel::class.java]
+
+        val s = SearchCityItem("",0,0.0,0.0, getString(R.string.mevcutKonum),"","")
+        list.add(s)
+        searchAdapter= SearchAdapter(list)
+
+        binding.recyS.layoutManager=LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+        binding.recyS.adapter=searchAdapter
+
+        observeLiveData()
+    }
+
+
+    fun observeLiveData(){
+
+        viewModel.search.observe(viewLifecycleOwner, Observer {search ->
+
+            search?.let {
+                searchAdapter.updateList(search)
+            }
+
+        })
+
+
     }
 
     fun onQueryTextChange(query: String): Boolean {
 
-        val searchh = ArrayList<SearchCityItem>()
-        val f = SearchCityItem("",0,0.0,0.0,getString(R.string.mevcutKonum),"","")
-        searchh.add(f)
+        viewModel.refreshData(requireContext(),"904aa43adf804caf913131326232306",query)
 
         if(query.length>0){
 

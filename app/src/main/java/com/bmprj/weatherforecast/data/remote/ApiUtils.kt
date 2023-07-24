@@ -1,6 +1,7 @@
 package com.bmprj.weatherforecast.data.remote
 
 import android.content.Context
+import com.bmprj.weatherforecast.data.model.SearchCity
 import com.bmprj.weatherforecast.data.model.Weather
 import io.reactivex.Single
 import retrofit2.Call
@@ -19,9 +20,13 @@ class ApiUtils {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(APIService::class.java)
-        }
+    }
 
-        fun getData( key:String, q:String?, days:Int, aqi:String, lang:String): Call<Weather> {
-            return api.getWeather(key,q,days,aqi,lang)
+    fun getData( key:String, q:String?, days:Int, aqi:String, lang:String): Call<Weather> {
+        return api.getWeather(key,q,days,aqi,lang)
+    }
+
+    fun getSearch(key:String, query:String): Call<SearchCity>{
+        return api.getSearch(key,query)
     }
 }

@@ -72,18 +72,12 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
             val city:String?
 
 
-            val dialog = ProgressDialog(context)
-            dialog.setMessage(getString(R.string.yukleniyor))
-            dialog.setCancelable(false)
-            dialog.setInverseBackgroundForced(false)
-//            dialog.show()
-
             if(search.size>0){
                 for(i in search){
                     if(i.id==1){
                         if(i.search==null || i.search ==getString(R.string.mevcutKonum)){
 
-                            getLocation(view,dialog)
+                            getLocation(view)
                         }else{
                             city=i.search
                             getWeather(city)
@@ -92,7 +86,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
                     }
                 }
             }else{
-                getLocation(view,dialog)
+                getLocation(view)
             }
         }
 
@@ -206,7 +200,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission")
-    fun getLocation(view:View,dialog: AlertDialog){
+    fun getLocation(view:View){
 
         val mFusedLocationClient = LocationServices.getFusedLocationProviderClient(view.context)
         if (checkPermissions(view)) {
@@ -219,12 +213,10 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
                 }
             }else{
                 Navigation.findNavController(view).navigate(R.id.searchFragment)
-                dialog.dismiss()
             }
         } else {
             requestPermissions(view)
             Navigation.findNavController(view).navigate(R.id.searchFragment)
-            dialog.dismiss()
         }
     }
 

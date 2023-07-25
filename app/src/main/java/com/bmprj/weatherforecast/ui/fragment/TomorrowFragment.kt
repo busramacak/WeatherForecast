@@ -1,44 +1,29 @@
-@file:Suppress("DEPRECATION")
-
 package com.bmprj.weatherforecast.ui.fragment
 
 import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.os.Build
-import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.ui.base.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.HourlyAdapter
 import com.bmprj.weatherforecast.adapter.RainyAdapter
 import com.bmprj.weatherforecast.adapter.WindAdapter
-import com.bmprj.weatherforecast.data.remote.ApiUtils
 import com.bmprj.weatherforecast.data.db.DAO
 import com.bmprj.weatherforecast.data.db.DataBase
-import com.bmprj.weatherforecast.data.model.Hourly
-import com.bmprj.weatherforecast.data.model.Rainy
-import com.bmprj.weatherforecast.data.model.Weather
-import com.bmprj.weatherforecast.data.model.Wind
 import com.bmprj.weatherforecast.databinding.FragmentTomorrowBinding
-import com.bmprj.weatherforecast.viewmodel.TodayViewModel
 import com.bmprj.weatherforecast.viewmodel.TomorrowViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.ArrayList
 
-@Suppress("DEPRECATION")
+
 class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(R.layout.fragment_tomorrow) {
     private val job = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main+job)
@@ -53,7 +38,7 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(R.layout.fragment
 
 
         binding.tomorrow=this
-        viewModel = ViewModelProviders.of(this@TomorrowFragment).get(TomorrowViewModel::class.java)
+        viewModel = ViewModelProviders.of(this@TomorrowFragment)[TomorrowViewModel::class.java]
 
         binding.recyRain.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         binding.recyRain.adapter=rainyAdapter
@@ -74,6 +59,8 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(R.layout.fragment
             val dh = DataBase.getInstance(requireContext())
             val search = DAO().get(dh)
             val city:String?
+
+
             for(i in search){
                 if(i.id==1){
                     city=i.search
@@ -102,23 +89,23 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(R.layout.fragment
     @RequiresApi(Build.VERSION_CODES.O)
     private fun observeLiveData(){
 
-        viewModel.hourlyTom.observe(viewLifecycleOwner, Observer { houryl ->
+        viewModel.hourlyTom.observe(viewLifecycleOwner) { houryl ->
             houryl?.let {
                 hourlyAdapter.updateList(it)
             }
 
-        })
+        }
 
-        viewModel.rainyTom.observe(viewLifecycleOwner, Observer { rainy->
+        viewModel.rainyTom.observe(viewLifecycleOwner) { rainy->
             rainy?.let {
                 rainyAdapter.updateList(it)
             }
-        })
+        }
 
-        viewModel.windyTom.observe(viewLifecycleOwner, Observer { windy ->
+        viewModel.windyTom.observe(viewLifecycleOwner)  { windy ->
             windy?.let { windAdapter.updateList(it) }
 
-        })
+        }
 
         val formatter = DateTimeFormatter.ofPattern("HH")
         val currentt = LocalDateTime.now().format(formatter)

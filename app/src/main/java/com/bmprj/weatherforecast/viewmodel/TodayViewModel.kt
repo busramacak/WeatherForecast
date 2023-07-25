@@ -7,10 +7,11 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bmprj.weatherforecast.R
+import com.bmprj.weatherforecast.data.db.DAO
+import com.bmprj.weatherforecast.data.db.DatabaseHelper
 import com.bmprj.weatherforecast.data.model.Hourly
 import com.bmprj.weatherforecast.data.model.Rainy
 import com.bmprj.weatherforecast.data.model.Today
-import com.bmprj.weatherforecast.data.model.Tomorrow
 import com.bmprj.weatherforecast.data.model.Weather
 import com.bmprj.weatherforecast.data.model.Wind
 import com.bmprj.weatherforecast.data.remote.ApiUtils
@@ -74,6 +75,16 @@ class TodayViewModel: ViewModel() {
                     weathers.value = response.body()
 
                     val cityName = response.body()?.location?.name
+                    val dh = DatabaseHelper(context)
+
+                    if(DAO().get(dh).size==0){
+                        DAO().add(dh,1,cityName)
+
+                    }else
+                    {
+                        DAO().update(dh,1,cityName)
+                    }
+
                     val current = response.body()?.current
                     val last_updated = response.body()?.current?.last_updated
                     val temp_c = current?.temp_c?.toInt().toString()

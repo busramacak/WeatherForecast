@@ -69,7 +69,7 @@ class SearchAdapter(override var list:ArrayList<SearchCityItem>)
 
 
                     alertDialog.setPositiveButton(Html.fromHtml("<font color='#757474'>"+binding.root.context.getString(R.string.openSettings)+"</font>"))
-                    { DialogInterface, which:Int ->
+                    { _, _ ->
 
                         DAO().delete(dh)
                         it.context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))

@@ -2,7 +2,6 @@ package com.bmprj.weatherforecast.data.remote
 
 import com.bmprj.weatherforecast.data.model.Weather
 import com.bmprj.weatherforecast.data.model.SearchCity
-import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

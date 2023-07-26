@@ -1,11 +1,7 @@
-@file:Suppress("DEPRECATION")
-
 package com.bmprj.weatherforecast.ui.fragment
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location

@@ -1,10 +1,8 @@
 package com.bmprj.weatherforecast.ui.fragment
 
-import android.app.AlertDialog
 import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.ui.base.BaseFragment
@@ -101,16 +99,16 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(R.layout.fragment
         val currentt = LocalDateTime.now().format(formatter)
         val t = currentt.toInt()
 
-        viewModel.tomorrow.observe(viewLifecycleOwner, Observer { tomorrow->
+        viewModel.tomorrow.observe(viewLifecycleOwner) { tomorrow ->
             tomorrow?.let {
-                binding.title.text=it.cityname
-                binding.date.text=it.date
-                binding.degree.text=it.degree
-                binding.condition.text=it.conditionText
-                binding.humidity.text=it.humidity
-                binding.uv.text=it.uv
-                binding.totalprecip.text=it.totalPrecip
-                binding.windKph.text=it.wind_kph
+                binding.title.text = it.cityname
+                binding.date.text = it.date
+                binding.degree.text = it.degree
+                binding.condition.text = it.conditionText
+                binding.humidity.text = it.humidity
+                binding.uv.text = it.uv
+                binding.totalprecip.text = it.totalPrecip
+                binding.windKph.text = it.wind_kph
 
 
                 when (tomorrow.code) {
@@ -157,13 +155,13 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(R.layout.fragment
 
                     }
 
-                    1183, 1186, 1189, 1192, 1195, 1198, 1201, 1240, 1243, 1246 -> {
+                    1183, 1186, 1189, 1192, 1195, 1198, 1201, 1240, 1243, 1246, 1063 -> {
                         binding.animationView.setAnimation(R.raw.partly_shower)
                     }
                 }
 
             }
-        })
+        }
     }
 
 

@@ -1,12 +1,9 @@
 package com.bmprj.weatherforecast.data.remote
 
-import android.content.Context
 import com.bmprj.weatherforecast.data.model.SearchCity
 import com.bmprj.weatherforecast.data.model.Weather
-import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiUtils {

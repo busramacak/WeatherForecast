@@ -1,5 +1,6 @@
 package com.bmprj.weatherforecast.data.model
 
+
 data class Today(
     val cityname:String?,
     val date:String?,

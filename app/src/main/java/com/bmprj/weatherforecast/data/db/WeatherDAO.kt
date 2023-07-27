@@ -1,0 +1,26 @@
+package com.bmprj.weatherforecast.data.db
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import com.bmprj.weatherforecast.data.model.Weather
+
+@Dao
+interface WeatherDAO {
+
+    @Insert
+    suspend fun insertAll(weather: Weather)
+
+
+    @Query("SELECT * FROM weather")
+    suspend fun getWeather():Weather
+
+
+    @Query("DELETE FROM weather")
+    suspend fun delete()
+
+
+
+
+
+}

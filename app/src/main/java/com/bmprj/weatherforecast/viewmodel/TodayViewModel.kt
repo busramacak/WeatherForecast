@@ -1,27 +1,31 @@
 package com.bmprj.weatherforecast.viewmodel
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.app.Application
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.data.db.DAO
 import com.bmprj.weatherforecast.data.db.DatabaseHelper
+import com.bmprj.weatherforecast.data.db.WeatherDatabase
 import com.bmprj.weatherforecast.data.model.Hourly
 import com.bmprj.weatherforecast.data.model.Rainy
 import com.bmprj.weatherforecast.data.model.Today
 import com.bmprj.weatherforecast.data.model.Weather
 import com.bmprj.weatherforecast.data.model.Wind
 import com.bmprj.weatherforecast.data.remote.ApiUtils
+import com.bmprj.weatherforecast.ui.base.BaseViewModel
+import com.bmprj.weatherforecast.util.CustomSharedPreferences
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class TodayViewModel: ViewModel() {
+class TodayViewModel(application: Application): BaseViewModel(application) {
     private val weatherApiUtils = ApiUtils()
 
 
@@ -32,6 +36,9 @@ class TodayViewModel: ViewModel() {
     val windyTod = MutableLiveData<ArrayList<Wind>>()
 
 
+    private var customSharedPreferences = CustomSharedPreferences(getApplication())
+    private val refreshTime = 15*60*1000*1000*1000L
+
 
     val today = MutableLiveData<Today>()
 
@@ -40,15 +47,78 @@ class TodayViewModel: ViewModel() {
     val weatherLoading = MutableLiveData<Boolean>()
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun refreshData(context: Context, key:String, q:String?, days:Int, aqi:String, lang:String){
-        getDataFromApi(context,key,q,days,aqi,lang)
+    fun refreshData(key: String, q: String?, days: Int, aqi: String, lang: String){
+
+        val updateTime = customSharedPreferences.getTime()
+
+        if(updateTime!=null && updateTime!=0L && System.nanoTime() - updateTime < refreshTime){
+            getDataFromSQLite()
+        }else{
+            getDataFromApi(key, q, days, aqi, lang)
+
+        }
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getDataFromSQLite(){
+        launch {
+            val weathers = WeatherDatabase(getApplication()).weatherDAO().getWeather()
+            showCountries(weathers)
+            Toast.makeText(getApplication(),"countries From SQLite", Toast.LENGTH_LONG).show()
+
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getDataFromApi(context:Context, key:String, q:String?, days:Int, aqi:String, lang:String) {
+    private fun getDataFromApi(key: String, q: String?, days: Int, aqi: String, lang: String) {
         weatherLoading.value = true
 
 
+
+
+
+        weatherApiUtils.getData(key, q, days, aqi, lang)
+            .enqueue(object : Callback<Weather> {
+                @SuppressLint("SuspiciousIndentation")
+                override fun onResponse(
+                    call: Call<Weather>,
+                    response: Response<Weather>,
+                ) {
+                    weathers.value = response.body()
+                    val weather=Weather(weathers.value?.current!!,response.body()?.forecast!!,response.body()?.location!!)
+
+                    storeInSQLite(weather)
+                    Toast.makeText(getApplication(),"countries From API",Toast.LENGTH_LONG).show()
+
+
+                }
+
+                override fun onFailure(call: Call<Weather>, t: Throwable) {
+                    weatherLoading.value=false
+                    weatherError.value=true
+                    t.printStackTrace()
+                }
+
+            })
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun storeInSQLite(weather: Weather) {
+        launch {
+            val dao = WeatherDatabase(getApplication()).weatherDAO()
+            dao.delete()
+            dao.insertAll(weather) //listeyi tekil eleman haline getirmeyi sağlıyor
+
+            weather.uid=1
+            showCountries(weather)
+        }
+
+        customSharedPreferences.saveTime(System.nanoTime())
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun showCountries(weather: Weather){
         val hourlyToday = ArrayList<Hourly>()
         val rainyToday = ArrayList<Rainy>()
         val windToday = ArrayList<Wind>()
@@ -65,166 +135,139 @@ class TodayViewModel: ViewModel() {
         var windDirection=""
 
 
-        weatherApiUtils.getData(key, q, days, aqi, lang)
-            .enqueue(object : Callback<Weather> {
-                @SuppressLint("SuspiciousIndentation")
-                override fun onResponse(
-                    call: Call<Weather>,
-                    response: Response<Weather>,
-                ) {
-                    weathers.value = response.body()
+        val cityName = weather.location.name
+        val dh = DatabaseHelper(getApplication())
 
-                    val cityName = response.body()?.location?.name
-                    val dh = DatabaseHelper(context)
+        if(DAO().get(dh).size==0){
+            DAO().add(dh,1,cityName)
 
-                    if(DAO().get(dh).size==0){
-                        DAO().add(dh,1,cityName)
+        }else
+        {
+            DAO().update(dh,1,cityName)
+        }
 
-                    }else
-                    {
-                        DAO().update(dh,1,cityName)
-                    }
+        val current = weather.current
+        val last_updated = weather.current.last_updated
+        val temp_c = current.temp_c.toInt().toString()
 
-                    val current = response.body()?.current
-                    val last_updated = response.body()?.current?.last_updated
-                    val temp_c = current?.temp_c?.toInt().toString()
+        val condition = current.condition
+        val condition_text = condition.text
+        val condition_code = condition.code
 
-                    val condition = current?.condition
-                    val condition_text = condition?.text
-                    val condition_code = condition?.code
-
-                    val day = response.body()?.forecast?.forecastday?.get(0)?.day
-                    val humidity = day?.avghumidity.toString()
-                    val uv = day?.uv.toString()
-                    val totalPrecip = day?.totalprecip_mm.toString()
+        val day = weather.forecast.forecastday.get(0).day
+        val humidity = day.avghumidity.toString()
+        val uv = day.uv.toString()
+        val totalPrecip = day.totalprecip_mm.toString()
 
 
 
 
-                    val hourToday = response.body()?.forecast?.forecastday?.get(0)?.hour
+        val hourToday = weather.forecast.forecastday.get(0).hour
 
 
-                        if(a<17){
-                            for(i in a until hourToday?.size!!){
-                                val hourSet = hourToday.get(i)
-                                val hf = hourToday.get(a)
-                                wind_kp = hf.wind_kph.toString()
-                                wind_degree = hf.wind_degree.toFloat()
-                                windDirection = hf.wind_dir
+        if(a<17){
+            for(i in a until hourToday.size){
+                val hourSet = hourToday.get(i)
+                val hf = hourToday.get(a)
+                wind_kp = hf.wind_kph.toString()
+                wind_degree = hf.wind_degree.toFloat()
+                windDirection = hf.wind_dir
 
-                                val temp_hour = hourSet.temp_c
-                                val cond_hour = hourSet.condition
-                                val cond_icon = cond_hour.icon
-                                val rain = hourSet.chance_of_rain
-                                val precip_hour = hourSet.precip_mm
-                                val wind_degr_hour = hourSet.wind_degree
-                                val wind_kph_hour = hourSet.wind_kph
+                val temp_hour = hourSet.temp_c
+                val cond_hour = hourSet.condition
+                val cond_icon = cond_hour.icon
+                val rain = hourSet.chance_of_rain
+                val precip_hour = hourSet.precip_mm
+                val wind_degr_hour = hourSet.wind_degree
+                val wind_kph_hour = hourSet.wind_kph
 
-                                val r = Rainy(
-                                    "%$rain",
-                                    context.getString(R.string.time, i.toString()),
-                                    precip_hour.toString(),
-                                    precip_hour.toFloat()
-                                )
-                                rainyToday.add(r)
-                                val w = Wind(
-                                    wind_kph_hour.toString(),
-                                    wind_kph_hour.toInt() * 3,
-                                    wind_degr_hour.toFloat(),
-                                    context.getString(R.string.time, i.toString())
-                                )
-                                windToday.add(w)
-                                val h = Hourly(
-                                    cond_icon,
-                                    context.getString(R.string.time, i.toString()),
-                                    context.getString(R.string.degre, temp_hour.toString())
-                                )
-                                hourlyToday.add(h)
+                val r = Rainy(
+                    "%$rain",
+                    getApplication<Application>().getString(R.string.time, i.toString()),
+                    precip_hour.toString(),
+                    precip_hour.toFloat()
+                )
+                rainyToday.add(r)
+                val w = Wind(
+                    wind_kph_hour.toString(),
+                    wind_kph_hour.toInt() * 3,
+                    wind_degr_hour.toFloat(),
+                    getApplication<Application>().getString(R.string.time, i.toString())
+                )
+                windToday.add(w)
+                val h = Hourly(
+                    cond_icon,
+                    getApplication<Application>().getString(R.string.time, i.toString()),
+                    getApplication<Application>().getString(R.string.degre, temp_hour.toString())
+                )
+                hourlyToday.add(h)
 
-                            }
-                        }else{
+            }
+        }else{
 
-                            for (i in 17 until hourToday?.size!!) {
-                                val hourSet = hourToday.get(i)
-                                val hf = hourToday.get(a)
-                                wind_kp = hf.wind_kph.toString()
-                                wind_degree = hf.wind_degree.toFloat()
-                                windDirection = hf.wind_dir
+            for (i in 17 until hourToday.size) {
+                val hourSet = hourToday.get(i)
+                val hf = hourToday.get(a)
+                wind_kp = hf.wind_kph.toString()
+                wind_degree = hf.wind_degree.toFloat()
+                windDirection = hf.wind_dir
 
-                                val temp_hour = hourSet.temp_c
-                                val cond_hour = hourSet.condition
-                                val cond_icon = cond_hour.icon
-                                val rain = hourSet.chance_of_rain
-                                val precip_hour = hourSet.precip_mm
-                                val wind_degr_hour = hourSet.wind_degree
-                                val wind_kph_hour = hourSet.wind_kph
+                val temp_hour = hourSet.temp_c
+                val cond_hour = hourSet.condition
+                val cond_icon = cond_hour.icon
+                val rain = hourSet.chance_of_rain
+                val precip_hour = hourSet.precip_mm
+                val wind_degr_hour = hourSet.wind_degree
+                val wind_kph_hour = hourSet.wind_kph
 
-                                val r = Rainy(
-                                    "%$rain",
-                                    context.getString(R.string.time, i.toString()),
-                                    precip_hour.toString(),
-                                    precip_hour.toFloat()
-                                )
-                                rainyToday.add(r)
-                                val w = Wind(
-                                    wind_kph_hour.toString(),
-                                    wind_kph_hour.toInt() * 3,
-                                    wind_degr_hour.toFloat(),
-                                    context.getString(R.string.time, i.toString())
-                                )
-                                windToday.add(w)
-                                val h = Hourly(
-                                    cond_icon,
-                                    context.getString(R.string.time, i.toString()),
-                                    context.getString(R.string.degre, temp_hour.toString())
-                                )
-                                hourlyToday.add(h)
-                            }
+                val r = Rainy(
+                    "%$rain",
+                    getApplication<Application>().getString(R.string.time, i.toString()),
+                    precip_hour.toString(),
+                    precip_hour.toFloat()
+                )
+                rainyToday.add(r)
+                val w = Wind(
+                    wind_kph_hour.toString(),
+                    wind_kph_hour.toInt() * 3,
+                    wind_degr_hour.toFloat(),
+                    getApplication<Application>().getString(R.string.time, i.toString())
+                )
+                windToday.add(w)
+                val h = Hourly(
+                    cond_icon,
+                    getApplication<Application>().getString(R.string.time, i.toString()),
+                    getApplication<Application>().getString(R.string.degre, temp_hour.toString())
+                )
+                hourlyToday.add(h)
+            }
 
-                        }
-
-
+        }
 
 
+        val tod = Today(
+            cityName,
+            last_updated,
+            getApplication<Application>().getString(R.string.degre,temp_c),
+            condition_text,
+            humidity,
+            uv,
+            getApplication<Application>().getString(R.string.totalPrecip,totalPrecip),
+            wind_kp,
+            wind_degree,
+            windDirection,
+            condition_code)
 
 
+        today.value = tod
 
 
+        hourlyTod.value = hourlyToday
+        rainyTod.value = rainyToday
+        windyTod.value = windToday
 
-
-
-                    val tod = Today(
-                        cityName,
-                        last_updated,
-                        context.getString(R.string.degre,temp_c),
-                        condition_text,
-                        humidity,
-                        uv,
-                        context.getString(R.string.totalPrecip,totalPrecip),
-                        wind_kp,
-                        wind_degree,
-                        windDirection,
-                        condition_code)
-
-
-                    today.value = tod
-
-
-                    hourlyTod.value = hourlyToday
-                    rainyTod.value = rainyToday
-                    windyTod.value = windToday
-
-                    weatherError.value = false
-                    weatherLoading.value = false
-                }
-
-                override fun onFailure(call: Call<Weather>, t: Throwable) {
-                    weatherLoading.value=false
-                    weatherError.value=true
-                    t.printStackTrace()
-                }
-
-            })
+        weatherError.value = false
+        weatherLoading.value = false
     }
 }
 

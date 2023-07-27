@@ -10,7 +10,10 @@
 
     </data>
 
-
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ScrollView
         android:id="@+id/scrollV"
@@ -201,7 +204,7 @@
                     android:fontFamily="sans-serif-light"
                     android:layout_toEndOf="@+id/humiditytxt"
                     android:layout_below="@id/humidity" />
-                    
+
 
             </RelativeLayout>
 
@@ -359,4 +362,6 @@
 
 
     </ScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

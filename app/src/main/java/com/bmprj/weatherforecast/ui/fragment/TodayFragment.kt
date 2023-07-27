@@ -23,10 +23,6 @@ import com.bmprj.weatherforecast.data.db.DataBase
 import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
 import com.bmprj.weatherforecast.viewmodel.TodayViewModel
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -34,8 +30,6 @@ import java.util.*
 
 
 class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today) {
-    val job = Job()
-    val uiScope = CoroutineScope(Dispatchers.Main + job)
     private lateinit var viewModel : TodayViewModel
     private val hourlyAdapter = HourlyAdapter(arrayListOf())
     private val rainyAdapter = RainyAdapter(arrayListOf())
@@ -62,10 +56,10 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
         binding.recy.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         binding.recy.adapter=hourlyAdapter
 
-        uiScope.launch(Dispatchers.Main){
+
             val dh = DataBase.getInstance(requireContext())
             val search = DAO().get(dh)
-            val city:String?
+            var city:String?=null
 
 
             if(search.size>0){
@@ -84,7 +78,21 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
             }else{
                 getLocation(view)
             }
-        }
+
+            binding.swipeRefreshLayout.setOnRefreshListener {
+                binding.swipeRefreshLayout.isRefreshing=false
+                binding.scrollV.visibility=View.GONE
+                viewModel.refreshData(
+                    "904aa43adf804caf913131326232306",
+                    city,
+                    1,
+                    "no",
+                    getString(R.string.lang)
+                )
+            }
+
+
+
 
         observeLiveData()
     }
@@ -102,6 +110,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
 
         viewModel.hourlyTod.observe(viewLifecycleOwner){ hourly ->
             hourly?.let{
+                binding.scrollV.visibility=View.VISIBLE
                 hourlyAdapter.updateList(hourly)
             }
         }
@@ -191,7 +200,13 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
     @RequiresApi(Build.VERSION_CODES.O)
     fun getWeather(city:String?){
 
-        viewModel.refreshData(requireContext(),"904aa43adf804caf913131326232306",city,1,"no",getString(R.string.lang))
+        viewModel.refreshData(
+            "904aa43adf804caf913131326232306",
+            city,
+            1,
+            "no",
+            getString(R.string.lang)
+        )
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

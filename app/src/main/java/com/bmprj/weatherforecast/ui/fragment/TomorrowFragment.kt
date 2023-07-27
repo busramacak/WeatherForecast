@@ -14,18 +14,12 @@ import com.bmprj.weatherforecast.data.db.DAO
 import com.bmprj.weatherforecast.data.db.DataBase
 import com.bmprj.weatherforecast.databinding.FragmentTomorrowBinding
 import com.bmprj.weatherforecast.viewmodel.TomorrowViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
 class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(R.layout.fragment_tomorrow) {
-    private val job = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main+job)
-    private lateinit var viewModel : TomorrowViewModel
+   private lateinit var viewModel : TomorrowViewModel
     private val hourlyAdapter = HourlyAdapter(arrayListOf())
     private val rainyAdapter = RainyAdapter(arrayListOf())
     private val windAdapter = WindAdapter(arrayListOf())
@@ -47,22 +41,34 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(R.layout.fragment
         binding.recy.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         binding.recy.adapter=hourlyAdapter
 
-        uiScope.launch(Dispatchers.Main){
-            val dh = DataBase.getInstance(requireContext())
-            val search = DAO().get(dh)
-            val city:String?
+        val dh = DataBase.getInstance(requireContext())
+        val search = DAO().get(dh)
+        var city:String?=null
 
+        for(i in search){
+            if(i.id==1){
+                city=i.search
 
-            for(i in search){
-                if(i.id==1){
-                    city=i.search
+                viewModel.refreshData("904aa43adf804caf913131326232306",city,2,"no",getString(R.string.lang))
 
-                    viewModel.refreshData(requireContext(),"904aa43adf804caf913131326232306",city,2,"no",getString(R.string.lang))
-
-                    break
-                }
+                break
             }
         }
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.swipeRefreshLayout.isRefreshing=false
+            binding.scrollV.visibility=View.GONE
+            viewModel.refreshData(
+                "904aa43adf804caf913131326232306",
+                city,
+                2,
+                "no",
+                getString(R.string.lang)
+            )
+        }
+
+
+
 
 
         observeLiveData()
@@ -79,6 +85,7 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(R.layout.fragment
 
         viewModel.hourlyTom.observe(viewLifecycleOwner) { houryl ->
             houryl?.let {
+                binding.scrollV.visibility=View.VISIBLE
                 hourlyAdapter.updateList(it)
             }
 

@@ -34,13 +34,13 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
     val hourlyTod = MutableLiveData<ArrayList<Hourly>>()
     val rainyTod = MutableLiveData<ArrayList<Rainy>>()
     val windyTod = MutableLiveData<ArrayList<Wind>>()
-
+    val today = MutableLiveData<Today>()
 
     private var customSharedPreferences = CustomSharedPreferences(getApplication())
     private val refreshTime = 15*60*1000*1000*1000L
 
 
-    val today = MutableLiveData<Today>()
+
 
 
     val weatherError = MutableLiveData<Boolean>()
@@ -86,7 +86,7 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
                     response: Response<Weather>,
                 ) {
                     weathers.value = response.body()
-                    val weather=Weather(weathers.value?.current!!,response.body()?.forecast!!,response.body()?.location!!)
+                    val weather=Weather(weathers.value?.current!!,weathers.value?.forecast!!,weathers.value?.location!!)
 
                     storeInSQLite(weather)
                     Toast.makeText(getApplication(),"countries From API",Toast.LENGTH_LONG).show()

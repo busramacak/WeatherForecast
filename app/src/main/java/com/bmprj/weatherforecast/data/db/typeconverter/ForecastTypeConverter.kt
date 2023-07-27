@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast.data.db
+package com.bmprj.weatherforecast.data.db.typeconverter
 
 import androidx.room.TypeConverter
 import com.bmprj.weatherforecast.data.model.Forecast

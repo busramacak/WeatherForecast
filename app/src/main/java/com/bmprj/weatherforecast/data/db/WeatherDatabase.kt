@@ -5,6 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.bmprj.weatherforecast.data.db.typeconverter.CurrentTypeConverter
+import com.bmprj.weatherforecast.data.db.typeconverter.ForecastTypeConverter
+import com.bmprj.weatherforecast.data.db.typeconverter.LocationTypeConverter
 import com.bmprj.weatherforecast.data.model.Weather
 
 @Database(entities = arrayOf(Weather::class), version = 1,exportSchema = false)

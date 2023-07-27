@@ -33,24 +33,26 @@ class TomorrowViewModel(application: Application):BaseViewModel(application) {
 
     private var customSharedPreferences = CustomSharedPreferences(getApplication())
     private val refreshTime = 15*60*1000*1000*1000L
+    private val uid = 2
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun refreshData( key:String, q:String?, days:Int, aqi:String, lang:String){
         val updateTime = customSharedPreferences.getTime()
 
-        if(updateTime!=null && updateTime!=0L && System.nanoTime() - updateTime < refreshTime){
-            getDataFromSQLite()
-        }else{
-            getDataFromApi(key, q, days, aqi, lang)
-
-        }
+        getDataFromSQLite()
+//        if(updateTime!=null && updateTime!=0L && System.nanoTime() - updateTime < refreshTime){
+//            getDataFromSQLite()
+//        }else{
+//            getDataFromApi(key, q, days, aqi, lang)
+//
+//        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getDataFromSQLite(){
         launch {
             val weathers = WeatherDatabase(getApplication()).weatherDAO().getWeather()
-            showCountries(weathers)
+            showWeathers(weathers)
             Toast.makeText(getApplication(),"countries From SQLite", Toast.LENGTH_LONG).show()
 
         }
@@ -85,14 +87,14 @@ class TomorrowViewModel(application: Application):BaseViewModel(application) {
             dao.delete()
             dao.insertAll(weather) //listeyi tekil eleman haline getirmeyi sağlıyor
 
-            weather.uid=2
-            showCountries(weather)
+            weather.uid=1
+            showWeathers(weather)
         }
 
         customSharedPreferences.saveTime(System.nanoTime())
     }
 
-    private fun showCountries(weather: Weather){
+    private fun showWeathers(weather: Weather){
 
         val hourlyTomorrow= ArrayList<Hourly>()
         val rainyTomorrow = ArrayList<Rainy>()

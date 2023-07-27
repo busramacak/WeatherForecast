@@ -10,6 +10,7 @@ import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,6 +41,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
     @RequiresApi(Build.VERSION_CODES.O)
     override fun setUpViews(view:View) {
         super.setUpViews(view)
+
 
 
         binding.today=this
@@ -85,7 +87,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
                 viewModel.refreshData(
                     "904aa43adf804caf913131326232306",
                     city,
-                    1,
+                    3,
                     "no",
                     getString(R.string.lang)
                 )
@@ -203,7 +205,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
         viewModel.refreshData(
             "904aa43adf804caf913131326232306",
             city,
-            1,
+            3,
             "no",
             getString(R.string.lang)
         )

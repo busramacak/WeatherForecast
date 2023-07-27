@@ -37,7 +37,8 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
     val today = MutableLiveData<Today>()
 
     private var customSharedPreferences = CustomSharedPreferences(getApplication())
-    private val refreshTime = 15*60*1000*1000*1000L
+    private val refreshTime = 0.1*60*1000*1000*1000L
+    private val uid = 1
 
 
 
@@ -64,7 +65,7 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
     private fun getDataFromSQLite(){
         launch {
             val weathers = WeatherDatabase(getApplication()).weatherDAO().getWeather()
-            showCountries(weathers)
+            showWeathers(weathers)
             Toast.makeText(getApplication(),"countries From SQLite", Toast.LENGTH_LONG).show()
 
         }
@@ -108,17 +109,17 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
         launch {
             val dao = WeatherDatabase(getApplication()).weatherDAO()
             dao.delete()
-            dao.insertAll(weather) //listeyi tekil eleman haline getirmeyi sağlıyor
+            dao.insertAll(weather)
 
-            weather.uid=1
-            showCountries(weather)
+            weather.uid=uid
+            showWeathers(weather)
         }
 
         customSharedPreferences.saveTime(System.nanoTime())
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun showCountries(weather: Weather){
+    private fun showWeathers(weather: Weather){
         val hourlyToday = ArrayList<Hourly>()
         val rainyToday = ArrayList<Rainy>()
         val windToday = ArrayList<Wind>()

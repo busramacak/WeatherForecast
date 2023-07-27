@@ -12,7 +12,7 @@ interface WeatherDAO {
     suspend fun insertAll(weather: Weather)
 
 
-    @Query("SELECT * FROM weather")
+    @Query("SELECT * FROM weather ")
     suspend fun getWeather():Weather
 
 

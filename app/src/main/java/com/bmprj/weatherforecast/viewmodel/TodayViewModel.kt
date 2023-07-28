@@ -66,7 +66,7 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
         launch {
             val weathers = WeatherDatabase(getApplication()).weatherDAO().getWeather()
             showWeathers(weathers)
-            Toast.makeText(getApplication(),"countries From SQLite", Toast.LENGTH_LONG).show()
+            Toast.makeText(getApplication(),"From SQLite", Toast.LENGTH_LONG).show()
 
         }
     }
@@ -74,9 +74,6 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getDataFromApi(key: String, q: String?, days: Int, aqi: String, lang: String) {
         weatherLoading.value = true
-
-
-
 
 
         weatherApiUtils.getData(key, q, days, aqi, lang)
@@ -90,7 +87,7 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
                     val weather=Weather(weathers.value?.current!!,weathers.value?.forecast!!,weathers.value?.location!!)
 
                     storeInSQLite(weather)
-                    Toast.makeText(getApplication(),"countries From API",Toast.LENGTH_LONG).show()
+                    Toast.makeText(getApplication(),"From API",Toast.LENGTH_LONG).show()
 
 
                 }

@@ -2,45 +2,26 @@ package com.bmprj.weatherforecast.viewmodel
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.data.db.WeatherDatabase
 import com.bmprj.weatherforecast.data.model.ThreeDay
 import com.bmprj.weatherforecast.data.model.Weather
-import com.bmprj.weatherforecast.data.remote.ApiUtils
 import com.bmprj.weatherforecast.ui.base.BaseViewModel
-import com.bmprj.weatherforecast.util.CustomSharedPreferences
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Date
 
 class ThreeDaysViewModel(application: Application):BaseViewModel(application){
 
-    private val weatherApiUtils = ApiUtils()
-
-    val weathers = MutableLiveData<Weather>()
     val threeDay = MutableLiveData<ArrayList<ThreeDay>>()
 
-    private var customSharedPreferences = CustomSharedPreferences(getApplication())
-    private val refreshTime = 15*60*1000*1000*1000L
-    private val uid = 3
 
 
-    fun refreshData( key:String, q:String?, days:Int, aqi:String, lang:String){
-        val updateTime = customSharedPreferences.getTime()
+    fun refreshData(){
 
-        if(updateTime!=null && updateTime!=0L && System.nanoTime() - updateTime < refreshTime){
-            getDataFromSQLite()
-        }else{
-            getDataFromApi(key, q, days, aqi, lang)
-
-        }
+        getDataFromSQLite()
     }
 
     private fun getDataFromSQLite(){
@@ -52,43 +33,43 @@ class ThreeDaysViewModel(application: Application):BaseViewModel(application){
         }
     }
 
-    private fun getDataFromApi(key:String, q:String?, days:Int, aqi:String, lang:String){
+//    private fun getDataFromApi(key:String, q:String?, days:Int, aqi:String, lang:String){
+//
+//
+//
+//        weatherApiUtils.getData(key, q, days, aqi, lang).enqueue(object : Callback<Weather>{
+//            override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
+//
+//                weathers.value=response.body()
+//
+//                val weather=Weather(weathers.value?.current!!,weathers.value?.forecast!!,weathers.value?.location!!)
+//
+//                storeInSQLite(weather)
+//                Toast.makeText(getApplication(),"countries From API", Toast.LENGTH_LONG).show()
+//
+//
+//            }
+//
+//            override fun onFailure(call: Call<Weather>, t: Throwable) {
+//                t.printStackTrace()
+//            }
+//
+//        })
+//
+//    }
 
-
-
-        weatherApiUtils.getData(key, q, days, aqi, lang).enqueue(object : Callback<Weather>{
-            override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
-
-                weathers.value=response.body()
-
-                val weather=Weather(weathers.value?.current!!,weathers.value?.forecast!!,weathers.value?.location!!)
-
-                storeInSQLite(weather)
-                Toast.makeText(getApplication(),"countries From API", Toast.LENGTH_LONG).show()
-
-
-            }
-
-            override fun onFailure(call: Call<Weather>, t: Throwable) {
-                t.printStackTrace()
-            }
-
-        })
-
-    }
-
-    private fun storeInSQLite(weather: Weather){
-        launch {
-            val dao = WeatherDatabase(getApplication()).weatherDAO()
-            dao.delete()
-            dao.insertAll(weather) //listeyi tekil eleman haline getirmeyi sağlıyor
-
-            weather.uid=uid
-            showWeathers(weather)
-        }
-
-        customSharedPreferences.saveTime(System.nanoTime())
-    }
+//    private fun storeInSQLite(weather: Weather){
+//        launch {
+//            val dao = WeatherDatabase(getApplication()).weatherDAO()
+//            dao.delete()
+//            dao.insertAll(weather) //listeyi tekil eleman haline getirmeyi sağlıyor
+//
+//            weather.uid=uid
+//            showWeathers(weather)
+//        }
+//
+//        customSharedPreferences.saveTime(System.nanoTime())
+//    }
 
     @SuppressLint("SimpleDateFormat")
     private fun showWeathers(weather: Weather){

@@ -10,7 +10,6 @@ import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -82,7 +81,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
             }
 
             binding.swipeRefreshLayout.setOnRefreshListener {
-                binding.swipeRefreshLayout.isRefreshing=false
                 binding.scrollV.visibility=View.GONE
                 viewModel.refreshData(
                     "904aa43adf804caf913131326232306",
@@ -91,6 +89,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
                     "no",
                     getString(R.string.lang)
                 )
+                binding.swipeRefreshLayout.isRefreshing=false
             }
 
 

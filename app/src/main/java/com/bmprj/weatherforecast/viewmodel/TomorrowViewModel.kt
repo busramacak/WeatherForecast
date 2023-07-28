@@ -12,40 +12,22 @@ import com.bmprj.weatherforecast.data.model.Rainy
 import com.bmprj.weatherforecast.data.model.Tomorrow
 import com.bmprj.weatherforecast.data.model.Weather
 import com.bmprj.weatherforecast.data.model.Wind
-import com.bmprj.weatherforecast.data.remote.ApiUtils
 import com.bmprj.weatherforecast.ui.base.BaseViewModel
-import com.bmprj.weatherforecast.util.CustomSharedPreferences
 import kotlinx.coroutines.launch
-import retrofit2.Callback
-import retrofit2.Call
-import retrofit2.Response
 
 class TomorrowViewModel(application: Application):BaseViewModel(application) {
-    private val weatherApiUtils = ApiUtils()
 
 
-    val weathers = MutableLiveData<Weather>()
     val hourlyTom = MutableLiveData<ArrayList<Hourly>>()
     val rainyTom = MutableLiveData<ArrayList<Rainy>>()
     val windyTom = MutableLiveData<ArrayList<Wind>>()
 
     val tomorrow = MutableLiveData<Tomorrow>()
 
-    private var customSharedPreferences = CustomSharedPreferences(getApplication())
-    private val refreshTime = 15*60*1000*1000*1000L
-    private val uid = 2
-
     @RequiresApi(Build.VERSION_CODES.O)
-    fun refreshData( key:String, q:String?, days:Int, aqi:String, lang:String){
-        val updateTime = customSharedPreferences.getTime()
+    fun refreshData(){
 
         getDataFromSQLite()
-//        if(updateTime!=null && updateTime!=0L && System.nanoTime() - updateTime < refreshTime){
-//            getDataFromSQLite()
-//        }else{
-//            getDataFromApi(key, q, days, aqi, lang)
-//
-//        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -53,46 +35,46 @@ class TomorrowViewModel(application: Application):BaseViewModel(application) {
         launch {
             val weathers = WeatherDatabase(getApplication()).weatherDAO().getWeather()
             showWeathers(weathers)
-            Toast.makeText(getApplication(),"countries From SQLite", Toast.LENGTH_LONG).show()
+            Toast.makeText(getApplication(),"weathers From SQLite", Toast.LENGTH_LONG).show()
 
         }
     }
-    private fun getDataFromApi( key:String, q:String?, days:Int, aqi:String, lang:String){
+//    private fun getDataFromApi( key:String, q:String?, days:Int, aqi:String, lang:String){
+//
+//
+//        weatherApiUtils.getData(key,q,days,aqi,lang).enqueue(object : Callback<Weather>{
+//            @RequiresApi(Build.VERSION_CODES.O)
+//            override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
+//
+//                weathers.value=response.body()
+//                val weather=Weather(weathers.value?.current!!,weathers.value?.forecast!!,weathers.value?.location!!)
+//
+//                storeInSQLite(weather)
+//                Toast.makeText(getApplication(),"countries From API",Toast.LENGTH_LONG).show()
+//
+//
+//            }
+//
+//            override fun onFailure(call: Call<Weather>, t: Throwable) {
+//                t.printStackTrace()
+//            }
+//
+//        })
+//    }
 
-
-        weatherApiUtils.getData(key,q,days,aqi,lang).enqueue(object : Callback<Weather>{
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
-
-                weathers.value=response.body()
-                val weather=Weather(weathers.value?.current!!,weathers.value?.forecast!!,weathers.value?.location!!)
-
-                storeInSQLite(weather)
-                Toast.makeText(getApplication(),"countries From API",Toast.LENGTH_LONG).show()
-
-
-            }
-
-            override fun onFailure(call: Call<Weather>, t: Throwable) {
-                t.printStackTrace()
-            }
-
-        })
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun storeInSQLite(weather: Weather) {
-        launch {
-            val dao = WeatherDatabase(getApplication()).weatherDAO()
-            dao.delete()
-            dao.insertAll(weather) //listeyi tekil eleman haline getirmeyi sağlıyor
-
-            weather.uid=1
-            showWeathers(weather)
-        }
-
-        customSharedPreferences.saveTime(System.nanoTime())
-    }
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    private fun storeInSQLite(weather: Weather) {
+//        launch {
+//            val dao = WeatherDatabase(getApplication()).weatherDAO()
+//            dao.delete()
+//            dao.insertAll(weather) //listeyi tekil eleman haline getirmeyi sağlıyor
+//
+//            weather.uid=1
+//            showWeathers(weather)
+//        }
+//
+//        customSharedPreferences.saveTime(System.nanoTime())
+//    }
 
     private fun showWeathers(weather: Weather){
 
@@ -177,9 +159,6 @@ class TomorrowViewModel(application: Application):BaseViewModel(application) {
         hourlyTom.value = hourlyTomorrow
         rainyTom.value=rainyTomorrow
         windyTom.value=windTomorrow
-
-
-
 
 
     }

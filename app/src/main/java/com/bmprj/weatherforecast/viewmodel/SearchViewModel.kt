@@ -15,13 +15,13 @@ class SearchViewModel : ViewModel() {
 
     private val searchUtils = ApiUtils()
 
-//
-//    val searchCity = MutableLiveData<SearchCity>()
-
     val search = MutableLiveData<ArrayList<SearchCityItem>>()
 
     fun refreshData(context:Context,key:String,query:String){
+
         getDataFromApi(context,key, query)
+
+
     }
 
     private fun getDataFromApi(context: Context, key:String, query:String){
@@ -49,7 +49,7 @@ class SearchViewModel : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<SearchCity>, t: Throwable) {
-                    TODO("Not yet implemented")
+                    t.printStackTrace()
                 }
 
             })

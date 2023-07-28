@@ -10,8 +10,6 @@ import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.HourlyAdapter
 import com.bmprj.weatherforecast.adapter.RainyAdapter
 import com.bmprj.weatherforecast.adapter.WindAdapter
-import com.bmprj.weatherforecast.data.db.DAO
-import com.bmprj.weatherforecast.data.db.DataBase
 import com.bmprj.weatherforecast.databinding.FragmentTomorrowBinding
 import com.bmprj.weatherforecast.viewmodel.TomorrowViewModel
 import java.time.LocalDateTime
@@ -41,30 +39,16 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(R.layout.fragment
         binding.recy.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         binding.recy.adapter=hourlyAdapter
 
-        val dh = DataBase.getInstance(requireContext())
-        val search = DAO().get(dh)
-        var city:String?=null
 
-        for(i in search){
-            if(i.id==1){
-                city=i.search
+        viewModel.refreshData()
 
-                viewModel.refreshData("904aa43adf804caf913131326232306",city,2,"no",getString(R.string.lang))
 
-                break
-            }
-        }
 
         binding.swipeRefreshLayout.setOnRefreshListener {
-            binding.swipeRefreshLayout.isRefreshing=false
+
             binding.scrollV.visibility=View.GONE
-            viewModel.refreshData(
-                "904aa43adf804caf913131326232306",
-                city,
-                2,
-                "no",
-                getString(R.string.lang)
-            )
+            viewModel.refreshData()
+            binding.swipeRefreshLayout.isRefreshing=false
         }
 
 

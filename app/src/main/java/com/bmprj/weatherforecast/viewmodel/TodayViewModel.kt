@@ -37,7 +37,7 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
     val today = MutableLiveData<Today>()
 
     private var customSharedPreferences = CustomSharedPreferences(getApplication())
-    private val refreshTime = 0.1*60*1000*1000*1000L
+    private val refreshTime = 15*60*1000*1000*1000L
     private val uid = 1
 
 

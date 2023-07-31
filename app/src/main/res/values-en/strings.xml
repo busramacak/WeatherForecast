@@ -39,6 +39,6 @@
 
     <!--    konum aç isteği-->
     <string name="location_enabled_request">Allow the app to access your device\'s location to provide you with the best service.</string>
-
-
+    <string name="location_permission">Unable to access location data. Please open your device location and try again.</string>
+    <string name="tryagain">Try again</string>
 </resources>

@@ -20,23 +20,23 @@
     <string name="time">%1$s:00</string>
     <string name="houryl_line">__________</string>
 
-<!--    menu item title-->
+    <!--    menu item title-->
     <string name="today">Bugün</string>
     <string name="tomorrow">Yarın</string>
     <string name="threedays">3 Gün</string>
     <string name="search">Şehir Ara</string>
 
-<!--    tomorrow-->
+    <!--    tomorrow-->
     <string name="max_minTemp">Gündüz %1$s, Gece %2$s</string>
     <string name="max_minWind">%1$s - %2$s</string>
 
-<!--    three day-->
+    <!--    three day-->
     <string name="day_month_dy">%1$s, %2$s %3$s </string>
-<!--    search -->
+    <!--    search -->
     <string name="searchViewText">Yer Arama</string>
 
-<!--    konum aç isteği-->
+    <!--    konum aç isteği-->
     <string name="location_enabled_request">Size en iyi hizmeti sağlamak için uygulamanın cihazınızın konumuna erişmesine izin verin.</string>
-
-
+    <string name="location_permission">Konum verisi alınamıyor. Lütfen cihazınızın konumunu açıp yeniden deneyin.</string>
+    <string name="tryagain">Yeniden Deneyin</string>
 </resources>

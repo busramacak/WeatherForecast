@@ -358,11 +358,13 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-
-
     </ScrollView>
+
+
+    <androidx.fragment.app.FragmentContainerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragmentView"/>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

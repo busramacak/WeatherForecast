@@ -4,14 +4,14 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
-import android.provider.Settings
 import android.text.Html
 import android.view.View
+import android.widget.Button
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
@@ -23,7 +23,6 @@ import com.bmprj.weatherforecast.adapter.RainyAdapter
 import com.bmprj.weatherforecast.adapter.WindAdapter
 import com.bmprj.weatherforecast.data.db.DAO
 import com.bmprj.weatherforecast.data.db.DataBase
-import com.bmprj.weatherforecast.data.db.DatabaseHelper
 import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
 import com.bmprj.weatherforecast.ui.base.BaseFragment
 import com.bmprj.weatherforecast.viewmodel.TodayViewModel
@@ -31,12 +30,9 @@ import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.coroutineContext
 
 
 class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today) {
@@ -251,8 +247,36 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
             button.setOnClickListener {
                 requestPermissions(view)
                 if(checkPermissions(view)){
-                    getLocation(view)
+                    if(!(view.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager).isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
+                        val  alert = AlertDialog.Builder(requireContext())
+                            .setView(layoutInflater.inflate(R.layout.fragment_location_is_of_,null))
+                            .setCancelable(false)
+//                            .setPositiveButton(Html.fromHtml("<font color='#757474'>"+"Tekrar Dene"+"</font>"),null)
+//                            .setNegativeButton(Html.fromHtml("<font color='#757474'>"+"Sehir Ara"+"</font>")) { DialogInterface, which: Int ->
+//                                Navigation.findNavController(binding.animationView).navigate(R.id.searchFragment)
+//                                Toast.makeText(requireContext(),"negatf",Toast.LENGTH_LONG).show()
+//
+//                            }
+                            .create()
+
+                        val pozitif = alert.findViewById<Button>(R.id.tryy)
+                        val negatif = alert.findViewById<Button>(R.id.searchcity)
+
+                        alert.setOnShowListener {
+                           pozitif.setOnClickListener {
+                                Toast.makeText(requireContext(),"pozitif",Toast.LENGTH_LONG).show()
+
+                                getLocation(view)
+                            }
+                            negatif.setOnClickListener {
+                                Navigation.findNavController(binding.animationView).navigate(R.id.searchFragment)
+                                Toast.makeText(requireContext(),"negatf",Toast.LENGTH_LONG).show()
+                            }
+                        }
+
+                        alert.show()
+                    }
                     alertDialog.dismiss()
 
                 }
@@ -264,6 +288,8 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
 
 
     }
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission", "SuspiciousIndentation")

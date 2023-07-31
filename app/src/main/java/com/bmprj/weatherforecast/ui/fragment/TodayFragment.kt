@@ -249,10 +249,11 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
                 if(checkPermissions(view)){
                     if(!(view.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager).isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
+                        val vieww = layoutInflater.inflate(R.layout.fragment_location_is_of_,null)
                         val  alert = AlertDialog.Builder(requireContext())
-                            .setView(layoutInflater.inflate(R.layout.fragment_location_is_of_,null))
+                            .setView(vieww)
                             .setCancelable(false)
-//                            .setPositiveButton(Html.fromHtml("<font color='#757474'>"+"Tekrar Dene"+"</font>"),null)
+//                            .setPositiveButton(resources.getResourceName(R.id.tryy),null)
 //                            .setNegativeButton(Html.fromHtml("<font color='#757474'>"+"Sehir Ara"+"</font>")) { DialogInterface, which: Int ->
 //                                Navigation.findNavController(binding.animationView).navigate(R.id.searchFragment)
 //                                Toast.makeText(requireContext(),"negatf",Toast.LENGTH_LONG).show()
@@ -260,24 +261,30 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
 //                            }
                             .create()
 
-                        val pozitif = alert.findViewById<Button>(R.id.tryy)
-                        val negatif = alert.findViewById<Button>(R.id.searchcity)
 
-                        alert.setOnShowListener {
-                           pozitif.setOnClickListener {
-                                Toast.makeText(requireContext(),"pozitif",Toast.LENGTH_LONG).show()
+                       val poz = vieww.findViewById<Button>(R.id.tryy)
+                        val neg = vieww.findViewById<Button>(R.id.searchcity)
 
-                                getLocation(view)
-                            }
-                            negatif.setOnClickListener {
-                                Navigation.findNavController(binding.animationView).navigate(R.id.searchFragment)
-                                Toast.makeText(requireContext(),"negatf",Toast.LENGTH_LONG).show()
-                            }
+                        poz.setOnClickListener {
+                            Toast.makeText(requireContext(),"pozitif",Toast.LENGTH_LONG).show()
+                            getLocation(view,alert)
+
+                        }
+                       neg.setOnClickListener {
+
+                            Navigation.findNavController(binding.animationView).navigate(R.id.searchFragment)
+                            Toast.makeText(requireContext(),"negatf",Toast.LENGTH_LONG).show()
+                           alert.dismiss()
                         }
 
+
+
                         alert.show()
+                        alertDialog.dismiss()
+
+
                     }
-                    alertDialog.dismiss()
+
 
                 }
             }
@@ -293,7 +300,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission", "SuspiciousIndentation")
-    fun getLocation(view:View){
+    fun getLocation(view:View,alertDialog: AlertDialog){
 
         val mFusedLocationClient = LocationServices.getFusedLocationProviderClient(view.context)
 
@@ -303,6 +310,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
 
 //                    DAO().add(DatabaseHelper(requireContext()),1,"${location.latitude},${location.longitude}")
                     getWeather("${location.latitude},${location.longitude}")
+                    alertDialog.dismiss()
 
                 }
             }

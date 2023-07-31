@@ -1,6 +1,7 @@
 package com.bmprj.weatherforecast.ui.fragment
 
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.ui.base.BaseFragment
@@ -16,6 +17,7 @@ class ThreeDayFragment : BaseFragment<FragmentThreeDayBinding>(R.layout.fragment
         super.setUpViews(view)
 
         binding.threeDay=this
+
 
         viewModel = ViewModelProviders.of(this@ThreeDayFragment)[ThreeDaysViewModel::class.java]
 

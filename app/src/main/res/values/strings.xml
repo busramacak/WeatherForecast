@@ -4,7 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="lang">tr</string>
-    <string name="yukleniyor">Yükleniyor...</string>
+    <string name="yukleniyor">Yükleniyor…</string>
     <string name="mevcutKonum">Mevcut Konum</string>
     <string name="no">HAYIR</string>
     <string name="openSettings">AYARLARI AÇ</string>
@@ -39,4 +39,5 @@
     <string name="location_enabled_request">Size en iyi hizmeti sağlamak için uygulamanın cihazınızın konumuna erişmesine izin verin.</string>
     <string name="location_permission">Konum verisi alınamıyor. Lütfen cihazınızın konumunu açıp yeniden deneyin.</string>
     <string name="tryagain">Yeniden Deneyin</string>
+    <string name="ok">Tamam</string>
 </resources>

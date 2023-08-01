@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
-import android.text.Html
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -27,9 +26,6 @@ import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
 import com.bmprj.weatherforecast.ui.base.BaseFragment
 import com.bmprj.weatherforecast.viewmodel.TodayViewModel
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -40,8 +36,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
     private val hourlyAdapter = HourlyAdapter(arrayListOf())
     private val rainyAdapter = RainyAdapter(arrayListOf())
     private val windAdapter = WindAdapter(arrayListOf())
-    private val job = Job()
-    private val scope  = CoroutineScope(job + Dispatchers.Main)
 
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -233,32 +227,24 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
     @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("MissingInflatedId", "InflateParams")
     fun islocationenabled(view:View){
+        val v =layoutInflater.inflate(R.layout.alert_dialog_layout,null)
         val  alertDialog = AlertDialog.Builder(requireContext())
-            .setView(layoutInflater.inflate(R.layout.alert_dialog_layout,null))
+            .setView(v)
             .setCancelable(false)
-            .setPositiveButton(Html.fromHtml("<font color='#757474'>"+"Tamam"+"</font>"),null)
-            .setNegativeButton(Html.fromHtml("<font color='#757474'>"+"Sehir Ara"+"</font>")) { DialogInterface, which: Int ->
-                Navigation.findNavController(binding.animationView).navigate(R.id.searchFragment)
-            }
-
             .create()
+
         alertDialog.setOnShowListener{
-            val button = (alertDialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
-            button.setOnClickListener {
+            val btnpoz = v.findViewById<Button>(R.id.tryyy)
+            val btnneg = v.findViewById<Button>(R.id.searchcityy)
+            btnpoz.setOnClickListener {
                 requestPermissions(view)
                 if(checkPermissions(view)){
                     if(!(view.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager).isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
-                        val vieww = layoutInflater.inflate(R.layout.fragment_location_is_of_,null)
+                        val vieww = layoutInflater.inflate(R.layout.location_is_of,null)
                         val  alert = AlertDialog.Builder(requireContext())
                             .setView(vieww)
                             .setCancelable(false)
-//                            .setPositiveButton(resources.getResourceName(R.id.tryy),null)
-//                            .setNegativeButton(Html.fromHtml("<font color='#757474'>"+"Sehir Ara"+"</font>")) { DialogInterface, which: Int ->
-//                                Navigation.findNavController(binding.animationView).navigate(R.id.searchFragment)
-//                                Toast.makeText(requireContext(),"negatf",Toast.LENGTH_LONG).show()
-//
-//                            }
                             .create()
 
 
@@ -277,23 +263,20 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
                            alert.dismiss()
                         }
 
-
-
                         alert.show()
                         alertDialog.dismiss()
-
-
                     }
-
-
                 }
+            }
+
+            btnneg.setOnClickListener {
+                Navigation.findNavController(binding.animationView).navigate(R.id.searchFragment)
+                Toast.makeText(requireContext(),"negatf",Toast.LENGTH_LONG).show()
+                alertDialog.dismiss()
             }
         }
 
-
         alertDialog.show()
-
-
     }
 
 

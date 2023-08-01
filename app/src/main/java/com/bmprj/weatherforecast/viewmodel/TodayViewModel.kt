@@ -28,6 +28,8 @@ import java.time.format.DateTimeFormatter
 class TodayViewModel(application: Application): BaseViewModel(application) {
     private val weatherApiUtils = ApiUtils()
 
+    private var lastCity = MutableLiveData<String>()
+
 
 
     val weathers = MutableLiveData<Weather>()
@@ -51,13 +53,18 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
     fun refreshData(key: String, q: String?, days: Int, aqi: String, lang: String){
 
         val updateTime = customSharedPreferences.getTime()
-
-        if(updateTime!=null && updateTime!=0L && System.nanoTime() - updateTime < refreshTime){
-            getDataFromSQLite()
-        }else{
+        if(lastCity.value!=q){
             getDataFromApi(key, q, days, aqi, lang)
+        }else{
+            if(updateTime!=null && updateTime!=0L && System.nanoTime() - updateTime < refreshTime){
+                getDataFromSQLite()
+            }else{
+                getDataFromApi(key, q, days, aqi, lang)
 
+            }
         }
+
+
     }
 
 
@@ -66,13 +73,14 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
         launch {
             val weathers = WeatherDatabase(getApplication()).weatherDAO().getWeather()
             showWeathers(weathers)
+
             Toast.makeText(getApplication(),"From SQLite", Toast.LENGTH_LONG).show()
 
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getDataFromApi(key: String, q: String?, days: Int, aqi: String, lang: String) {
+    fun getDataFromApi(key: String, q: String?, days: Int, aqi: String, lang: String) {
         weatherLoading.value = true
 
 
@@ -108,6 +116,7 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
             dao.delete()
             dao.insertAll(weather)
 
+            lastCity.value=weather.location.name
             weather.uid=uid
             showWeathers(weather)
         }

@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast.data.db
+package com.bmprj.weatherforecast.data.db.sqlite
 
 import android.annotation.SuppressLint
 import android.content.ContentValues

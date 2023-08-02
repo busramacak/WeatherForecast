@@ -1,34 +1,15 @@
-@file:Suppress("DEPRECATION")
-
 package com.bmprj.weatherforecast.adapter
 
-import android.app.AlertDialog
-import android.app.ProgressDialog
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.LocationManager
-import android.net.Uri
-import android.provider.Settings
-import android.text.Html
-import android.view.LayoutInflater
-import android.view.View
-import androidx.core.app.ActivityCompat
 import androidx.navigation.Navigation
 import com.bmprj.weatherforecast.ui.base.BaseAdapter
 import com.bmprj.weatherforecast.R
-import com.bmprj.weatherforecast.data.db.DAO
-import com.bmprj.weatherforecast.data.db.DataBase
+import com.bmprj.weatherforecast.data.db.sqlite.DAO
+import com.bmprj.weatherforecast.data.db.sqlite.DataBase
 import com.bmprj.weatherforecast.databinding.SearchLayoutBinding
 import com.bmprj.weatherforecast.data.model.SearchCityItem
 import com.bmprj.weatherforecast.ui.fragment.SearchFragmentDirections
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
-@Suppress("DEPRECATION")
 class SearchAdapter(override var list:ArrayList<SearchCityItem>)
     : BaseAdapter<SearchLayoutBinding, SearchCityItem>(list) {
 

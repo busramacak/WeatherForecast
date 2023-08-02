@@ -20,8 +20,8 @@ import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.HourlyAdapter
 import com.bmprj.weatherforecast.adapter.RainyAdapter
 import com.bmprj.weatherforecast.adapter.WindAdapter
-import com.bmprj.weatherforecast.data.db.DAO
-import com.bmprj.weatherforecast.data.db.DataBase
+import com.bmprj.weatherforecast.data.db.sqlite.DAO
+import com.bmprj.weatherforecast.data.db.sqlite.DataBase
 import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
 import com.bmprj.weatherforecast.ui.base.BaseFragment
 import com.bmprj.weatherforecast.viewmodel.TodayViewModel
@@ -77,22 +77,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
             }
         }
 
-//            if(search.size>0){
-//                for(i in search){
-//                    if(i.id==1){
-//                        if(i.search==null || i.search ==getString(R.string.mevcutKonum)){
-//
-//                            getLocation(view)
-//                        }else{
-//                            city=i.search
-//                            getWeather(city)
-//                        }
-//                        break
-//                    }
-//                }
-//            }else{
-//                getLocation(view)
-//            }
 
             binding.swipeRefreshLayout.setOnRefreshListener {
                 binding.scrollV.visibility=View.GONE
@@ -327,38 +311,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
 
 }
 
-
-
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    fun refreshCurrentClick(view:View){
-//        onViewCreated(view, bundleOf())
-//        val dialog = ProgressDialog(context)
-//        dialog.setMessage(getString(R.string.yukleniyor))
-//        dialog.setCancelable(false)
-//        dialog.setInverseBackgroundForced(false)
-//        dialog.show()
-//        viewModel = ViewModelProviders.of(this@TodayFragment).get(TodayViewModel::class.java)
-//
-//
-//        uiScope.launch(Dispatchers.Main){
-//            val dh = DataBase.getInstance(requireContext())
-//            val search = DAO().get(dh)
-//            val city:String?
-//            if(search.size>0){
-//                for(i in search){
-//                    if(i.id==1){
-//                        city=i.search
-//                        getWeather(city)
-//                        break
-//                    }
-//                }
-//            }else{
-//                getLocation(view,dialog)
-//            }
-//        }
-//
-//        observeLiveData()
-//    }
 
 
 

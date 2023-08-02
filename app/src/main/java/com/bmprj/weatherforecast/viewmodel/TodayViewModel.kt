@@ -7,9 +7,9 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.bmprj.weatherforecast.R
-import com.bmprj.weatherforecast.data.db.DAO
-import com.bmprj.weatherforecast.data.db.DatabaseHelper
-import com.bmprj.weatherforecast.data.db.WeatherDatabase
+import com.bmprj.weatherforecast.data.db.sqlite.DAO
+import com.bmprj.weatherforecast.data.db.sqlite.DatabaseHelper
+import com.bmprj.weatherforecast.data.db.room.WeatherDatabase
 import com.bmprj.weatherforecast.data.model.Hourly
 import com.bmprj.weatherforecast.data.model.Rainy
 import com.bmprj.weatherforecast.data.model.Today
@@ -74,8 +74,6 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
             val weathers = WeatherDatabase(getApplication()).weatherDAO().getWeather()
             showWeathers(weathers)
 
-            Toast.makeText(getApplication(),"From SQLite", Toast.LENGTH_LONG).show()
-
         }
     }
 
@@ -95,8 +93,6 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
                     val weather=Weather(weathers.value?.current!!,weathers.value?.forecast!!,weathers.value?.location!!)
 
                     storeInSQLite(weather)
-                    Toast.makeText(getApplication(),"From API",Toast.LENGTH_LONG).show()
-
 
                 }
 

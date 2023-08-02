@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.bmprj.weatherforecast.R
-import com.bmprj.weatherforecast.data.db.WeatherDatabase
+import com.bmprj.weatherforecast.data.db.room.WeatherDatabase
 import com.bmprj.weatherforecast.data.model.Hourly
 import com.bmprj.weatherforecast.data.model.Rainy
 import com.bmprj.weatherforecast.data.model.Tomorrow
@@ -35,46 +35,8 @@ class TomorrowViewModel(application: Application):BaseViewModel(application) {
         launch {
             val weathers = WeatherDatabase(getApplication()).weatherDAO().getWeather()
             showWeathers(weathers)
-            Toast.makeText(getApplication(),"weathers From SQLite", Toast.LENGTH_LONG).show()
-
         }
     }
-//    private fun getDataFromApi( key:String, q:String?, days:Int, aqi:String, lang:String){
-//
-//
-//        weatherApiUtils.getData(key,q,days,aqi,lang).enqueue(object : Callback<Weather>{
-//            @RequiresApi(Build.VERSION_CODES.O)
-//            override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
-//
-//                weathers.value=response.body()
-//                val weather=Weather(weathers.value?.current!!,weathers.value?.forecast!!,weathers.value?.location!!)
-//
-//                storeInSQLite(weather)
-//                Toast.makeText(getApplication(),"countries From API",Toast.LENGTH_LONG).show()
-//
-//
-//            }
-//
-//            override fun onFailure(call: Call<Weather>, t: Throwable) {
-//                t.printStackTrace()
-//            }
-//
-//        })
-//    }
-
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    private fun storeInSQLite(weather: Weather) {
-//        launch {
-//            val dao = WeatherDatabase(getApplication()).weatherDAO()
-//            dao.delete()
-//            dao.insertAll(weather) //listeyi tekil eleman haline getirmeyi sağlıyor
-//
-//            weather.uid=1
-//            showWeathers(weather)
-//        }
-//
-//        customSharedPreferences.saveTime(System.nanoTime())
-//    }
 
     private fun showWeathers(weather: Weather){
 

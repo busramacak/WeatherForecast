@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast.data.db
+package com.bmprj.weatherforecast.data.db.sqlite
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -8,11 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper
 class DataBase private constructor(){
 
     companion object{
-        private var instance:DatabaseHelper?=null
+        private var instance: DatabaseHelper?=null
 
-        fun getInstance(context: Context):DatabaseHelper{
-            if(instance==null){
-                instance= DatabaseHelper(context)
+        fun getInstance(context: Context): DatabaseHelper {
+            if(instance ==null){
+                instance = DatabaseHelper(context)
             }
             return instance!!
         }

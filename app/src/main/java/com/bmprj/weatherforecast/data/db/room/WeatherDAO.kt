@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast.data.db
+package com.bmprj.weatherforecast.data.db.room
 
 import androidx.room.Dao
 import androidx.room.Insert

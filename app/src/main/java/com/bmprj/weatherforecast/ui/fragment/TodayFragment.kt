@@ -10,7 +10,6 @@ import android.location.LocationManager
 import android.os.Build
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
@@ -236,14 +235,12 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
                         val neg = vieww.findViewById<Button>(R.id.searchcity)
 
                         poz.setOnClickListener {
-                            Toast.makeText(requireContext(),"pozitif",Toast.LENGTH_LONG).show()
                             getLocation(view,alert)
 
                         }
                        neg.setOnClickListener {
 
                             Navigation.findNavController(binding.animationView).navigate(R.id.searchFragment)
-                            Toast.makeText(requireContext(),"negatf",Toast.LENGTH_LONG).show()
                            alert.dismiss()
                         }
 
@@ -255,7 +252,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
 
             btnneg.setOnClickListener {
                 Navigation.findNavController(binding.animationView).navigate(R.id.searchFragment)
-                Toast.makeText(requireContext(),"negatf",Toast.LENGTH_LONG).show()
                 alertDialog.dismiss()
             }
         }

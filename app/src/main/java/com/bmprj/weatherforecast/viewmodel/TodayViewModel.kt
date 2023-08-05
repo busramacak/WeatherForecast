@@ -3,7 +3,6 @@ package com.bmprj.weatherforecast.viewmodel
 import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.bmprj.weatherforecast.R

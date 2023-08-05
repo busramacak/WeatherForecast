@@ -28,8 +28,6 @@ class ThreeDaysViewModel(application: Application):BaseViewModel(application){
         launch {
             val weathers = WeatherDatabase(getApplication()).weatherDAO().getWeather()
             showWeathers(weathers)
-            Toast.makeText(getApplication(),"From SQLite", Toast.LENGTH_LONG).show()
-
         }
     }
 

@@ -13,6 +13,10 @@ import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.databinding.ActivityMainBinding
 
 
+
+
+
+
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 

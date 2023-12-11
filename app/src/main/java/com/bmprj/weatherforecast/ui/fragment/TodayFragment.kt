@@ -23,7 +23,7 @@ import com.bmprj.weatherforecast.data.db.sqlite.DAO
 import com.bmprj.weatherforecast.data.db.sqlite.DataBase
 import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
 import com.bmprj.weatherforecast.ui.base.BaseFragment
-import com.bmprj.weatherforecast.viewmodel.TodayViewModel
+import com.bmprj.weatherforecast.ui.viewmodel.TodayViewModel
 import com.google.android.gms.location.LocationServices
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -64,6 +64,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
 
         if(DAO().get(dh).size==0|| DAO().get(dh).get(0).search==null || DAO().get(dh).get(0).search==getString(R.string.mevcutKonum)){
             islocationenabled(view)
+            println(DAO().get(dh).get(0))
 
         }else{
             if(search.size>0){
@@ -198,6 +199,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
     @RequiresApi(Build.VERSION_CODES.O)
     fun getWeather(city:String?){
 
+        println(city)
         viewModel.refreshData(
             "904aa43adf804caf913131326232306",
             city,
@@ -210,6 +212,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
     @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("MissingInflatedId", "InflateParams")
     fun islocationenabled(view:View){
+        println("islocationenabled girdi")
         val v =layoutInflater.inflate(R.layout.alert_dialog_layout,null)
         val  alertDialog = AlertDialog.Builder(requireContext())
             .setView(v)
@@ -220,10 +223,11 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
             val btnpoz = v.findViewById<Button>(R.id.tryyy)
             val btnneg = v.findViewById<Button>(R.id.searchcityy)
             btnpoz.setOnClickListener {
+                println("tmm tikladi")
                 requestPermissions(view)
+                println(checkPermissions(view))
                 if(checkPermissions(view)){
                     if(!(view.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager).isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
                         val vieww = layoutInflater.inflate(R.layout.location_is_of,null)
                         val  alert = AlertDialog.Builder(requireContext())
                             .setView(vieww)
@@ -235,10 +239,12 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
                         val neg = vieww.findViewById<Button>(R.id.searchcity)
 
                         poz.setOnClickListener {
+                            println("tamam tiklandi")
                             getLocation(view,alert)
 
                         }
                        neg.setOnClickListener {
+                           println("sehir ara tiklandi")
 
                             Navigation.findNavController(binding.animationView).navigate(R.id.searchFragment)
                            alert.dismiss()
@@ -246,6 +252,8 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
 
                         alert.show()
                         alertDialog.dismiss()
+                    }else{
+                        getLocation(view,alertDialog)
                     }
                 }
             }
@@ -270,7 +278,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
             mFusedLocationClient.lastLocation.addOnCompleteListener() { task ->
                 val location: Location? = task.result
                 if (location != null) {
-
+                    println(location.latitude.toString()+","+location.longitude.toString())
 //                    DAO().add(DatabaseHelper(requireContext()),1,"${location.latitude},${location.longitude}")
                     getWeather("${location.latitude},${location.longitude}")
                     alertDialog.dismiss()

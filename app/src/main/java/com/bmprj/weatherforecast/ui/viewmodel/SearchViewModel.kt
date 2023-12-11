@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast.viewmodel
+package com.bmprj.weatherforecast.ui.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData

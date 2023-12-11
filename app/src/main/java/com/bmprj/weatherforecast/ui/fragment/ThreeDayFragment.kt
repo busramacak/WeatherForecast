@@ -1,16 +1,15 @@
 package com.bmprj.weatherforecast.ui.fragment
 
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.ui.base.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.ThreeDayAdapter
 import com.bmprj.weatherforecast.databinding.FragmentThreeDayBinding
-import com.bmprj.weatherforecast.viewmodel.ThreeDaysViewModel
+import com.bmprj.weatherforecast.ui.viewmodel.ThreeDaysViewModel
 class ThreeDayFragment : BaseFragment<FragmentThreeDayBinding>(R.layout.fragment_three_day) {
-    private lateinit var viewModel:ThreeDaysViewModel
+    private lateinit var viewModel: ThreeDaysViewModel
     private val threedaysAdapter = ThreeDayAdapter(arrayListOf())
 
     override fun setUpViews(view:View) {

@@ -11,7 +11,7 @@ import com.bmprj.weatherforecast.adapter.HourlyAdapter
 import com.bmprj.weatherforecast.adapter.RainyAdapter
 import com.bmprj.weatherforecast.adapter.WindAdapter
 import com.bmprj.weatherforecast.databinding.FragmentTomorrowBinding
-import com.bmprj.weatherforecast.viewmodel.TomorrowViewModel
+import com.bmprj.weatherforecast.ui.viewmodel.TomorrowViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 

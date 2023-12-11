@@ -1,8 +1,7 @@
-package com.bmprj.weatherforecast.viewmodel
+package com.bmprj.weatherforecast.ui.viewmodel
 
 import android.app.Application
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.bmprj.weatherforecast.R

@@ -10,7 +10,7 @@ import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.SearchAdapter
 import com.bmprj.weatherforecast.databinding.FragmentSearchBinding
 import com.bmprj.weatherforecast.data.model.SearchCityItem
-import com.bmprj.weatherforecast.viewmodel.SearchViewModel
+import com.bmprj.weatherforecast.ui.viewmodel.SearchViewModel
 
 
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {

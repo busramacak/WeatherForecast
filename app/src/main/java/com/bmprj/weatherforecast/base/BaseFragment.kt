@@ -9,7 +9,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 
-open class BaseFragment<VBinding:ViewBinding>(
+abstract class BaseFragment<VBinding:ViewBinding>(
     private val bindingInflater: (LayoutInflater) -> VBinding
 ): Fragment(){
 
@@ -27,10 +27,10 @@ open class BaseFragment<VBinding:ViewBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpViews(view)
+        setUpViews()
     }
 
 
-    open fun setUpViews(view:View){}
+    abstract fun setUpViews()
 
 }

@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <data>
-        <variable
-            name="today"
-            type="com.bmprj.weatherforecast.ui.fragment.TodayFragment" />
-
-    </data>
-
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
 
@@ -207,8 +201,7 @@
                 app:layout_constraintTop_toBottomOf="@id/rel"
                 app:layout_constraintStart_toStartOf="parent"
                 android:background="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:importantForAccessibility="no" />
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <RelativeLayout
                 android:id="@+id/relRain"
@@ -358,4 +351,3 @@
         android:id="@+id/fragmentView"/>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-</layout>

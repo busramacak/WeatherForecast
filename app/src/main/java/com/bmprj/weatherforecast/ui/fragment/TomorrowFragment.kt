@@ -3,9 +3,10 @@ package com.bmprj.weatherforecast.ui.fragment
 import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bmprj.weatherforecast.ui.base.BaseFragment
+import com.bmprj.weatherforecast.base.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.HourlyAdapter
 import com.bmprj.weatherforecast.adapter.RainyAdapter
@@ -16,19 +17,14 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(R.layout.fragment_tomorrow) {
-   private lateinit var viewModel : TomorrowViewModel
+class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(FragmentTomorrowBinding::inflate) {
+    private val viewModel by viewModels<TomorrowViewModel> ()
     private val hourlyAdapter = HourlyAdapter(arrayListOf())
     private val rainyAdapter = RainyAdapter(arrayListOf())
     private val windAdapter = WindAdapter(arrayListOf())
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun setUpViews(view: View) {
-        super.setUpViews(view)
-
-
-        binding.tomorrow=this
-        viewModel = ViewModelProviders.of(this@TomorrowFragment)[TomorrowViewModel::class.java]
+    override fun setUpViews() {
 
         binding.recyRain.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         binding.recyRain.adapter=rainyAdapter

@@ -1,11 +1,12 @@
 package com.bmprj.weatherforecast.ui.fragment
 
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bmprj.weatherforecast.ui.base.BaseFragment
+import com.bmprj.weatherforecast.base.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.SearchAdapter
 import com.bmprj.weatherforecast.databinding.FragmentSearchBinding
@@ -13,19 +14,14 @@ import com.bmprj.weatherforecast.data.model.SearchCityItem
 import com.bmprj.weatherforecast.ui.viewmodel.SearchViewModel
 
 
-class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
+class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate) {
 
-    private lateinit var viewModel : SearchViewModel
+    private val viewModel by viewModels<SearchViewModel>()
     val list = ArrayList<SearchCityItem>()
 
     private lateinit var searchAdapter :SearchAdapter
 
-    override fun setUpViews(view:View) {
-        super.setUpViews(view)
-
-        binding.search=this
-
-        viewModel=ViewModelProviders.of(this@SearchFragment)[SearchViewModel::class.java]
+    override fun setUpViews() {
 
         val s = SearchCityItem("",0,0.0,0.0, getString(R.string.mevcutKonum),"","")
         list.add(s)

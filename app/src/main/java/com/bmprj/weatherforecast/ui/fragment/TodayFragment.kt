@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +23,7 @@ import com.bmprj.weatherforecast.adapter.WindAdapter
 import com.bmprj.weatherforecast.data.db.sqlite.DAO
 import com.bmprj.weatherforecast.data.db.sqlite.DataBase
 import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
-import com.bmprj.weatherforecast.ui.base.BaseFragment
+import com.bmprj.weatherforecast.base.BaseFragment
 import com.bmprj.weatherforecast.ui.viewmodel.TodayViewModel
 import com.google.android.gms.location.LocationServices
 import java.time.LocalDateTime
@@ -30,22 +31,15 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today) {
-    private lateinit var viewModel : TodayViewModel
+class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::inflate) {
+    private val viewModel by viewModels<TodayViewModel> ()
     private val hourlyAdapter = HourlyAdapter(arrayListOf())
     private val rainyAdapter = RainyAdapter(arrayListOf())
     private val windAdapter = WindAdapter(arrayListOf())
 
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    override fun setUpViews(view:View) {
-        super.setUpViews(view)
-
-
-
-        binding.today=this
-        viewModel = ViewModelProviders.of(this@TodayFragment)[TodayViewModel::class.java]
-
+    override fun setUpViews() {
 
 
         binding.recyRain.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
@@ -63,8 +57,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(R.layout.fragment_today
             var city:String?=null
 
         if(DAO().get(dh).size==0|| DAO().get(dh).get(0).search==null || DAO().get(dh).get(0).search==getString(R.string.mevcutKonum)){
-            islocationenabled(view)
-            println(DAO().get(dh).get(0))
+//            islocationenabled(view)
 
         }else{
             if(search.size>0){

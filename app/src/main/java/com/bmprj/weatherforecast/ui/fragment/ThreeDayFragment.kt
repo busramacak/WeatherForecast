@@ -1,24 +1,19 @@
 package com.bmprj.weatherforecast.ui.fragment
 
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bmprj.weatherforecast.ui.base.BaseFragment
+import com.bmprj.weatherforecast.base.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.ThreeDayAdapter
 import com.bmprj.weatherforecast.databinding.FragmentThreeDayBinding
 import com.bmprj.weatherforecast.ui.viewmodel.ThreeDaysViewModel
-class ThreeDayFragment : BaseFragment<FragmentThreeDayBinding>(R.layout.fragment_three_day) {
-    private lateinit var viewModel: ThreeDaysViewModel
+class ThreeDayFragment : BaseFragment<FragmentThreeDayBinding>(FragmentThreeDayBinding::inflate) {
+    private val viewModel by viewModels<ThreeDaysViewModel>()
     private val threedaysAdapter = ThreeDayAdapter(arrayListOf())
 
-    override fun setUpViews(view:View) {
-        super.setUpViews(view)
-
-        binding.threeDay=this
-
-
-        viewModel = ViewModelProviders.of(this@ThreeDayFragment)[ThreeDaysViewModel::class.java]
+    override fun setUpViews() {
 
         binding.recyThreeDay.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         binding.recyThreeDay.adapter=threedaysAdapter

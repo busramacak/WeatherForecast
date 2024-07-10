@@ -18,7 +18,9 @@ object ApiUtils{
 
     @Provides
     @ViewModelScoped
-    fun provideApiUtils(api: APIService): ApiRepository = ApiRepositoryImpl(api)
+    fun provideApiUtils(api: APIService): ApiRepository {
+        return ApiRepositoryImpl(api)
+    }
 
     @Provides
     @ViewModelScoped

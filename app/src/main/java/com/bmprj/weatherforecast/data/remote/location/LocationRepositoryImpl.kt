@@ -12,9 +12,9 @@ class LocationRepositoryImpl @Inject constructor(
 ) : LocationRepository{
     override suspend fun getLocation(): Flow<Location?>  = callbackFlow{
         fusedLocationClient.lastLocation.addOnSuccessListener {
-            trySend(it).isSuccess
+            trySend(it)
         }.addOnFailureListener{
-            trySend(null).isSuccess
+            trySend(null)
         }
     }
 

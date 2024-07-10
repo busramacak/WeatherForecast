@@ -31,13 +31,13 @@ class TomorrowViewModel @Inject constructor(
 
 
     private val _hourlyTom = MutableStateFlow<UiState<List<Hourly>>>(UiState.Loading)
-    val hourlyTod get() = _hourlyTom.asStateFlow()
+    val hourlyTom get() = _hourlyTom.asStateFlow()
 
     private val _rainyTom = MutableStateFlow<UiState<List<Rainy>>>(UiState.Loading)
-    val rainyTod get() = _rainyTom.asStateFlow()
+    val rainyTom get() = _rainyTom.asStateFlow()
 
     private val _windyTom = MutableStateFlow<UiState<List<Wind>>>(UiState.Loading)
-    val windyTod get() = _windyTom.asStateFlow()
+    val windyTom get() = _windyTom.asStateFlow()
 
     private val _tomorrow = MutableStateFlow<UiState<Tomorrow>>(UiState.Loading)
     val tomorrow get() = _tomorrow.asStateFlow()

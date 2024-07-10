@@ -5,7 +5,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.databinding.BindingAdapter
 import com.bmprj.weatherforecast.R
 import com.bumptech.glide.Glide
 

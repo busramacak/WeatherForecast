@@ -5,18 +5,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 
-
-
-
-
+@AndroidEntryPoint
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
@@ -25,8 +22,9 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.main=this
+        binding= ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
 
 
 

@@ -64,31 +64,33 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(FragmentTomorrowB
     @RequiresApi(Build.VERSION_CODES.O)
     private fun observeLiveData(){
 
-        viewModel.hourlyTom.observe(viewLifecycleOwner) { houryl ->
-            houryl?.let {
+        viewModel.hourlyTom.handleState(
+            onSucces = {
                 binding.scrollV.visibility=View.VISIBLE
                 hourlyAdapter.updateList(it)
             }
+        )
 
-        }
 
-        viewModel.rainyTom.observe(viewLifecycleOwner) { rainy->
-            rainy?.let {
+
+        viewModel.rainyTom.handleState(
+            onSucces = {
                 rainyAdapter.updateList(it)
             }
-        }
+        )
 
-        viewModel.windyTom.observe(viewLifecycleOwner)  { windy ->
-            windy?.let { windAdapter.updateList(it) }
-
-        }
+        viewModel.windyTom.handleState(
+            onSucces = {
+                windAdapter.updateList(it)
+            }
+        )
 
         val formatter = DateTimeFormatter.ofPattern("HH")
         val currentt = LocalDateTime.now().format(formatter)
         val t = currentt.toInt()
 
-        viewModel.tomorrow.observe(viewLifecycleOwner) { tomorrow ->
-            tomorrow?.let {
+        viewModel.tomorrow.handleState (
+            onSucces = {
                 binding.title.text = it.cityname
                 binding.date.text = it.date
                 binding.degree.text = it.degree
@@ -99,9 +101,9 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(FragmentTomorrowB
                 binding.windKph.text = it.wind_kph
 
 
-                when (tomorrow.code) {
+                when (it.code) {
                     1000 -> {
-                        if (t > 6 && t < 21) {
+                        if (t in 7..20) {
                             binding.animationView.setAnimation(R.raw.sunny)
                         } else {
                             binding.animationView.setAnimation(R.raw.night)
@@ -109,7 +111,7 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(FragmentTomorrowB
                     }
 
                     1003 -> {
-                        if (t > 6 && t < 21) {
+                        if (t in 7..20) {
                             binding.animationView.setAnimation(R.raw.partly_cloudy)
                         } else {
                             binding.animationView.setAnimation(R.raw.cloudynight)
@@ -125,7 +127,7 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(FragmentTomorrowB
                     }
 
                     1114, 1117, 1204, 1207, 1213, 1219, 1225 -> {
-                        if (t > 6 && t < 21) {
+                        if (t in 7..20) {
                             binding.animationView.setAnimation(R.raw.snow)
                         } else {
                             binding.animationView.setAnimation(R.raw.snownight)
@@ -140,7 +142,6 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(FragmentTomorrowB
 
                     1087, 1273, 1276 -> {
                         binding.animationView.setAnimation(R.raw.thunder)
-
                     }
 
                     1183, 1186, 1189, 1192, 1195, 1198, 1201, 1240, 1243, 1246, 1063 -> {
@@ -149,7 +150,7 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(FragmentTomorrowB
                 }
 
             }
-        }
+        )
     }
 
 

@@ -244,7 +244,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
 
 
     private fun getLocation(){
-
         viewModel.getLocation()
     }
 
@@ -260,7 +259,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
     }
     private fun requestPermissions(view:View) {
         ActivityCompat.requestPermissions(
-            view.context as Activity,
+            requireActivity(),
             arrayOf(
                 android.Manifest.permission.ACCESS_COARSE_LOCATION,
                 android.Manifest.permission.ACCESS_FINE_LOCATION

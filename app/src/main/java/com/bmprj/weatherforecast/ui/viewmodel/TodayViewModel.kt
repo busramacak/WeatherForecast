@@ -154,11 +154,11 @@ class TodayViewModel @Inject constructor(
         val cityName = weather.location.name
 
         weatherRepository.getSearch().collect{
-            searchList = it
+            searchList = arrayListOf(it[0])
         }
 
         if(::searchList.isInitialized && searchList.isEmpty()){
-            weatherRepository.insertSearch(1,cityName)
+            weatherRepository.insertSearch(Search(1,cityName))
 
         }else {
             weatherRepository.updateSearch(searchList[0])

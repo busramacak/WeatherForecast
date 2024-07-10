@@ -29,5 +29,7 @@ class DatabaseModule {
 
     @Provides
     @ViewModelScoped
-    fun provideWeatherDao(db:WeatherDatabase):WeatherDAO = db.weatherDAO()
+    fun provideWeatherDao(db:WeatherDatabase):WeatherDAO {
+        return db.weatherDAO()
+    }
 }

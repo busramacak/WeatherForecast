@@ -11,7 +11,7 @@ interface WeatherRepository {
     suspend fun insertAll(weather: Weather): Flow<Unit>
     suspend fun getWeather(): Flow<Weather>
     suspend fun delete(): Flow<Unit>
-    suspend fun insertSearch(id:Int, search:String):Flow<Unit>
+    suspend fun insertSearch(search: Search):Flow<Unit>
     suspend fun updateSearch(search: Search) : Flow<Unit>
-    suspend fun getSearch(): Flow<ArrayList<Search>>
+    suspend fun getSearch(): Flow<List<Search>>
 }

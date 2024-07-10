@@ -10,9 +10,8 @@ import com.bmprj.weatherforecast.data.db.room.typeconverter.LocationTypeConverte
 import com.bmprj.weatherforecast.model.Search
 import com.bmprj.weatherforecast.model.Weather
 
-@Database(entities = [Weather::class, Search::class], version = 2,exportSchema = false)
+@Database(entities = [Weather::class, Search::class], version = 3)
 @TypeConverters(CurrentTypeConverter::class, ForecastTypeConverter::class, LocationTypeConverter::class)
-
 abstract class WeatherDatabase : RoomDatabase() {
         abstract fun weatherDAO() : WeatherDAO
 

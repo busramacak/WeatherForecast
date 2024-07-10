@@ -1,6 +1,12 @@
 package com.bmprj.weatherforecast.model
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Entity
-data class Search(val id:Int, val search:String?)
+@Entity(tableName = "searchh")
+data class Search(
+    @PrimaryKey(autoGenerate = false)
+    val id:Int=0,
+    val search:String)
+{
+}

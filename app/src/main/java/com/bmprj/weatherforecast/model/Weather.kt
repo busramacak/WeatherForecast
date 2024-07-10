@@ -8,8 +8,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 
-@Entity
-@Suppress("PLUGIN_IS_NOT_ENABLED")
+@Entity(tableName = "weather")
 @Serializable
 data class Weather(
     @ColumnInfo(name = "current")

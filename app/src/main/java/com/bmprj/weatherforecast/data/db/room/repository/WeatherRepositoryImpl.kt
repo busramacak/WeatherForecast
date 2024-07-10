@@ -22,15 +22,15 @@ class WeatherRepositoryImpl  @Inject constructor(
         emit(weatherDAO.delete())
     }
 
-    override suspend fun insertSearch(id: Int, search: String): Flow<Unit> = flow{
-        emit(weatherDAO.insertSearch(id, search))
+    override suspend fun insertSearch(search: Search): Flow<Unit> = flow{
+        emit(weatherDAO.insertSearch(search))
     }
 
     override suspend fun updateSearch(search: Search): Flow<Unit> = flow {
         emit(weatherDAO.updateSearch(search))
     }
 
-    override suspend fun getSearch(): Flow<ArrayList<Search>> = flow {
+    override suspend fun getSearch(): Flow<List<Search>> = flow {
         emit(weatherDAO.getSearch())
     }
 }

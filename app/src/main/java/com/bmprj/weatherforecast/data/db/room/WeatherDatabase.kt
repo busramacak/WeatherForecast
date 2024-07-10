@@ -16,25 +16,4 @@ import com.bmprj.weatherforecast.data.model.Weather
 abstract class WeatherDatabase : RoomDatabase() {
         abstract fun weatherDAO() : WeatherDAO
 
-
-        //singleton
-
-        companion object{
-
-            //volatile her bir thread için sırayla nesneye erişmeyi sağlıyor.
-            @Volatile private var instance : WeatherDatabase?=null
-
-            private val lock = Any()
-
-            operator fun invoke(context: Context) = instance ?: synchronized(lock){
-                instance ?: makeDatabase(context).also {
-                    instance = it
-                }
-            }
-
-            private fun makeDatabase(context: Context) = Room.databaseBuilder(
-                context.applicationContext, WeatherDatabase::class.java,"weatherdatabase"
-            ).build()
-        }
-
 }

@@ -1,6 +1,7 @@
 package com.bmprj.weatherforecast.ui.viewmodel
 
 import android.app.Application
+import android.location.Location
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
@@ -14,6 +15,7 @@ import com.bmprj.weatherforecast.model.Wind
 import com.bmprj.weatherforecast.base.BaseViewModel
 import com.bmprj.weatherforecast.data.db.room.repository.WeatherRepositoryImpl
 import com.bmprj.weatherforecast.data.remote.api.ApiRepositoryImpl
+import com.bmprj.weatherforecast.data.remote.location.LocationRepositoryImpl
 import com.bmprj.weatherforecast.model.Search
 import com.bmprj.weatherforecast.util.ApiResources
 import com.bmprj.weatherforecast.util.CustomSharedPreferences
@@ -32,7 +34,8 @@ import javax.inject.Inject
 class TodayViewModel @Inject constructor(
     application: Application,
     private val apiRepository: ApiRepositoryImpl,
-    private val weatherRepository:WeatherRepositoryImpl
+    private val weatherRepository:WeatherRepositoryImpl,
+    private val locationRepository:LocationRepositoryImpl
 ): BaseViewModel(application) {
 
     private val lastCity = MutableLiveData<String>()
@@ -54,6 +57,9 @@ class TodayViewModel @Inject constructor(
     private val _search = MutableStateFlow<UiState<List<Search>>>(UiState.Loading)
     val search get() = _search.asStateFlow()
 
+    private val _location = MutableStateFlow<UiState<Location?>>(UiState.Loading)
+    val location get() = _location.asStateFlow()
+
     private var customSharedPreferences = CustomSharedPreferences(getApplication())
     private val refreshTime = 15*60*1000*1000*1000L
     private val uid = 1
@@ -61,6 +67,11 @@ class TodayViewModel @Inject constructor(
     lateinit var searchList:ArrayList<Search>
 
 
+    fun getLocation() = viewModelScope.launch{
+        locationRepository.getLocation().collect{
+            _location.emit(UiState.Success(it))
+        }
+    }
     fun getSearch() = viewModelScope.launch {
         weatherRepository.getSearch().collect{
             _search.emit(UiState.Success(it))

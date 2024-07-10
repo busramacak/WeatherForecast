@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast.ui.base
+package com.bmprj.weatherforecast.base
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

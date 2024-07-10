@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast.ui.base
+package com.bmprj.weatherforecast.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,18 +7,22 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 
-open class BaseFragment<DBinding:ViewDataBinding>(private val layout:Int): Fragment(){
+open class BaseFragment<VBinding:ViewBinding>(
+    private val bindingInflater: (LayoutInflater) -> VBinding
+): Fragment(){
 
-    protected lateinit var binding: DBinding
+    private lateinit var _binding:VBinding
+    protected val binding get() =  _binding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding=DataBindingUtil.inflate(inflater,layout,container,false)
-        return binding.root
+        _binding = bindingInflater.invoke(inflater)
+        return _binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,19 +1,20 @@
 package com.bmprj.weatherforecast.adapter
 
-import com.bmprj.weatherforecast.ui.base.BaseAdapter
+import com.bmprj.weatherforecast.base.BaseAdapter
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.data.model.Wind
 import com.bmprj.weatherforecast.databinding.WindLayoutBinding
+import com.bmprj.weatherforecast.util.setLayoutWidth
 
-class WindAdapter(override var list:ArrayList<Wind>)
-    : BaseAdapter<WindLayoutBinding, Wind>(list){
-
-    override val layoutId: Int = R.layout.wind_layout
+class WindAdapter()
+    : BaseAdapter<WindLayoutBinding, Wind>(arrayListOf(), WindLayoutBinding::inflate){
 
     override fun bind(binding: WindLayoutBinding, item: Wind) {
         binding.apply {
-            wind=item
-            executePendingBindings()
+            winddiw.rotation=item.wind_degree
+            windd.text=item.wind
+            img.setLayoutWidth(item.height)
+            time.text=item.time
         }
     }
 

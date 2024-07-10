@@ -6,15 +6,15 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.data.db.room.WeatherDatabase
-import com.bmprj.weatherforecast.data.model.Hourly
-import com.bmprj.weatherforecast.data.model.Rainy
-import com.bmprj.weatherforecast.data.model.Tomorrow
-import com.bmprj.weatherforecast.data.model.Weather
-import com.bmprj.weatherforecast.data.model.Wind
-import com.bmprj.weatherforecast.ui.base.BaseViewModel
+import com.bmprj.weatherforecast.model.Hourly
+import com.bmprj.weatherforecast.model.Rainy
+import com.bmprj.weatherforecast.model.Tomorrow
+import com.bmprj.weatherforecast.model.Weather
+import com.bmprj.weatherforecast.model.Wind
+import com.bmprj.weatherforecast.base.BaseViewModel
 import kotlinx.coroutines.launch
 
-class TomorrowViewModel(application: Application):BaseViewModel(application) {
+class TomorrowViewModel(application: Application): BaseViewModel(application) {
 
 
     val hourlyTom = MutableLiveData<ArrayList<Hourly>>()

@@ -1,8 +1,9 @@
 package com.bmprj.weatherforecast.data.remote
 
-import com.bmprj.weatherforecast.data.model.Weather
-import com.bmprj.weatherforecast.data.model.SearchCity
+import com.bmprj.weatherforecast.model.Weather
+import com.bmprj.weatherforecast.model.SearchCity
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -16,11 +17,11 @@ interface APIService {
         @Query("aqi") aqi:String,
         @Query("lang") lang:String
 
-    ): Call<Weather>
+    ): Response<Weather>
 
     @GET("search.json")
     fun getSearch(
         @Query("key") key:String ,
         @Query("q") q:String
-    ) : Call<SearchCity>
+    ) : Response<SearchCity>
 }

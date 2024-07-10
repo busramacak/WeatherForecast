@@ -5,14 +5,14 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.data.db.room.WeatherDatabase
-import com.bmprj.weatherforecast.data.model.ThreeDay
-import com.bmprj.weatherforecast.data.model.Weather
-import com.bmprj.weatherforecast.ui.base.BaseViewModel
+import com.bmprj.weatherforecast.model.ThreeDay
+import com.bmprj.weatherforecast.model.Weather
+import com.bmprj.weatherforecast.base.BaseViewModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class ThreeDaysViewModel(application: Application):BaseViewModel(application){
+class ThreeDaysViewModel(application: Application): BaseViewModel(application){
 
     val threeDay = MutableLiveData<ArrayList<ThreeDay>>()
 

@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast.data.model
+package com.bmprj.weatherforecast.model
 
 
 class SearchCity : ArrayList<SearchCityItem>()

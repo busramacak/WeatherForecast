@@ -1,7 +1,8 @@
-package com.bmprj.weatherforecast.data.remote
+package com.bmprj.weatherforecast.di
 
-import com.bmprj.weatherforecast.data.model.SearchCity
-import com.bmprj.weatherforecast.data.model.Weather
+import com.bmprj.weatherforecast.model.SearchCity
+import com.bmprj.weatherforecast.model.Weather
+import com.bmprj.weatherforecast.data.remote.APIService
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

@@ -4,14 +4,19 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bmprj.weatherforecast.R
-import com.bmprj.weatherforecast.data.model.SearchCity
-import com.bmprj.weatherforecast.data.model.SearchCityItem
-import com.bmprj.weatherforecast.data.remote.ApiUtils
+import com.bmprj.weatherforecast.model.SearchCity
+import com.bmprj.weatherforecast.model.SearchCityItem
+import com.bmprj.weatherforecast.di.ApiUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class SearchViewModel : ViewModel() {
+@HiltViewModel
+class SearchViewModel @Inject constructor(
+
+): ViewModel() {
 
     private val searchUtils = ApiUtils()
 

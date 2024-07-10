@@ -1,7 +1,7 @@
 package com.bmprj.weatherforecast.data.db.room.typeconverter
 
 import androidx.room.TypeConverter
-import com.bmprj.weatherforecast.data.model.Forecast
+import com.bmprj.weatherforecast.model.Forecast
 import com.google.gson.Gson
 
 class ForecastTypeConverter {

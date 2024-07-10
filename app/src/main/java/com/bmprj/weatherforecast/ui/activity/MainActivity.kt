@@ -37,15 +37,10 @@ class MainActivity : AppCompatActivity() {
         navHostFragment.navController.addOnDestinationChangedListener{ _, nd: NavDestination, _ ->
             if( nd.id== R.id.searchFragment ){
                 binding.bottomNav.visibility= View.GONE
-
-
-
             }else{
                 binding.bottomNav.visibility= View.VISIBLE
             }
-
         }
-
     }
 
 

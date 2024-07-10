@@ -9,7 +9,7 @@ import com.bmprj.weatherforecast.base.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.SearchAdapter
 import com.bmprj.weatherforecast.databinding.FragmentSearchBinding
-import com.bmprj.weatherforecast.data.model.SearchCityItem
+import com.bmprj.weatherforecast.model.SearchCityItem
 import com.bmprj.weatherforecast.ui.viewmodel.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

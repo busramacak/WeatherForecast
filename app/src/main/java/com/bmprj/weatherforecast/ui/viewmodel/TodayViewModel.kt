@@ -9,13 +9,13 @@ import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.data.db.sqlite.DAO
 import com.bmprj.weatherforecast.data.db.sqlite.DatabaseHelper
 import com.bmprj.weatherforecast.data.db.room.WeatherDatabase
-import com.bmprj.weatherforecast.data.model.Hourly
-import com.bmprj.weatherforecast.data.model.Rainy
-import com.bmprj.weatherforecast.data.model.Today
-import com.bmprj.weatherforecast.data.model.Weather
-import com.bmprj.weatherforecast.data.model.Wind
-import com.bmprj.weatherforecast.data.remote.ApiUtils
-import com.bmprj.weatherforecast.ui.base.BaseViewModel
+import com.bmprj.weatherforecast.model.Hourly
+import com.bmprj.weatherforecast.model.Rainy
+import com.bmprj.weatherforecast.model.Today
+import com.bmprj.weatherforecast.model.Weather
+import com.bmprj.weatherforecast.model.Wind
+import com.bmprj.weatherforecast.di.ApiUtils
+import com.bmprj.weatherforecast.base.BaseViewModel
 import com.bmprj.weatherforecast.util.CustomSharedPreferences
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -89,7 +89,8 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
                     response: Response<Weather>,
                 ) {
                     weathers.value = response.body()
-                    val weather=Weather(weathers.value?.current!!,weathers.value?.forecast!!,weathers.value?.location!!)
+                    val weather=
+                        Weather(weathers.value?.current!!,weathers.value?.forecast!!,weathers.value?.location!!)
 
                     storeInSQLite(weather)
 

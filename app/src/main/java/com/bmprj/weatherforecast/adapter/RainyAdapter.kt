@@ -2,7 +2,7 @@ package com.bmprj.weatherforecast.adapter
 
 import com.bmprj.weatherforecast.base.BaseAdapter
 import com.bmprj.weatherforecast.R
-import com.bmprj.weatherforecast.data.model.Rainy
+import com.bmprj.weatherforecast.model.Rainy
 import com.bmprj.weatherforecast.databinding.RainyLayoutBinding
 import com.bmprj.weatherforecast.util.changeTextColor
 

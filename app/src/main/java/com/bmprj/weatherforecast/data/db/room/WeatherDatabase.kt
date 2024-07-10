@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.bmprj.weatherforecast.data.db.room.typeconverter.CurrentTypeConverter
 import com.bmprj.weatherforecast.data.db.room.typeconverter.ForecastTypeConverter
 import com.bmprj.weatherforecast.data.db.room.typeconverter.LocationTypeConverter
-import com.bmprj.weatherforecast.data.model.Weather
+import com.bmprj.weatherforecast.model.Weather
 
 @Database(entities = [Weather::class], version = 1,exportSchema = false)
 @TypeConverters(CurrentTypeConverter::class, ForecastTypeConverter::class, LocationTypeConverter::class)

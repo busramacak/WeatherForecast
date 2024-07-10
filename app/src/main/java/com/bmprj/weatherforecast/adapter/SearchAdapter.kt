@@ -6,7 +6,7 @@ import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.data.db.sqlite.DAO
 import com.bmprj.weatherforecast.data.db.sqlite.DataBase
 import com.bmprj.weatherforecast.databinding.SearchLayoutBinding
-import com.bmprj.weatherforecast.data.model.SearchCityItem
+import com.bmprj.weatherforecast.model.SearchCityItem
 import com.bmprj.weatherforecast.ui.fragment.SearchFragmentDirections
 
 

@@ -1,8 +1,6 @@
-package com.bmprj.weatherforecast.data.remote
+package com.bmprj.weatherforecast.data.db.room.repository
 
-import androidx.room.Insert
-import androidx.room.Query
-import com.bmprj.weatherforecast.data.model.Weather
+import com.bmprj.weatherforecast.model.Weather
 import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository {

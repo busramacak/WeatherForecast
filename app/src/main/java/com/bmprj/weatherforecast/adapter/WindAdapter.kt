@@ -2,7 +2,7 @@ package com.bmprj.weatherforecast.adapter
 
 import com.bmprj.weatherforecast.base.BaseAdapter
 import com.bmprj.weatherforecast.R
-import com.bmprj.weatherforecast.data.model.Wind
+import com.bmprj.weatherforecast.model.Wind
 import com.bmprj.weatherforecast.databinding.WindLayoutBinding
 import com.bmprj.weatherforecast.util.setLayoutWidth
 

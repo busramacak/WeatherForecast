@@ -1,6 +1,7 @@
 package com.bmprj.weatherforecast.data.db.room.repository
 
 import com.bmprj.weatherforecast.data.db.room.WeatherDAO
+import com.bmprj.weatherforecast.model.Search
 import com.bmprj.weatherforecast.model.Weather
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -19,5 +20,17 @@ class WeatherRepositoryImpl  @Inject constructor(
 
     override suspend fun delete(): Flow<Unit> = flow  {
         emit(weatherDAO.delete())
+    }
+
+    override suspend fun insertSearch(id: Int, search: String): Flow<Unit> = flow{
+        emit(weatherDAO.insertSearch(id, search))
+    }
+
+    override suspend fun updateSearch(search: Search): Flow<Unit> = flow {
+        emit(weatherDAO.updateSearch(search))
+    }
+
+    override suspend fun getSearch(): Flow<ArrayList<Search>> = flow {
+        emit(weatherDAO.getSearch())
     }
 }

@@ -1,64 +1,51 @@
 package com.bmprj.weatherforecast.ui.viewmodel
 
-import android.content.Context
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.bmprj.weatherforecast.R
-import com.bmprj.weatherforecast.model.SearchCity
+import androidx.lifecycle.viewModelScope
+import com.bmprj.weatherforecast.data.remote.api.ApiRepositoryImpl
 import com.bmprj.weatherforecast.model.SearchCityItem
-import com.bmprj.weatherforecast.di.ApiUtils
+import com.bmprj.weatherforecast.util.ApiResources
+import com.bmprj.weatherforecast.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-
+    private val apiRepository: ApiRepositoryImpl,
 ): ViewModel() {
 
-    private val searchUtils = ApiUtils()
+    private val _search = MutableStateFlow<UiState<List<SearchCityItem>>>(UiState.Loading)
+    val search get() = _search.asStateFlow()
 
-    val search = MutableLiveData<ArrayList<SearchCityItem>>()
-
-    fun refreshData(context:Context,key:String,query:String){
-
-        getDataFromApi(context,key, query)
-
-
+    fun refreshData(key:String,query:String){
+        getDataFromApi(key, query)
     }
 
-    private fun getDataFromApi(context: Context, key:String, query:String){
-        val searchh = ArrayList<SearchCityItem>()
-
-        val s = SearchCityItem("",0,0.0,0.0, context.getString(R.string.mevcutKonum),"","")
-
-        searchh.add(s)
-
-        if(query.isNotEmpty()){
-
-            searchUtils.getSearch(key, query).enqueue(object : Callback<SearchCity> {
-                override fun onResponse(call: Call<SearchCity>, response: Response<SearchCity>) {
-                    for(i in 0 until response.body()!!.size){
-                        val searc = response.body()?.get(i)
-                        val name = searc?.name
-                        val country = searc?.country
-
-                        val d = SearchCityItem( country,0,0.0,0.0,name,"","")
-                        searchh.add(d)
+    private fun getDataFromApi(key:String, query:String) = viewModelScope.launch {
+        if(query.isEmpty()) return@launch
+        apiRepository.getSearch(key,query)
+            .onStart {
+                _search.emit(UiState.Loading)
+            }
+            .catch {
+                _search.emit(UiState.Error(it))
+            }
+            .collect{
+                when(it){
+                    is ApiResources.Failure -> {
+                        _search.emit(UiState.Error(Throwable(it.exception.errorMessage)))
                     }
-
-                    search.value=searchh
-
+                    is ApiResources.Success -> {
+                        _search.emit(UiState.Success(it.result))
+                    }
                 }
 
-                override fun onFailure(call: Call<SearchCity>, t: Throwable) {
-                    t.printStackTrace()
-                }
-
-            })
-        }
+            }
 
     }
 }

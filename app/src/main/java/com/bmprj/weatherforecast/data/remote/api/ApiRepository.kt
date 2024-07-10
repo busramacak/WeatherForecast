@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast.data.remote
+package com.bmprj.weatherforecast.data.remote.api
 
 import com.bmprj.weatherforecast.model.SearchCity
 import com.bmprj.weatherforecast.model.Weather

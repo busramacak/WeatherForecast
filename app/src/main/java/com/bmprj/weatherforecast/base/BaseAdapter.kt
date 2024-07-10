@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.bmprj.weatherforecast.model.SearchCityItem
 
 abstract class BaseAdapter<VBinding:ViewBinding, T : Any>(
     open var list: ArrayList<T> = arrayListOf(),
@@ -26,7 +27,7 @@ abstract class BaseAdapter<VBinding:ViewBinding, T : Any>(
     }
 
 
-    fun updateList(newList:ArrayList<T>){
+    fun updateList(newList: List<T>){
         list.clear()
         list.addAll(newList)
         notifyDataSetChanged()

@@ -1,9 +1,9 @@
 package com.bmprj.weatherforecast.di
 
 import com.bmprj.weatherforecast.BuildConfig
-import com.bmprj.weatherforecast.data.remote.APIService
-import com.bmprj.weatherforecast.data.remote.ApiRepository
-import com.bmprj.weatherforecast.data.remote.ApiRepositoryImpl
+import com.bmprj.weatherforecast.data.remote.api.APIService
+import com.bmprj.weatherforecast.data.remote.api.ApiRepository
+import com.bmprj.weatherforecast.data.remote.api.ApiRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,11 +18,11 @@ object ApiUtils{
 
     @Provides
     @ViewModelScoped
-    fun provideApiUtils(api:APIService): ApiRepository = ApiRepositoryImpl(api)
+    fun provideApiUtils(api: APIService): ApiRepository = ApiRepositoryImpl(api)
 
     @Provides
     @ViewModelScoped
-    fun provideApiService():APIService{
+    fun provideApiService(): APIService {
         return Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

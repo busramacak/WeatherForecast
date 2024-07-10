@@ -1,127 +1,129 @@
 package com.bmprj.weatherforecast.ui.viewmodel
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.bmprj.weatherforecast.R
-import com.bmprj.weatherforecast.data.db.sqlite.DAO
-import com.bmprj.weatherforecast.data.db.sqlite.DatabaseHelper
-import com.bmprj.weatherforecast.data.db.room.WeatherDatabase
 import com.bmprj.weatherforecast.model.Hourly
 import com.bmprj.weatherforecast.model.Rainy
 import com.bmprj.weatherforecast.model.Today
 import com.bmprj.weatherforecast.model.Weather
 import com.bmprj.weatherforecast.model.Wind
-import com.bmprj.weatherforecast.di.ApiUtils
 import com.bmprj.weatherforecast.base.BaseViewModel
+import com.bmprj.weatherforecast.data.db.room.repository.WeatherRepositoryImpl
+import com.bmprj.weatherforecast.data.remote.api.ApiRepositoryImpl
+import com.bmprj.weatherforecast.model.Search
+import com.bmprj.weatherforecast.util.ApiResources
 import com.bmprj.weatherforecast.util.CustomSharedPreferences
+import com.bmprj.weatherforecast.util.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
-class TodayViewModel(application: Application): BaseViewModel(application) {
-    private val weatherApiUtils = ApiUtils()
+@HiltViewModel
+class TodayViewModel @Inject constructor(
+    application: Application,
+    private val apiRepository: ApiRepositoryImpl,
+    private val weatherRepository:WeatherRepositoryImpl
+): BaseViewModel(application) {
 
-    private var lastCity = MutableLiveData<String>()
+    private val lastCity = MutableLiveData<String>()
 
+    private val _weathers = MutableStateFlow<UiState<Weather>>(UiState.Loading)
 
+    private val _hourlyTod = MutableStateFlow<UiState<List<Hourly>>>(UiState.Loading)
+    val hourlyTod get() = _hourlyTod.asStateFlow()
 
-    val weathers = MutableLiveData<Weather>()
-    val hourlyTod = MutableLiveData<ArrayList<Hourly>>()
-    val rainyTod = MutableLiveData<ArrayList<Rainy>>()
-    val windyTod = MutableLiveData<ArrayList<Wind>>()
-    val today = MutableLiveData<Today>()
+    private val _rainyTod = MutableStateFlow<UiState<List<Rainy>>>(UiState.Loading)
+    val rainyTod get() = _rainyTod.asStateFlow()
+
+    private val _windyTod = MutableStateFlow<UiState<List<Wind>>>(UiState.Loading)
+    val windyTod get() = _windyTod.asStateFlow()
+
+    private val _today = MutableStateFlow<UiState<Today>>(UiState.Loading)
+    val today get() = _today.asStateFlow()
+
+    private val _search = MutableStateFlow<UiState<List<Search>>>(UiState.Loading)
+    val search get() = _search.asStateFlow()
 
     private var customSharedPreferences = CustomSharedPreferences(getApplication())
     private val refreshTime = 15*60*1000*1000*1000L
     private val uid = 1
 
+    lateinit var searchList:ArrayList<Search>
 
 
-
-
-    val weatherError = MutableLiveData<Boolean>()
-    val weatherLoading = MutableLiveData<Boolean>()
+    fun getSearch() = viewModelScope.launch {
+        weatherRepository.getSearch().collect{
+            _search.emit(UiState.Success(it))
+        }
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun refreshData(key: String, q: String?, days: Int, aqi: String, lang: String){
-
+    fun refreshData(key: String, q: String?, days: Int, aqi: String, lang: String) = viewModelScope.launch{
         val updateTime = customSharedPreferences.getTime()
         if(lastCity.value!=q){
             getDataFromApi(key, q, days, aqi, lang)
         }else{
             if(updateTime!=null && updateTime!=0L && System.nanoTime() - updateTime < refreshTime){
-                getDataFromSQLite()
+                getDataFromDatabase()
             }else{
                 getDataFromApi(key, q, days, aqi, lang)
 
             }
         }
 
-
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun getDataFromSQLite(){
-        launch {
-            val weathers = WeatherDatabase(getApplication()).weatherDAO().getWeather()
-            showWeathers(weathers)
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getDataFromDatabase() = viewModelScope.launch{
+        weatherRepository.getWeather().collect{
+            showWeathers(it)
         }
     }
 
+
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getDataFromApi(key: String, q: String?, days: Int, aqi: String, lang: String) {
-        weatherLoading.value = true
-
-
-        weatherApiUtils.getData(key, q, days, aqi, lang)
-            .enqueue(object : Callback<Weather> {
-                @SuppressLint("SuspiciousIndentation")
-                override fun onResponse(
-                    call: Call<Weather>,
-                    response: Response<Weather>,
-                ) {
-                    weathers.value = response.body()
-                    val weather=
-                        Weather(weathers.value?.current!!,weathers.value?.forecast!!,weathers.value?.location!!)
-
-                    storeInSQLite(weather)
-
+    fun getDataFromApi(key: String, q: String?, days: Int, aqi: String, lang: String) = viewModelScope.launch {
+        apiRepository.getWeather(key, q, days, aqi, lang)
+            .onStart { _weathers.emit(UiState.Loading) }
+            .catch { _weathers.emit(UiState.Error(it)) }
+            .collect{
+                when(it){
+                    is ApiResources.Failure -> _weathers.emit(UiState.Error(Throwable(it.exception.errorMessage)))
+                    is ApiResources.Success -> {
+                        _weathers.emit(UiState.Success(it.result))
+                        storeInSQLite(it.result)
+                    }
                 }
-
-                override fun onFailure(call: Call<Weather>, t: Throwable) {
-                    weatherLoading.value=false
-                    weatherError.value=true
-                    t.printStackTrace()
-                }
-
-            })
+            }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun storeInSQLite(weather: Weather) {
-        launch {
-            val dao = WeatherDatabase(getApplication()).weatherDAO()
-            dao.delete()
-            dao.insertAll(weather)
+    private fun storeInSQLite(weather: Weather) = viewModelScope.launch{
+        weatherRepository.delete()
+        weatherRepository.insertAll(weather)
 
-            lastCity.value=weather.location.name
-            weather.uid=uid
-            showWeathers(weather)
-        }
+        lastCity.value=weather.location.name
+        weather.uid=uid
+        showWeathers(weather)
 
         customSharedPreferences.saveTime(System.nanoTime())
     }
 
+
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun showWeathers(weather: Weather){
+    private fun showWeathers(weather: Weather) = viewModelScope.launch{
         val hourlyToday = ArrayList<Hourly>()
         val rainyToday = ArrayList<Rainy>()
         val windToday = ArrayList<Wind>()
@@ -139,15 +141,18 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
 
 
         val cityName = weather.location.name
-        val dh = DatabaseHelper(getApplication())
 
-        if(DAO().get(dh).size==0){
-            DAO().add(dh,1,cityName)
-
-        }else
-        {
-            DAO().update(dh,1,cityName)
+        weatherRepository.getSearch().collect{
+            searchList = it
         }
+
+        if(::searchList.isInitialized && searchList.isEmpty()){
+            weatherRepository.insertSearch(1,cityName)
+
+        }else {
+            weatherRepository.updateSearch(searchList[0])
+        }
+
 
         val current = weather.current
         val last_updated = weather.current.last_updated
@@ -157,7 +162,7 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
         val condition_text = condition.text
         val condition_code = condition.code
 
-        val day = weather.forecast.forecastday.get(0).day
+        val day = weather.forecast.forecastday[0].day
         val humidity = day.avghumidity.toString()
         val uv = day.uv.toString()
         val totalPrecip = day.totalprecip_mm.toString()
@@ -165,13 +170,13 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
 
 
 
-        val hourToday = weather.forecast.forecastday.get(0).hour
+        val hourToday = weather.forecast.forecastday[0].hour
 
 
         if(a<17){
             for(i in a until hourToday.size){
-                val hourSet = hourToday.get(i)
-                val hf = hourToday.get(a)
+                val hourSet = hourToday[i]
+                val hf = hourToday[a]
                 wind_kp = hf.wind_kph.toString()
                 wind_degree = hf.wind_degree.toFloat()
                 windDirection = hf.wind_dir
@@ -209,8 +214,8 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
         }else{
 
             for (i in 17 until hourToday.size) {
-                val hourSet = hourToday.get(i)
-                val hf = hourToday.get(a)
+                val hourSet = hourToday[i]
+                val hf = hourToday[a]
                 wind_kp = hf.wind_kph.toString()
                 wind_degree = hf.wind_degree.toFloat()
                 windDirection = hf.wind_dir
@@ -262,15 +267,10 @@ class TodayViewModel(application: Application): BaseViewModel(application) {
             condition_code)
 
 
-        today.value = tod
-
-
-        hourlyTod.value = hourlyToday
-        rainyTod.value = rainyToday
-        windyTod.value = windToday
-
-        weatherError.value = false
-        weatherLoading.value = false
+        _today.emit(UiState.Success(tod))
+        _hourlyTod.emit(UiState.Success(hourlyToday))
+        _rainyTod.emit(UiState.Success(rainyToday))
+        _windyTod.emit(UiState.Success(windToday))
     }
 }
 

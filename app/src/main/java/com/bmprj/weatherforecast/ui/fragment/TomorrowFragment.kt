@@ -4,7 +4,6 @@ import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.base.BaseFragment
 import com.bmprj.weatherforecast.R

@@ -2,45 +2,52 @@ package com.bmprj.weatherforecast.ui.viewmodel
 
 import android.annotation.SuppressLint
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.bmprj.weatherforecast.R
-import com.bmprj.weatherforecast.data.db.room.WeatherDatabase
 import com.bmprj.weatherforecast.model.ThreeDay
 import com.bmprj.weatherforecast.model.Weather
 import com.bmprj.weatherforecast.base.BaseViewModel
+import com.bmprj.weatherforecast.data.db.room.repository.WeatherRepositoryImpl
+import com.bmprj.weatherforecast.util.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
+import javax.inject.Inject
 
-class ThreeDaysViewModel(application: Application): BaseViewModel(application){
+@HiltViewModel
+class ThreeDaysViewModel @Inject constructor(
+    application: Application,
+    private val weatherRepository:WeatherRepositoryImpl,
+    ): BaseViewModel(application){
 
-    val threeDay = MutableLiveData<ArrayList<ThreeDay>>()
-
+    private val _threeDay = MutableStateFlow<UiState<List<ThreeDay>>>(UiState.Loading)
+    val threeDay get() = _threeDay.asStateFlow()
 
 
     fun refreshData(){
-
         getDataFromSQLite()
     }
 
-    private fun getDataFromSQLite(){
-        launch {
-            val weathers = WeatherDatabase(getApplication()).weatherDAO().getWeather()
-            showWeathers(weathers)
+    private fun getDataFromSQLite() = viewModelScope.launch{
+        weatherRepository.getWeather().collect{
+            showWeathers(it)
         }
     }
 
 
     @SuppressLint("SimpleDateFormat")
-    private fun showWeathers(weather: Weather){
+    private fun showWeathers(weather: Weather) = viewModelScope.launch{
         val dayly = ArrayList<ThreeDay>()
 
         val cityName = weather.location.name
-        val forecastday = weather.forecast.forecastday
+        val forecastDay = weather.forecast.forecastday
 
-        for(i in 0 until forecastday.size){
+        for(element in forecastDay){
 
-            val hour = forecastday[i]
+            val hour = element
 
             val day = hour.day
             val date = hour.date
@@ -70,8 +77,6 @@ class ThreeDaysViewModel(application: Application): BaseViewModel(application){
             dayly.add(t)
         }
 
-        threeDay.value=dayly
-
-
+        _threeDay.emit(UiState.Success(dayly))
     }
 }

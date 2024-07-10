@@ -2,7 +2,6 @@ package com.bmprj.weatherforecast.ui.fragment
 
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.base.BaseFragment
@@ -21,40 +20,45 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     private val searchAdapter by lazy { SearchAdapter(::onCityClicked) }
 
     override fun setUpViews() {
+        setUpListeners()
+        setUpAdapter()
+        setUpLiveDataObservers()
+    }
 
+    private fun setUpAdapter() {
         val s = SearchCityItem("",0,0.0,0.0, getString(R.string.mevcutKonum),"","")
 
         var list = arrayListOf(s)
         searchAdapter.list=list
+
+        binding.recyS.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+        binding.recyS.adapter=searchAdapter
+
+    }
+
+    private fun setUpListeners() {
         binding.searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.refreshData(requireContext(),"904aa43adf804caf913131326232306",newText.toString())
+                viewModel.refreshData("904aa43adf804caf913131326232306",newText.toString())
                 return false
             }
         })
-
-
-        binding.recyS.layoutManager=LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-        binding.recyS.adapter=searchAdapter
-
-        observeLiveData()
     }
 
 
-    fun observeLiveData(){
+    fun setUpLiveDataObservers(){
 
-        viewModel.search.observe(viewLifecycleOwner, Observer {search ->
-
-            search?.let {
-                searchAdapter.updateList(search)
+        viewModel.search.handleState(
+            onLoading = {},
+            onError = {},
+            onSucces = {
+                searchAdapter.updateList(it)
             }
-
-        })
-
+        )
 
     }
 

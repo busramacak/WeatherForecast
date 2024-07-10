@@ -4,6 +4,7 @@ import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.data.db.room.WeatherDatabase
 import com.bmprj.weatherforecast.model.Hourly
@@ -12,32 +13,49 @@ import com.bmprj.weatherforecast.model.Tomorrow
 import com.bmprj.weatherforecast.model.Weather
 import com.bmprj.weatherforecast.model.Wind
 import com.bmprj.weatherforecast.base.BaseViewModel
+import com.bmprj.weatherforecast.data.db.room.repository.WeatherRepositoryImpl
+import com.bmprj.weatherforecast.model.Today
+import com.bmprj.weatherforecast.util.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TomorrowViewModel(application: Application): BaseViewModel(application) {
+@HiltViewModel
+class TomorrowViewModel @Inject constructor(
+    application: Application,
+    private val weatherRepository:WeatherRepositoryImpl
+): BaseViewModel(application) {
 
 
-    val hourlyTom = MutableLiveData<ArrayList<Hourly>>()
-    val rainyTom = MutableLiveData<ArrayList<Rainy>>()
-    val windyTom = MutableLiveData<ArrayList<Wind>>()
+    private val _hourlyTom = MutableStateFlow<UiState<List<Hourly>>>(UiState.Loading)
+    val hourlyTod get() = _hourlyTom.asStateFlow()
 
-    val tomorrow = MutableLiveData<Tomorrow>()
+    private val _rainyTom = MutableStateFlow<UiState<List<Rainy>>>(UiState.Loading)
+    val rainyTod get() = _rainyTom.asStateFlow()
+
+    private val _windyTom = MutableStateFlow<UiState<List<Wind>>>(UiState.Loading)
+    val windyTod get() = _windyTom.asStateFlow()
+
+    private val _tomorrow = MutableStateFlow<UiState<Tomorrow>>(UiState.Loading)
+    val tomorrow get() = _tomorrow.asStateFlow()
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun refreshData(){
-
         getDataFromSQLite()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getDataFromSQLite(){
-        launch {
-            val weathers = WeatherDatabase(getApplication()).weatherDAO().getWeather()
-            showWeathers(weathers)
-        }
+    private fun getDataFromSQLite() = viewModelScope.launch{
+            weatherRepository.getWeather().collect{
+                showWeathers(it)
+            }
     }
 
-    private fun showWeathers(weather: Weather){
+    private fun showWeathers(weather: Weather) = viewModelScope.launch{
 
         val hourlyTomorrow= ArrayList<Hourly>()
         val rainyTomorrow = ArrayList<Rainy>()
@@ -46,7 +64,7 @@ class TomorrowViewModel(application: Application): BaseViewModel(application) {
 
 
         val cityName = weather.location.name
-        val forecastday = weather.forecast.forecastday.get(1)
+        val forecastday = weather.forecast.forecastday[1]
         val date = forecastday.date
         val max_temp_c_tomorrow = forecastday.day.maxtemp_c.toString()
         val min_temp_c_tomorrow = forecastday.day.mintemp_c.toString()
@@ -57,13 +75,13 @@ class TomorrowViewModel(application: Application): BaseViewModel(application) {
         val totalPrecipT = forecastday.day.totalprecip_mm.toString()
 
 
-        val hourTomorrow = weather.forecast.forecastday.get(1).hour
+        val hourTomorrow = weather.forecast.forecastday[1].hour
 
         var maxWind=0.0
         var minWind=0.0
 
 
-        for(i in 0 until hourTomorrow.size){
+        for(i in hourTomorrow.indices){
 
             val hourSet = hourTomorrow[i]
 
@@ -115,11 +133,11 @@ class TomorrowViewModel(application: Application): BaseViewModel(application) {
             getApplication<Application>().getString(R.string.max_minWind,minWind.toInt().toString(),maxWind.toInt().toString()),
             conditioncodeT)
 
-        tomorrow.value=tom
+        _tomorrow.emit(UiState.Success(tom))
 
-        hourlyTom.value = hourlyTomorrow
-        rainyTom.value=rainyTomorrow
-        windyTom.value=windTomorrow
+        _hourlyTom.emit(UiState.Success(hourlyTomorrow))
+        _rainyTom.emit(UiState.Success(rainyTomorrow))
+        _windyTom.emit(UiState.Success(windTomorrow))
 
 
     }

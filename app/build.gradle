@@ -41,11 +41,13 @@ android {
     buildTypes {
         release {
             buildConfigField("String","BASE_URL","\"https://api.weatherapi.com/v1/\"")
+            buildConfigField("String","API_KEY", "\"904aa43adf804caf913131326232306\"")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug{
             buildConfigField("String","BASE_URL","\"https://api.weatherapi.com/v1/\"")
+            buildConfigField("String","API_KEY", "\"904aa43adf804caf913131326232306\"")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

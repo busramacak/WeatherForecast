@@ -1,30 +1,31 @@
 package com.bmprj.weatherforecast.di
 
-import com.bmprj.weatherforecast.model.SearchCity
-import com.bmprj.weatherforecast.model.Weather
+import com.bmprj.weatherforecast.BuildConfig
 import com.bmprj.weatherforecast.data.remote.APIService
-import retrofit2.Call
+import com.bmprj.weatherforecast.data.remote.ApiRepository
+import com.bmprj.weatherforecast.data.remote.ApiRepositoryImpl
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ApiUtils {
+@Module
+@InstallIn(ViewModelComponent::class)
+object ApiUtils{
 
-    companion object{
+    @Provides
+    @ViewModelScoped
+    fun provideApiUtils(api:APIService): ApiRepository = ApiRepositoryImpl(api)
 
-        private val BASE_URL="https://api.weatherapi.com/v1/"
-
-        private val api = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(APIService::class.java)
-    }
-
-    fun getData( key:String, q:String?, days:Int, aqi:String, lang:String): Call<Weather> {
-        return api.getWeather(key,q,days,aqi,lang)
-    }
-
-    fun getSearch(key:String, query:String): Call<SearchCity>{
-        return api.getSearch(key,query)
+    @Provides
+    @ViewModelScoped
+    fun provideApiService():APIService{
+        return Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(APIService::class.java)
     }
 }

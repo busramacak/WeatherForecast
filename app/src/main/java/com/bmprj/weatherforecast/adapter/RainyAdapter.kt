@@ -1,20 +1,22 @@
 package com.bmprj.weatherforecast.adapter
 
-import com.bmprj.weatherforecast.ui.base.BaseAdapter
+import com.bmprj.weatherforecast.base.BaseAdapter
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.data.model.Rainy
 import com.bmprj.weatherforecast.databinding.RainyLayoutBinding
+import com.bmprj.weatherforecast.util.changeTextColor
 
 class RainyAdapter(
-    override var list:ArrayList<Rainy>
-    ) : BaseAdapter<RainyLayoutBinding, Rainy>(list){
+    ) : BaseAdapter<RainyLayoutBinding, Rainy>(arrayListOf(),RainyLayoutBinding::inflate){
 
-    override val layoutId: Int = R.layout.rainy_layout
 
     override fun bind(binding: RainyLayoutBinding, item: Rainy) {
         binding.apply {
-            rainy=item
-            executePendingBindings()
+            percentageRainy.text=item.percentageRainy
+            rating.rating=item.rating
+            precipMm.text=item.precip_mm
+            timeRainy.text=item.timeRainy
+            precipMm.changeTextColor(item.rating)
         }
     }
 }

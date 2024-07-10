@@ -40,7 +40,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textColorHint="@color/white"
-                    android:onQueryTextChange="@{() -> search.onQueryTextChange(searchView.getQuery().toString())}"
                     android:iconifiedByDefault="false"
                     android:queryHint="@string/searchViewText"
                     app:showAsAction="always|ifRoom"/>

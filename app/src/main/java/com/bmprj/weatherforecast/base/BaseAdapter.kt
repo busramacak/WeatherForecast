@@ -2,38 +2,27 @@ package com.bmprj.weatherforecast.base
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import com.bmprj.weatherforecast.data.model.Hourly
+import androidx.viewbinding.ViewBinding
 
-abstract class BaseAdapter<DBinding:ViewDataBinding, T : Any>(open var list: ArrayList<T>)
-    : RecyclerView.Adapter<BaseViewHolder<DBinding>>() {
+abstract class BaseAdapter<VBinding:ViewBinding, T : Any>(
+    open var list: ArrayList<T> = arrayListOf(),
+    private val inflate: (LayoutInflater, ViewGroup, Boolean) -> VBinding
+) : RecyclerView.Adapter<BaseViewHolder<VBinding>>() {
 
-    @get:LayoutRes
-    abstract val layoutId:Int
-    abstract fun bind(binding:DBinding,item:T)
+    abstract fun bind(binding:VBinding,item:T)
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<DBinding> {
-        val binder = DataBindingUtil.inflate<DBinding>(
-            LayoutInflater.from(parent.context),
-            layoutId,
-            parent,
-            false
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<VBinding> {
+        val binder = inflate(LayoutInflater.from(parent.context),parent,false)
 
         return BaseViewHolder(binder)
     }
 
     override fun getItemCount(): Int = list.size
 
-    override fun onBindViewHolder(holder: BaseViewHolder<DBinding>, position: Int) {
-
+    override fun onBindViewHolder(holder: BaseViewHolder<VBinding>, position: Int) {
         bind(holder.binder,list[position])
-
-
     }
 
 

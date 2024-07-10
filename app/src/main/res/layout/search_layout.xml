@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <variable
-            name="searchV"
-            type="com.bmprj.weatherforecast.data.model.SearchCityItem" />
-
-    </data>
-
-    <androidx.cardview.widget.CardView
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/transparent"
@@ -49,7 +41,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="@{searchV.name,default=null}"
                     android:textSize="20sp"
                     android:fontFamily="sans-serif-light"
                     android:textColor="@color/white"
@@ -57,23 +48,16 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/country"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="sans-serif-light"
                     android:textColor="#CAE1F4"
-                    android:text="@{searchV.country,default=null}"
                     app:layout_constraintStart_toEndOf="@id/imgV"
                     app:layout_constraintTop_toBottomOf="@id/city" />
 
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
     </androidx.cardview.widget.CardView>
-</layout>

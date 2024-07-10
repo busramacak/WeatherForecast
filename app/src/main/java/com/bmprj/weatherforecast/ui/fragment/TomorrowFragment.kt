@@ -13,15 +13,17 @@ import com.bmprj.weatherforecast.adapter.RainyAdapter
 import com.bmprj.weatherforecast.adapter.WindAdapter
 import com.bmprj.weatherforecast.databinding.FragmentTomorrowBinding
 import com.bmprj.weatherforecast.ui.viewmodel.TomorrowViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
+@AndroidEntryPoint
 class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(FragmentTomorrowBinding::inflate) {
     private val viewModel by viewModels<TomorrowViewModel> ()
-    private val hourlyAdapter = HourlyAdapter(arrayListOf())
-    private val rainyAdapter = RainyAdapter(arrayListOf())
-    private val windAdapter = WindAdapter(arrayListOf())
+    private val hourlyAdapter by lazy { HourlyAdapter() }
+    private val rainyAdapter by lazy { RainyAdapter() }
+    private val windAdapter by lazy { WindAdapter() }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun setUpViews() {

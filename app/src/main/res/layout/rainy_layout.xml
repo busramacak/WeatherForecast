@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <variable
-            name="rainy"
-            type="com.bmprj.weatherforecast.data.model.Rainy" />
 
-    </data>
-
-    <androidx.cardview.widget.CardView
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dp"
@@ -31,26 +24,24 @@
                 android:layout_gravity="center"
                 android:fontFamily="sans-serif-light"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/white"
-                android:text="@{rainy.percentageRainy, default=null}" />
+                android:textColor="@color/white" />
 
             <RatingBar
+                android:id="@+id/rating"
                 android:layout_marginTop="10dp"
                 style="@style/CustomRatingBarStyle"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center"
                 android:numStars="1"
-                android:isIndicator="true"
-                android:rating="@{rainy.rating}"/>
+                android:isIndicator="true"/>
 
             <TextView
+                android:id="@+id/precipMm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="sans-serif-light"
-                android:textColor="@{rainy.rating > 0 ? @color/rating:@color/white}"
-                android:text="@{rainy.precip_mm}"/>
+                android:fontFamily="sans-serif-light" />
 
             <TextView
                 android:id="@+id/timeRainy"
@@ -60,9 +51,8 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-light"
                 android:textColor="@color/white"
-                android:text="@{rainy.timeRainy, default=0.00}" />
+                android:text="0.00" />
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-</layout>

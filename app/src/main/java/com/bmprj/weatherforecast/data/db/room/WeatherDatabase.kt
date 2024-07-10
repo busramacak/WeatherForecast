@@ -10,7 +10,7 @@ import com.bmprj.weatherforecast.data.db.room.typeconverter.ForecastTypeConverte
 import com.bmprj.weatherforecast.data.db.room.typeconverter.LocationTypeConverter
 import com.bmprj.weatherforecast.data.model.Weather
 
-@Database(entities = arrayOf(Weather::class), version = 1,exportSchema = false)
+@Database(entities = [Weather::class], version = 1,exportSchema = false)
 @TypeConverters(CurrentTypeConverter::class, ForecastTypeConverter::class, LocationTypeConverter::class)
 
 abstract class WeatherDatabase : RoomDatabase() {

@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <variable
-            name="wind"
-            type="com.bmprj.weatherforecast.data.model.Wind" />
 
-    </data>
-
-    <androidx.cardview.widget.CardView
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         app:cardBackgroundColor="@color/transparent"
@@ -32,7 +25,6 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginStart="18dp"
                 android:layout_marginEnd="15dp"
-                android:rotation="@{wind.wind_degree}"
                 android:scaleType="matrix"
                 android:src="@drawable/arrow_up"
                 android:importantForAccessibility="no" />
@@ -48,12 +40,10 @@
                 android:layout_marginEnd="15dp"
                 android:gravity="center"
                 android:fontFamily="sans-serif-light"
-                android:textColor="@color/white"
-                android:text="@{wind.wind,default=null}" />
+                android:textColor="@color/white" />
 
             <ImageView
                 android:id="@+id/img"
-                height="@{wind.height}"
                 android:layout_width="30dp"
                 android:layout_height="20dp"
                 android:layout_alignParentStart="true"
@@ -78,10 +68,6 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:text="@{wind.time,default=null}" />
+                android:gravity="center" />
         </RelativeLayout>
-
-
     </androidx.cardview.widget.CardView>
-</layout>

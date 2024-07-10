@@ -26,16 +26,18 @@ import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
 import com.bmprj.weatherforecast.base.BaseFragment
 import com.bmprj.weatherforecast.ui.viewmodel.TodayViewModel
 import com.google.android.gms.location.LocationServices
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 
+@AndroidEntryPoint
 class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::inflate) {
     private val viewModel by viewModels<TodayViewModel> ()
-    private val hourlyAdapter = HourlyAdapter(arrayListOf())
-    private val rainyAdapter = RainyAdapter(arrayListOf())
-    private val windAdapter = WindAdapter(arrayListOf())
+    private val hourlyAdapter by lazy { HourlyAdapter() }
+    private val rainyAdapter by lazy { RainyAdapter() }
+    private val windAdapter by lazy { WindAdapter() }
 
 
     @RequiresApi(Build.VERSION_CODES.Q)

@@ -9,9 +9,12 @@ import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.ThreeDayAdapter
 import com.bmprj.weatherforecast.databinding.FragmentThreeDayBinding
 import com.bmprj.weatherforecast.ui.viewmodel.ThreeDaysViewModel
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
 class ThreeDayFragment : BaseFragment<FragmentThreeDayBinding>(FragmentThreeDayBinding::inflate) {
     private val viewModel by viewModels<ThreeDaysViewModel>()
-    private val threedaysAdapter = ThreeDayAdapter(arrayListOf())
+    private val threedaysAdapter by lazy { ThreeDayAdapter() }
 
     override fun setUpViews() {
 

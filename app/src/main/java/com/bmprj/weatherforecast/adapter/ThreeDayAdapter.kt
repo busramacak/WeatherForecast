@@ -1,20 +1,22 @@
 package com.bmprj.weatherforecast.adapter
 
-import com.bmprj.weatherforecast.ui.base.BaseAdapter
+import com.bmprj.weatherforecast.base.BaseAdapter
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.data.model.ThreeDay
 import com.bmprj.weatherforecast.databinding.ThreeDaysLayoutBinding
+import com.bmprj.weatherforecast.util.setImgUrl
 
 class ThreeDayAdapter(
-    override var list:ArrayList<ThreeDay>
-    ) : BaseAdapter<ThreeDaysLayoutBinding, ThreeDay>(list){
+    ) : BaseAdapter<ThreeDaysLayoutBinding, ThreeDay>(arrayListOf(),ThreeDaysLayoutBinding::inflate){
 
-    override val layoutId: Int = R.layout.three_days_layout
 
     override fun bind(binding: ThreeDaysLayoutBinding, item: ThreeDay) {
         binding.apply {
-            threeday=item
-            executePendingBindings()
+            day.text=item.day
+            condition.text=item.condition
+            image.setImgUrl(item.image)
+            maxTemp.text=item.maxTemp
+            minTemp.text=item.minTemp
         }
     }
 

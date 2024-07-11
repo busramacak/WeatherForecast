@@ -123,7 +123,13 @@ class TodayViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     private fun storeInSQLite(weather: Weather) = viewModelScope.launch{
         weatherRepository.delete()
-        weatherRepository.insertAll(weather)
+            .collect{
+                weatherRepository.insertAll(weather)
+                    .collect{
+                        println("oldiiiiiiiiiiiiiii")
+                    }
+            }
+
 
         lastCity.value=weather.location.name
         weather.uid=uid

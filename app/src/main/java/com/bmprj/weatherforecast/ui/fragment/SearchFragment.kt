@@ -1,13 +1,17 @@
 package com.bmprj.weatherforecast.ui.fragment
 
+import android.util.Log
 import android.view.View
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bmprj.weatherforecast.BuildConfig
 import com.bmprj.weatherforecast.base.BaseFragment
 import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.adapter.SearchAdapter
 import com.bmprj.weatherforecast.databinding.FragmentSearchBinding
+import com.bmprj.weatherforecast.model.Search
 import com.bmprj.weatherforecast.model.SearchCityItem
 import com.bmprj.weatherforecast.ui.viewmodel.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,8 +22,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
     private val viewModel by viewModels<SearchViewModel>()
     private val searchAdapter by lazy { SearchAdapter(::onCityClicked) }
-
-    override fun setUpViews() {
+    private val findNavController by lazy { findNavController() }
+        override fun setUpViews() {
         setUpListeners()
         setUpAdapter()
         setUpLiveDataObservers()
@@ -28,35 +32,45 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     private fun setUpAdapter() {
         val s = SearchCityItem("",0,0.0,0.0, getString(R.string.mevcutKonum),"","")
 
-        var list = arrayListOf(s)
-        searchAdapter.list=list
+        val list = arrayListOf(s)
+        searchAdapter.updateList(list)
 
-        binding.recyS.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
-        binding.recyS.adapter=searchAdapter
+        binding.searchRecyclerView.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+        binding.searchRecyclerView.adapter=searchAdapter
 
     }
 
     private fun setUpListeners() {
-        binding.searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.refreshData("904aa43adf804caf913131326232306",newText.toString())
-                return false
+        with(binding) {
+            searchView.setupWithSearchBar(binding.searchBar)
+            searchView.editText.addTextChangedListener {
+                viewModel.refreshData(BuildConfig.API_KEY,it.toString())
             }
-        })
+        }
+
+
     }
 
 
-    fun setUpLiveDataObservers(){
+    private fun setUpLiveDataObservers(){
 
         viewModel.search.handleState(
             onLoading = {},
-            onError = {},
+            onError = {
+                      Log.e("tagotag",it.message.toString())
+            },
             onSucces = {
                 searchAdapter.updateList(it)
+            }
+        )
+
+        viewModel.insertSearch.handleState(
+            onLoading = {
+                        println("loading")
+            },
+            onSucces = {
+
             }
         )
 
@@ -66,12 +80,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
 
     fun backClick(view: View) {
-
-        Navigation.findNavController(view).navigate(R.id.todayFragment)
+        val action = SearchFragmentDirections.actionSearchFragmentToTodayFragment(null)
+        findNavController.navigate(action)
     }
 
     private fun onCityClicked(item: SearchCityItem) {
-
+       val  action= SearchFragmentDirections.actionSearchFragmentToTodayFragment(item.name)
+        viewModel.inserttSearch(Search(id = 1,item.name!!))
+        findNavController.navigate(action)
     }
 
 }

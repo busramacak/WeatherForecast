@@ -6,12 +6,14 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Build
+import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.BuildConfig
 import com.bmprj.weatherforecast.R
@@ -35,25 +37,34 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
     private val findNavController by lazy { findNavController() }
     private lateinit var alertDialog : AlertDialog
     private lateinit var alert : AlertDialog
-    private var city:String?=null
+    private val bundle: TodayFragmentArgs by navArgs()
+    private val cityName by lazy { bundle.cityName }
 
+
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun setUpViews() {
+
+
         viewModel.getSearch()
         setUpAdapter()
         setUpListeners()
         setUpLiveDataObservers()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setUpListeners() {
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.scrollV.visibility=View.GONE
-            viewModel.refreshData(
-                BuildConfig.API_KEY,
-                city,
-                3,
-                "no",
-                getString(R.string.lang)
-            )
+            if(!cityName.isNullOrEmpty()){
+                viewModel.refreshData(
+                    BuildConfig.API_KEY,
+                    cityName,
+                    3,
+                    "no",
+                    getString(R.string.lang)
+                )
+            }
+
             binding.swipeRefreshLayout.isRefreshing=false
         }
     }
@@ -81,23 +92,17 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
                 }
             }
         )
+
         viewModel.search.handleState(
             onSucces = {
-                if(it.isEmpty() || it[0].search==null || it[0].search==getString(R.string.mevcutKonum)){
+                if(it[0].search == getString(R.string.mevcutKonum)){
                     isLocationEnabled(requireView())
-
                 }else{
-                    if(it.isNotEmpty()){
-                        for(i in it) {
-                            if(i.id==1){
-                                city=i.search
-                                getWeather(city)
-                            }
-                        }
-                    }
+                    getWeather(it[0].search)
                 }
             }
         )
+
         viewModel.hourlyTod.handleState(
             onSucces = {
                 binding.scrollV.visibility=View.VISIBLE
@@ -187,6 +192,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun getWeather(city:String?){
         viewModel.refreshData(BuildConfig.API_KEY, city, 3, "no", getString(R.string.lang))
     }

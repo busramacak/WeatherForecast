@@ -27,6 +27,23 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(FragmentTomorrowB
     @RequiresApi(Build.VERSION_CODES.O)
     override fun setUpViews() {
 
+        viewModel.refreshData()
+        setUpAdapters()
+        setUpListeners()
+        observeLiveData()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setUpListeners() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+
+            binding.scrollV.visibility=View.GONE
+            viewModel.refreshData()
+            binding.swipeRefreshLayout.isRefreshing=false
+        }
+    }
+
+    private fun setUpAdapters() {
         binding.recyRain.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         binding.recyRain.adapter=rainyAdapter
 
@@ -35,24 +52,6 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(FragmentTomorrowB
 
         binding.recy.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         binding.recy.adapter=hourlyAdapter
-
-
-        viewModel.refreshData()
-
-
-
-        binding.swipeRefreshLayout.setOnRefreshListener {
-
-            binding.scrollV.visibility=View.GONE
-            viewModel.refreshData()
-            binding.swipeRefreshLayout.isRefreshing=false
-        }
-
-
-
-
-
-        observeLiveData()
     }
 
     override fun onPause() {
@@ -70,8 +69,6 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(FragmentTomorrowB
                 hourlyAdapter.updateList(it)
             }
         )
-
-
 
         viewModel.rainyTom.handleState(
             onSucces = {

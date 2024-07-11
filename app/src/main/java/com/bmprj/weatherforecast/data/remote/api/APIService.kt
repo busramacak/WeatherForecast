@@ -10,7 +10,7 @@ import retrofit2.http.Query
 
 interface APIService {
     @GET("forecast.json")
-    fun getWeather(
+    suspend fun getWeather(
         @Query("key") key:String,
         @Query("q") q :String?,
         @Query("days") days:Int,
@@ -20,7 +20,7 @@ interface APIService {
     ): Response<Weather>
 
     @GET("search.json")
-    fun getSearch(
+    suspend fun getSearch(
         @Query("key") key:String ,
         @Query("q") q:String
     ) : Response<SearchCity>

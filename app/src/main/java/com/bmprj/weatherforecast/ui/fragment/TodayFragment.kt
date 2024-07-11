@@ -85,10 +85,16 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
     private fun setUpLiveDataObservers(){
         viewModel.location.handleState(
             onSucces = {
+                println("successe girdi")
                 it?.let {
                     getWeather("${it.latitude},${it.longitude}")
-                    alertDialog.dismiss()
-                    alert.dismiss()
+                    if(::alert.isInitialized){
+                        alert.dismiss()
+                    }
+                    if( ::alertDialog.isInitialized){
+                        alertDialog.dismiss()
+                    }
+
                 }
             }
         )

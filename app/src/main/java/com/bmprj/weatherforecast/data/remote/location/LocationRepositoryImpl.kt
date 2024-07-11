@@ -10,12 +10,17 @@ import javax.inject.Inject
 class LocationRepositoryImpl @Inject constructor(
     private val fusedLocationClient: FusedLocationProviderClient
 ) : LocationRepository{
-    override suspend fun getLocation(): Flow<Location?>  = callbackFlow{
+
+    lateinit var result: Location
+    override suspend fun getLocation(): Flow<Location?>  = flow {
+
         fusedLocationClient.lastLocation.addOnSuccessListener {
-            trySend(it)
-        }.addOnFailureListener{
-            trySend(null)
+            result = it
         }
+        if(::result.isInitialized){
+            emit(result)
+        }
+
     }
 
 

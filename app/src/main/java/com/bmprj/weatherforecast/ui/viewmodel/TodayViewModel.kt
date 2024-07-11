@@ -68,7 +68,12 @@ class TodayViewModel @Inject constructor(
 
 
     fun getLocation() = viewModelScope.launch{
-        locationRepository.getLocation().collect{
+        locationRepository.getLocation()
+            .catch {
+                println(it.message)
+            }
+            .collect{
+            println(it)
             _location.emit(UiState.Success(it))
         }
     }

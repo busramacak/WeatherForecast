@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast.adapter
+package com.bmprj.weatherforecast.ui.adapter
 
 import androidx.core.net.toUri
 import com.bmprj.weatherforecast.base.BaseAdapter

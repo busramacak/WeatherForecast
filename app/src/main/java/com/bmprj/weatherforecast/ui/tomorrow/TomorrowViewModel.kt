@@ -1,12 +1,10 @@
-package com.bmprj.weatherforecast.ui.viewmodel
+package com.bmprj.weatherforecast.ui.tomorrow
 
 import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.bmprj.weatherforecast.R
-import com.bmprj.weatherforecast.data.db.room.WeatherDatabase
 import com.bmprj.weatherforecast.model.Hourly
 import com.bmprj.weatherforecast.model.Rainy
 import com.bmprj.weatherforecast.model.Tomorrow
@@ -14,12 +12,10 @@ import com.bmprj.weatherforecast.model.Weather
 import com.bmprj.weatherforecast.model.Wind
 import com.bmprj.weatherforecast.base.BaseViewModel
 import com.bmprj.weatherforecast.data.db.room.repository.WeatherRepositoryImpl
-import com.bmprj.weatherforecast.model.Today
 import com.bmprj.weatherforecast.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

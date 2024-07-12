@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast.ui.viewmodel
+package com.bmprj.weatherforecast.ui.threeDays
 
 import android.annotation.SuppressLint
 import android.app.Application

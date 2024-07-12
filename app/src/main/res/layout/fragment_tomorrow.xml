@@ -12,7 +12,7 @@
         android:id="@+id/scrollV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragment.TomorrowFragment"
+        tools:context=".ui.tomorrow.TomorrowFragment"
         android:background="@color/cloudBackground">
 
         <androidx.constraintlayout.widget.ConstraintLayout

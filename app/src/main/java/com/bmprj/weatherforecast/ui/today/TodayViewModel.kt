@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast.ui.viewmodel
+package com.bmprj.weatherforecast.ui.today
 
 import android.app.Application
 import android.location.Location
@@ -73,7 +73,6 @@ class TodayViewModel @Inject constructor(
                 println(it.message)
             }
             .collect{
-            println(it)
             _location.emit(UiState.Success(it))
         }
     }
@@ -170,6 +169,7 @@ class TodayViewModel @Inject constructor(
 
         if(::searchList.isInitialized && searchList.isEmpty()){
             weatherRepository.insertSearch(Search(1,cityName))
+            getSearch()
 
         }else {
             weatherRepository.updateSearch(searchList[0])

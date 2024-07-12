@@ -1,11 +1,10 @@
-package com.bmprj.weatherforecast.ui.viewmodel
+package com.bmprj.weatherforecast.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bmprj.weatherforecast.data.db.room.repository.WeatherRepositoryImpl
 import com.bmprj.weatherforecast.data.remote.api.ApiRepositoryImpl
 import com.bmprj.weatherforecast.model.Search
-import com.bmprj.weatherforecast.model.SearchCity
 import com.bmprj.weatherforecast.model.SearchCityItem
 import com.bmprj.weatherforecast.util.ApiResources
 import com.bmprj.weatherforecast.util.UiState

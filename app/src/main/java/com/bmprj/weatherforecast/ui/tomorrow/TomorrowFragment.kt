@@ -1,4 +1,4 @@
-package com.bmprj.weatherforecast.ui.fragment
+package com.bmprj.weatherforecast.ui.tomorrow
 
 import android.os.Build
 import android.view.View
@@ -7,11 +7,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.base.BaseFragment
 import com.bmprj.weatherforecast.R
-import com.bmprj.weatherforecast.adapter.HourlyAdapter
-import com.bmprj.weatherforecast.adapter.RainyAdapter
-import com.bmprj.weatherforecast.adapter.WindAdapter
+import com.bmprj.weatherforecast.ui.adapter.HourlyAdapter
+import com.bmprj.weatherforecast.ui.adapter.RainyAdapter
+import com.bmprj.weatherforecast.ui.adapter.WindAdapter
 import com.bmprj.weatherforecast.databinding.FragmentTomorrowBinding
-import com.bmprj.weatherforecast.ui.viewmodel.TomorrowViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

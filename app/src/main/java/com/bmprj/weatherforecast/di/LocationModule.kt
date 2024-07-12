@@ -9,7 +9,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
-import javax.inject.Singleton
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -20,4 +19,5 @@ object LocationModule {
     fun provideLocationProviderClient(@ApplicationContext context: Context) : FusedLocationProviderClient{
         return LocationServices.getFusedLocationProviderClient(context)
     }
+
 }

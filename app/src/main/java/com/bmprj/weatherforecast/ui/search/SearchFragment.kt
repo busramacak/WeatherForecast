@@ -1,7 +1,6 @@
-package com.bmprj.weatherforecast.ui.fragment
+package com.bmprj.weatherforecast.ui.search
 
 import android.util.Log
-import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -9,11 +8,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.BuildConfig
 import com.bmprj.weatherforecast.base.BaseFragment
 import com.bmprj.weatherforecast.R
-import com.bmprj.weatherforecast.adapter.SearchAdapter
 import com.bmprj.weatherforecast.databinding.FragmentSearchBinding
 import com.bmprj.weatherforecast.model.Search
 import com.bmprj.weatherforecast.model.SearchCityItem
-import com.bmprj.weatherforecast.ui.viewmodel.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -41,20 +38,18 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     }
 
     private fun setUpListeners() {
-
         with(binding) {
             searchView.setupWithSearchBar(binding.searchBar)
             searchView.editText.addTextChangedListener {
                 viewModel.refreshData(BuildConfig.API_KEY,it.toString())
             }
+
+            backButton.setOnClickListener { backButtonClicked() }
         }
-
-
     }
 
 
     private fun setUpLiveDataObservers(){
-
         viewModel.search.handleState(
             onLoading = {},
             onError = {
@@ -66,12 +61,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         )
 
         viewModel.insertSearch.handleState(
-            onLoading = {
-                        println("loading")
-            },
-            onSucces = {
-
-            }
+            onLoading = {},
+            onSucces = {}
         )
 
     }
@@ -79,7 +70,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
 
 
-    fun backClick(view: View) {
+    private fun backButtonClicked() {
         val action = SearchFragmentDirections.actionSearchFragmentToTodayFragment(null)
         findNavController.navigate(action)
     }

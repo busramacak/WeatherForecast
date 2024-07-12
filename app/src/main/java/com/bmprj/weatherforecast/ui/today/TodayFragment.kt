@@ -1,14 +1,13 @@
-package com.bmprj.weatherforecast.ui.fragment
+package com.bmprj.weatherforecast.ui.today
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Build
-import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.viewModels
@@ -17,12 +16,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.BuildConfig
 import com.bmprj.weatherforecast.R
-import com.bmprj.weatherforecast.adapter.HourlyAdapter
-import com.bmprj.weatherforecast.adapter.RainyAdapter
-import com.bmprj.weatherforecast.adapter.WindAdapter
+import com.bmprj.weatherforecast.ui.adapter.HourlyAdapter
+import com.bmprj.weatherforecast.ui.adapter.RainyAdapter
+import com.bmprj.weatherforecast.ui.adapter.WindAdapter
 import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
 import com.bmprj.weatherforecast.base.BaseFragment
-import com.bmprj.weatherforecast.ui.viewmodel.TodayViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -85,7 +83,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
     private fun setUpLiveDataObservers(){
         viewModel.location.handleState(
             onSucces = {
-                println("successe girdi")
                 it?.let {
                     getWeather("${it.latitude},${it.longitude}")
                     if(::alert.isInitialized){
@@ -101,6 +98,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
 
         viewModel.search.handleState(
             onSucces = {
+                println(it)
                 if(it[0].search == getString(R.string.mevcutKonum)){
                     isLocationEnabled(requireView())
                 }else{
@@ -146,7 +144,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
 
                     when (today.code) {
                         1000 -> {
-                            if (t > 6 && t < 21) {
+                            if (t in 7..20) {
                                 binding.animationView.setAnimation(R.raw.sunny)
                             } else {
                                 binding.animationView.setAnimation(R.raw.night)
@@ -154,7 +152,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
                         }
 
                         1003 -> {
-                            if (t > 6 && t < 21) {
+                            if (t in 7..20) {
                                 binding.animationView.setAnimation(R.raw.partly_cloudy)
                             } else {
                                 binding.animationView.setAnimation(R.raw.cloudynight)
@@ -170,7 +168,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
                         }
 
                         1114, 1117, 1204, 1207, 1213, 1219, 1225 -> {
-                            if (t > 6 && t < 21) {
+                            if (t in 7..20) {
                                 binding.animationView.setAnimation(R.raw.snow)
                             } else {
                                 binding.animationView.setAnimation(R.raw.snownight)
@@ -227,7 +225,12 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
                         val neg = vieww.findViewById<Button>(R.id.searchcity)
 
                         poz.setOnClickListener {
-                            getLocation()
+
+                            if ((requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager).isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                getLocation()
+                            } else {
+                                Toast.makeText(context,"Konum servisleri hala kapalı" , Toast.LENGTH_SHORT).show()
+                            }
                         }
                        neg.setOnClickListener {
                            val action = TodayFragmentDirections.actionTodayFragmentToSearchFragment()

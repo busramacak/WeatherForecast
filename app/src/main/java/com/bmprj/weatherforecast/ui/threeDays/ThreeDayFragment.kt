@@ -1,12 +1,10 @@
-package com.bmprj.weatherforecast.ui.fragment
+package com.bmprj.weatherforecast.ui.threeDays
 
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmprj.weatherforecast.base.BaseFragment
-import com.bmprj.weatherforecast.adapter.ThreeDayAdapter
 import com.bmprj.weatherforecast.databinding.FragmentThreeDayBinding
-import com.bmprj.weatherforecast.ui.viewmodel.ThreeDaysViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

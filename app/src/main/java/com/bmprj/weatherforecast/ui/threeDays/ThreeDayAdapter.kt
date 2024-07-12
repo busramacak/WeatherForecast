@@ -1,7 +1,6 @@
-package com.bmprj.weatherforecast.adapter
+package com.bmprj.weatherforecast.ui.threeDays
 
 import com.bmprj.weatherforecast.base.BaseAdapter
-import com.bmprj.weatherforecast.R
 import com.bmprj.weatherforecast.model.ThreeDay
 import com.bmprj.weatherforecast.databinding.ThreeDaysLayoutBinding
 import com.bmprj.weatherforecast.util.setImgUrl

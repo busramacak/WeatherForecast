@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/todayFragment"
-        android:name="com.bmprj.weatherforecast.ui.fragment.TodayFragment"
+        android:name="com.bmprj.weatherforecast.ui.today.TodayFragment"
         android:label="fragment_today"
         tools:layout="@layout/fragment_today">
 
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/tomorrowFragment"
-        android:name="com.bmprj.weatherforecast.ui.fragment.TomorrowFragment"
+        android:name="com.bmprj.weatherforecast.ui.tomorrow.TomorrowFragment"
         android:label="TomorrowFragment"
         tools:layout="@layout/fragment_tomorrow">
         <argument
@@ -35,12 +35,12 @@
     </fragment>
     <fragment
         android:id="@+id/threeDayFragment"
-        android:name="com.bmprj.weatherforecast.ui.fragment.ThreeDayFragment"
+        android:name="com.bmprj.weatherforecast.ui.threeDays.ThreeDayFragment"
         android:label="ThreeDayFragment"
         tools:layout="@layout/fragment_three_day"/>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.bmprj.weatherforecast.ui.fragment.SearchFragment"
+        android:name="com.bmprj.weatherforecast.ui.search.SearchFragment"
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search">
         <action

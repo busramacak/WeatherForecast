@@ -12,9 +12,6 @@
         tools:layout="@layout/fragment_today">
 
         <action
-            android:id="@+id/action_todayFragment_to_tomorrowFragment"
-            app:destination="@id/tomorrowFragment" />
-        <action
             android:id="@+id/action_todayFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
         <argument

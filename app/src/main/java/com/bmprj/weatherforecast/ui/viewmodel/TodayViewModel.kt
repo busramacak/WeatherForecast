@@ -41,6 +41,7 @@ class TodayViewModel @Inject constructor(
     private val lastCity = MutableLiveData<String>()
 
     private val _weathers = MutableStateFlow<UiState<Weather>>(UiState.Loading)
+    val weather get() = _weathers.asStateFlow()
 
     private val _hourlyTod = MutableStateFlow<UiState<List<Hourly>>>(UiState.Loading)
     val hourlyTod get() = _hourlyTod.asStateFlow()
@@ -54,17 +55,15 @@ class TodayViewModel @Inject constructor(
     private val _today = MutableStateFlow<UiState<Today>>(UiState.Loading)
     val today get() = _today.asStateFlow()
 
-    private val _search = MutableStateFlow<UiState<List<Search>>>(UiState.Loading)
-    val search get() = _search.asStateFlow()
-
     private val _location = MutableStateFlow<UiState<Location?>>(UiState.Loading)
     val location get() = _location.asStateFlow()
+
+    private val _search = MutableStateFlow<UiState<Search?>>(UiState.Loading)
+    val searchh get() = _search.asStateFlow()
 
     private var customSharedPreferences = CustomSharedPreferences(getApplication())
     private val refreshTime = 15*60*1000*1000*1000L
     private val uid = 1
-
-    lateinit var searchList:ArrayList<Search>
 
 
     fun getLocation() = viewModelScope.launch{
@@ -73,40 +72,23 @@ class TodayViewModel @Inject constructor(
                 println(it.message)
             }
             .collect{
+                println(it)
             _location.emit(UiState.Success(it))
         }
     }
-    fun getSearch() = viewModelScope.launch {
-        weatherRepository.getSearch().collect{
+
+    fun getSearch(id:Int) = viewModelScope.launch {
+        weatherRepository.getSearch(id).collect{
             _search.emit(UiState.Success(it))
         }
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun refreshData(key: String, q: String?, days: Int, aqi: String, lang: String) = viewModelScope.launch{
-        val updateTime = customSharedPreferences.getTime()
-        if(lastCity.value!=q){
-            getDataFromApi(key, q, days, aqi, lang)
-        }else{
-            if(updateTime!=null && updateTime!=0L && System.nanoTime() - updateTime < refreshTime){
-                getDataFromDatabase()
-            }else{
-                getDataFromApi(key, q, days, aqi, lang)
-
-            }
-        }
-
-    }
-
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun getDataFromDatabase() = viewModelScope.launch{
-        weatherRepository.getWeather().collect{
-            showWeathers(it)
+    fun insertSearch(search: Search) = viewModelScope.launch {
+        weatherRepository.insertSearch(search).catch {
+            println(it.message)
+        }.collect{
+            println("kaydedildi")
         }
     }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getDataFromApi(key: String, q: String?, days: Int, aqi: String, lang: String) = viewModelScope.launch {
@@ -126,20 +108,13 @@ class TodayViewModel @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun storeInSQLite(weather: Weather) = viewModelScope.launch{
-        weatherRepository.delete()
+        weatherRepository.insertAll(weather)
             .collect{
-                weatherRepository.insertAll(weather)
-                    .collect{
-                        println("oldiiiiiiiiiiiiiii")
-                    }
+                lastCity.value=weather.location.name
+                weather.uid=uid
+                showWeathers(weather)
+                customSharedPreferences.saveTime(System.nanoTime())
             }
-
-
-        lastCity.value=weather.location.name
-        weather.uid=uid
-        showWeathers(weather)
-
-        customSharedPreferences.saveTime(System.nanoTime())
     }
 
 
@@ -148,9 +123,6 @@ class TodayViewModel @Inject constructor(
         val hourlyToday = ArrayList<Hourly>()
         val rainyToday = ArrayList<Rainy>()
         val windToday = ArrayList<Wind>()
-
-
-
 
         val formatter = DateTimeFormatter.ofPattern("HH")
         val currentt = LocalDateTime.now().format(formatter)
@@ -162,19 +134,6 @@ class TodayViewModel @Inject constructor(
 
 
         val cityName = weather.location.name
-
-        weatherRepository.getSearch().collect{
-            searchList = arrayListOf(it[0])
-        }
-
-        if(::searchList.isInitialized && searchList.isEmpty()){
-            weatherRepository.insertSearch(Search(1,cityName))
-            getSearch()
-
-        }else {
-            weatherRepository.updateSearch(searchList[0])
-        }
-
 
         val current = weather.current
         val last_updated = weather.current.last_updated

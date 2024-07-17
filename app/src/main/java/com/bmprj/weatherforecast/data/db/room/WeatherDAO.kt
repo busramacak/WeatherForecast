@@ -17,18 +17,11 @@ interface WeatherDAO {
     @Query("SELECT * FROM weather")
     suspend fun getWeather(): Weather
 
-    @Query("DELETE FROM weather")
-    suspend fun delete()
-
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSearch(search: Search)
 
-    @Update
-    suspend fun updateSearch(search:Search)
-
-    @Query("SELECT * FROM searchh")
-    suspend fun getSearch():List<Search>
+    @Query("SELECT * FROM searchh WHERE id=:id")
+    suspend fun getSearch(id:Int):Search?
 
 
 

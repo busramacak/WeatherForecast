@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.core.graphics.createBitmap
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -21,6 +22,7 @@ import com.bmprj.weatherforecast.ui.adapter.RainyAdapter
 import com.bmprj.weatherforecast.ui.adapter.WindAdapter
 import com.bmprj.weatherforecast.databinding.FragmentTodayBinding
 import com.bmprj.weatherforecast.base.BaseFragment
+import com.bmprj.weatherforecast.model.Search
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -35,36 +37,16 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
     private val findNavController by lazy { findNavController() }
     private lateinit var alertDialog : AlertDialog
     private lateinit var alert : AlertDialog
-    private val bundle: TodayFragmentArgs by navArgs()
-    private val cityName by lazy { bundle.cityName }
-
+    private lateinit var cityName:String
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun setUpViews() {
 
 
-        viewModel.getSearch()
+        viewModel.getSearch(1)
+
         setUpAdapter()
-        setUpListeners()
         setUpLiveDataObservers()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun setUpListeners() {
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            binding.scrollV.visibility=View.GONE
-            if(!cityName.isNullOrEmpty()){
-                viewModel.refreshData(
-                    BuildConfig.API_KEY,
-                    cityName,
-                    3,
-                    "no",
-                    getString(R.string.lang)
-                )
-            }
-
-            binding.swipeRefreshLayout.isRefreshing=false
-        }
     }
 
     private fun setUpAdapter() {
@@ -84,25 +66,28 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
         viewModel.location.handleState(
             onSucces = {
                 it?.let {
-                    getWeather("${it.latitude},${it.longitude}")
                     if(::alert.isInitialized){
                         alert.dismiss()
                     }
                     if( ::alertDialog.isInitialized){
                         alertDialog.dismiss()
                     }
-
+                    getWeather("${it.latitude},${it.longitude}")
                 }
             }
         )
 
-        viewModel.search.handleState(
+        viewModel.searchh.handleState(
             onSucces = {
-                println(it)
-                if(it[0].search == getString(R.string.mevcutKonum)){
-                    isLocationEnabled(requireView())
+                if(it != null){
+                    if(it.search!=getString(R.string.mevcutKonum)){
+                        cityName=it.search
+                        getWeather(it.search)
+                    }else{
+                        isLocationEnabled()
+                    }
                 }else{
-                    getWeather(it[0].search)
+                    isLocationEnabled()
                 }
             }
         )
@@ -131,6 +116,8 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
 
         viewModel.today.handleState(
             onSucces = { today ->
+
+                viewModel.insertSearch(Search(1,today.cityname!!))
                     binding.date.text = today.date
                     binding.title.text = today.cityname
                     binding.degree.text = today.degree
@@ -198,10 +185,10 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getWeather(city:String?){
-        viewModel.refreshData(BuildConfig.API_KEY, city, 3, "no", getString(R.string.lang))
+        viewModel.getDataFromApi(BuildConfig.API_KEY, city, 3, "no", getString(R.string.lang))
     }
 
-    private fun isLocationEnabled(view:View){
+    private fun isLocationEnabled(){
         val v =layoutInflater.inflate(R.layout.alert_dialog_layout,null)
         alertDialog= AlertDialog.Builder(requireContext()).setView(v).setCancelable(false).create()
 
@@ -210,9 +197,9 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(FragmentTodayBinding::i
             val btnneg = v.findViewById<Button>(R.id.searchcityy)
             btnpoz.setOnClickListener {
 
-                requestPermissions(view)
+                requestPermissions(requireView())
 
-                if(checkPermissions(view)){
+                if(checkPermissions(requireView())){
                     if(!(requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager).isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                         val vieww = layoutInflater.inflate(R.layout.location_is_of,null)
                         alert = AlertDialog.Builder(requireContext())

@@ -71,12 +71,12 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
 
     private fun backButtonClicked() {
-        val action = SearchFragmentDirections.actionSearchFragmentToTodayFragment(null)
+        val action = SearchFragmentDirections.actionSearchFragmentToTodayFragment()
         findNavController.navigate(action)
     }
 
     private fun onCityClicked(item: SearchCityItem) {
-       val  action= SearchFragmentDirections.actionSearchFragmentToTodayFragment(item.name)
+       val  action= SearchFragmentDirections.actionSearchFragmentToTodayFragment()
         viewModel.inserttSearch(Search(id = 1,item.name!!))
         findNavController.navigate(action)
     }

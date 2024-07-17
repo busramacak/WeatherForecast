@@ -28,19 +28,9 @@ class TomorrowFragment : BaseFragment<FragmentTomorrowBinding>(FragmentTomorrowB
 
         viewModel.refreshData()
         setUpAdapters()
-        setUpListeners()
         observeLiveData()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun setUpListeners() {
-        binding.swipeRefreshLayout.setOnRefreshListener {
-
-            binding.scrollV.visibility=View.GONE
-            viewModel.refreshData()
-            binding.swipeRefreshLayout.isRefreshing=false
-        }
-    }
 
     private fun setUpAdapters() {
         binding.recyRain.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)

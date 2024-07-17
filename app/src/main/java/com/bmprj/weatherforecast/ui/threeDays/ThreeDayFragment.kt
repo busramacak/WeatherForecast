@@ -16,17 +16,9 @@ class ThreeDayFragment : BaseFragment<FragmentThreeDayBinding>(FragmentThreeDayB
 
         viewModel.refreshData()
         setUpAdapter()
-        setUpListeners()
         setUpLiveDataObservers()
     }
 
-    private fun setUpListeners() {
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            binding.constrain.visibility=View.GONE
-            viewModel.refreshData()
-            binding.swipeRefreshLayout.isRefreshing=false
-        }
-    }
 
     private fun setUpAdapter() {
         binding.recyThreeDay.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
